@@ -1,0 +1,322 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    background-image: url('/src/img/flat-lay-white-ceramic-mug-with-coffee-silver-dollar-gum-tree-leaves-white-bed-sheet_209303-28.jpg');
+    background-size: cover;
+    background-position: top center;
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+}
+body.homepage {
+    background-image: none;
+}
+main {
+    min-height: calc(100vh - 200px);
+}
+#modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(83, 83, 83, 0.2); /* Tumma läpinäkyvä tausta */
+    z-index: -1; 
+}
+
+
+nav {
+    width: 100%;
+    height: auto; 
+    margin: auto; 
+    margin-bottom: 40px;
+    overflow: hidden;
+    visibility:visible;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.auth-link {
+    display: none;
+}
+.otsikko {
+    float: left; 
+    color: white;
+    font-size: 27px;
+    padding: 20px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+li a {
+    display: block;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+    margin: 13px;
+    text-decoration: none;
+}
+
+li a:hover {
+    color:#477668;
+    cursor: pointer;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+#login-button {
+    background-color: #477668;
+    font-size: 14px;
+    color: rgb(255, 255, 255);;
+    width: auto;
+    padding: 10px 15px;
+    margin: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    align-items: right;
+  }
+  
+  button:hover {
+    background-color: #dddddd;
+  }
+
+
+.auth-container {
+    display: block;
+    padding-top: 10px;
+}
+.modal {
+    display: none; /* Aluksi piilotettu */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    padding: 20px;
+    z-index: 1000;
+    overflow: visible;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    background-color: #ddd;
+    border-radius: 13px;
+}
+
+.modal-content {
+    margin: 0 auto; /* Keskittää sen modalin sisälle */
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+}
+
+/* Sulkemispainike */
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Tabit */
+.modal-tabs {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.modal-tab {
+    cursor: pointer;
+    padding: 10px;
+    flex: 1;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+}
+
+.modal-tab.active {
+    color: #477668;
+    border-bottom: 2px solid #477668;
+}
+
+.modal-form {
+    display: none; /* Oletuksena piilossa */
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-form.active {
+    display: flex;
+}
+
+/* Lomakekentät */
+.form-group {
+    margin-bottom: 1px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-button {
+    background-color: #477668;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.form-button:hover {
+    background-color: #477668;
+}
+
+#logoutButton {
+    font-size: 20px;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin: 13px;
+    background: none;
+    border: 2px solid white;
+    text-decoration: none;
+    white-space: nowrap;
+    
+}
+
+#logoutButton:hover {
+    color: rgb(68, 149, 68);
+    cursor: pointer;
+}
+#logo {
+    color: rgb(153, 243, 153);
+    font-size: 25px;
+}
+
+/* Ilmoitus käyttäjälle kirjautumisesta/rekisteröinnistä */
+#loginResponse {
+    opacity: 0;
+    visibility: hidden;
+    margin-top: 20px;
+    padding: 12px;
+    text-align: center;
+    font-size: 1.1em;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease;
+}
+
+.success {
+    background-color: #4CAF50; 
+    color: white;
+    font-weight: bold;
+}
+
+.error {
+    background-color: #f44336;
+    color: white;
+    font-weight: bold;
+}
+
+#loginResponse.show {
+    visibility: visible; 
+    opacity: 1;
+    transition: opacity 0.5s ease, visibility 0s;
+}
+
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; 
+    gap: 20px; 
+}
+
+input[type=text], input[type=password], input[type=email], textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* FOOTER */
+footer {
+    height: 70px;
+    margin-top: 20px;
+    width: 100%;
+    line-height: 70px;
+    color: #ffffff;
+    text-align: center;
+}
+
+/* RESPONSIIVISUUS */
+@media (max-width: 1024px) {
+    nav {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    ul {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    li {
+        width: 100%;
+        text-align: center;
+    }
+
+    #logoutButton {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        font-size: 12px;
+    }
+}

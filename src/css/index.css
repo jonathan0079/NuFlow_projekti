@@ -1,0 +1,41 @@
+.hero-container {
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: hsla(0, 0%, 86%, 0.2);
+    border-radius: 20px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px); /* Vahvempi blur */
+    line-height: 1.6;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Lisää pehmeä varjo */
+}
+
+.features, .analysis, .alert {
+    margin-top: 20px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 20px; /* Lisää sisennystä */
+}
+
+ul li {
+    font-size: 18px;
+    padding: 5px 0;
+    position: relative;
+}
+
+h1 {
+    font-size: 30px;
+    color: #3f675b; /* Hieman tummempi vihreä */
+    margin-bottom: 15px;
+    text-align: center;
+}
+p {
+    font-size: 18px;
+    color: #f5f5f5; /* Erittäin vaalea harmaa, parempi kontrasti */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); /* Lisää syvyyttä */
+}
+
