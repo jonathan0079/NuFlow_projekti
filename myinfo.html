@@ -1,24 +1,27 @@
-
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <title>NuFlow</title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
-    <link rel="stylesheet" href="/src/css/snackbar.css">
     <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/initial_info.css">
 </head>
 <body>
     <nav>
-        <div id="modal-overlay"></div>
+      <div id="modal-overlay"></div>
         <div class="otsikko">NuFlow</div>
         <ul>
             <li><a href="/index.html">Etusivu</a></li>
             <!-- <li class="auth-link"><a href="src/pages/myinfo.html">Omat tietoni</a></li> -->
-            <li><a href="/src/pages/myinfo.html">Omat tiedot</a></li>
+            <li><a href="/myinfo.html">Omat tiedot</a></li>
             <!--<li class="auth-link"><a href="src/pages/diary.html">Päiväkirja</a></li>-->
-            <li><a href="/src/pages/diary.html">Päiväkirja</a></li>
+            <li><a href="/diary.html">Päiväkirja</a></li>
+            <li class="settings-link">
+              <a href="/settings.html">
+                  <button id="settings-icon">⚙️</button>
+              </a>
+          </li>
             <li><button id="logoutButton" style="display: none;">Kirjaudu ulos</button></li>
             <div class="auth-container">
                 <button id="login-button" class="login-button">Kirjaudu sisään</button>
@@ -27,11 +30,13 @@
                     <span class="dropdown-icon">▼</span>
                     <div id="user-menu-content" class="user-menu-content"></div>
                 </div>
-            </div>
         </ul>   
         </nav>
-        <main>
-        </body>
-      </main>
-      <footer>Minun sivusto</footer>
-      </html>
+    <main>
+      <h1>Omat tietoni</h1>
+      <a href="/initial_info.html">Muokkaa esitietoja</a>
+  </body>
+</main>
+<footer>NuFlow © 2025</footer>
+<script type="module" src="/src/js/auth.js"></script>
+</html>

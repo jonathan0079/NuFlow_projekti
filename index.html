@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <title>NuFlow</title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
@@ -16,9 +15,14 @@
         <ul>
             <li><a href="/index.html">Etusivu</a></li>
            <!-- <li class="auth-link"><a href="src/pages/myinfo.html">Omat tietoni</a></li> -->
-            <li><a href="/src/pages/myinfo.html">Omat tiedot</a></li>
+            <li><a href="/myinfo.html">Omat tiedot</a></li>
             <!--<li class="auth-link"><a href="src/pages/diary.html">Päiväkirja</a></li>-->
-            <li><a href="/src/pages/diary.html">Päiväkirja</a></li>
+            <li><a href="/diary.html">Päiväkirja</a></li>
+            <li class="settings-link">
+              <a href="/settings.html">
+                  <button id="settings-icon">⚙️</button>
+              </a>
+          </li>
             <li><button id="logoutButton" style="display: none;">Kirjaudu ulos</button></li>
             <div class="auth-container">
                 <button id="login-button" class="login-button">Kirjaudu sisään</button>
@@ -40,8 +44,6 @@
                 <p>Jos tuloksissa ilmenee huolestuttavia merkkejä, voit helposti lähettää tietosi suoraan ammattilaisen arvioitavaksi.</p>
                 </div>
     </main>
-    
-    <footer>Minun sivusto</footer>
     
 <!-- Kirjautumis- ja rekisteröintimodaali -->
 <div id="login-modal" class="modal">
@@ -92,4 +94,5 @@
   </div>
     <script type="module" src="/src/js/auth.js"></script>
 </body>
+<footer>NuFlow © 2025</footer>
 </html>

@@ -6,7 +6,7 @@
     background: hsla(0, 0%, 86%, 0.2);
     border-radius: 20px;
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px); /* Vahvempi blur */
+    backdrop-filter: blur(10px); 
     line-height: 1.6;
     margin-bottom: 20px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Lisää pehmeä varjo */
@@ -29,13 +29,13 @@ ul li {
 
 h1 {
     font-size: 30px;
-    color: #3f675b; /* Hieman tummempi vihreä */
+    color: #3f675b; 
     margin-bottom: 15px;
     text-align: center;
 }
 p {
     font-size: 18px;
-    color: #f5f5f5; /* Erittäin vaalea harmaa, parempi kontrasti */
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); /* Lisää syvyyttä */
+    color: #f5f5f5; 
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); 
 }
 
