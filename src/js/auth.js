@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
       submitButton.textContent = 'Rekisteröidään...';
       submitButton.disabled = true;
       
-      const response = await fetch(`${API_URL}/api/users`, {
+      const response = await fetch(`${API_URL}/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
