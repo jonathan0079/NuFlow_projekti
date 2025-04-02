@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const email = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
     
-// Validoi käyttäjän syötteet
+    // Validoi käyttäjän syötteet
     if (!email || !password) {
       loginError.textContent = 'Käyttäjänimi ja salasana vaaditaan';
       return;
@@ -134,13 +134,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('Attempting login with username:', email);
     
-// Näyttää lataus tilan
+    // Näyttää lataus tilan
     const submitButton = loginForm.querySelector('button[type="submit"]');
     const originalButtonText = submitButton.textContent;
     submitButton.textContent = 'Kirjaudutaan...';
     submitButton.disabled = true;
     
-// Rakentaa login endpointin
+    // Rakentaa login endpointin
     const loginUrl = `${API_URL}/auth/login`;
     console.log('Login endpoint (full URL):', loginUrl);
     
@@ -153,33 +153,62 @@ document.addEventListener('DOMContentLoaded', function() {
         body: JSON.stringify({ email, password })
       });
       
-      const data = await response.json();
-      console.log('Login response:', data);
-      
+      // Virhe vastauksessa
       if (!response.ok) {
-        loginError.textContent = data.message || 'Kirjautuminen epäonnistui';
-        console.error('Login failed:', data.message);
+        const errorData = await response.json().catch(() => ({}));
+        loginError.textContent = errorData.message || 'Kirjautuminen epäonnistui';
+        console.error('Login failed:', errorData.message);
         return;
       }
       
-// Tallentaa käyttäjän datan local storageen
-      localStorage.setItem('user', JSON.stringify(data.data));
-      console.log('User data stored in localStorage:', data.data);
+      // Jäsennetään vastaus
+      const responseText = await response.text();
       
-// Sulkee login modalin
+      if (!responseText) {
+        loginError.textContent = 'Palvelin palautti tyhjän vastauksen';
+        return;
+      }
+      
+      const data = JSON.parse(responseText);
+      console.log('Login response:', data);
+      
+      // Tarkistetaan onko data.data olemassa vai onko data suoraan käyttäjäobjekti
+      const userData = data.data || data;
+      console.log('User data structure:', userData);
+      
+      if (!userData.token) {
+        loginError.textContent = 'Kirjautuminen epäonnistui: tokenia ei löytynyt';
+        return;
+      }
+      
+      // Tallentaa käyttäjän datan local storageen
+      localStorage.setItem('user', JSON.stringify(userData));
+      console.log('User data stored in localStorage:', userData);
+      
+      // Sulkee login modalin
       modal.style.display = 'none';
       
-// Näyttää viestin onnistuneesta kirjautumisesta
+      // Näyttää viestin onnistuneesta kirjautumisesta
       updateAuthUI(true);
+      showMessage('Kirjautuminen onnistui!', 'success');
       
-// Lataa päiväkirja sivu, jos käyttäjä on siellä
-      window.location.reload();
+      // Tarkistaa onko käyttäjällä esitietoja ja ohjaa käyttäjän oikealle sivulle
+      const userId = userData.user_id;
+      console.log('User ID for checking health metrics:', userId);
+      
+      if (userId) {
+        checkUserInitialInfo(userId);
+      } else {
+        console.error('User ID not found in login response');
+        // Ohjataan käyttäjä esitietolomakkeelle joka tapauksessa
+        window.location.href = 'initial_info.html';
+      }
       
     } catch (error) {
       console.error('Login error:', error);
       loginError.textContent = 'Palvelinvirhe, yritä myöhemmin uudelleen';
     } finally {
-// Palauttaa alkuperäisen tilan
+      // Palauttaa alkuperäisen tilan
       submitButton.textContent = originalButtonText;
       submitButton.disabled = false;
     }
@@ -244,17 +273,20 @@ document.addEventListener('DOMContentLoaded', function() {
       
 // rekisteröinti onnistui
       if (data.success) {
-// Näyttää onnistuneen rekisteröinnin viestin
+        // Näyttää onnistuneen rekisteröinnin viestin
         registerError.textContent = 'Rekisteröinti onnistui! Voit nyt kirjautua sisään.';
         registerError.className = 'login-error success';
         
-// Tyhjentää formit
+        // Näyttää viestin myös popup-ilmoituksena
+        showMessage('Rekisteröinti onnistui! Kirjaudu sisään jatkaaksesi.', 'success');
+        
+        // Tyhjentää formit
         registerForm.reset();
         
-// Näyttää login formia
+        // Näyttää kirjautumislomakkeen
         setTimeout(() => {
           showLoginForm();
-        }, 2000);
+        }, 1500);
       }
       
     } catch (error) {
@@ -291,37 +323,131 @@ document.addEventListener('DOMContentLoaded', function() {
 // Tarkistaa käyttäjän kirjautumistilan
   function checkAuthStatus() {
     console.log('Checking authentication status');
-    const user = JSON.parse(localStorage.getItem('user'));
-    
-    if (user && user.token) {
+    try {
+      const userJson = localStorage.getItem('user');
+      if (!userJson) {
+        console.log('No user data in localStorage');
+        updateAuthUI(false);
+        
+        // Jos käyttäjä on suojatulla sivulla, ohjaa etusivulle
+        if (window.location.pathname.includes('diary.html') || 
+            window.location.pathname.includes('initial_info.html')) {
+          window.location.href = 'index.html';
+        }
+        return;
+      }
+      
+      const user = JSON.parse(userJson);
+      console.log('User data from localStorage:', user);
+      
+      if (!user || !user.token) {
+        console.log('Invalid user data in localStorage');
+        updateAuthUI(false);
+        localStorage.removeItem('user');
+        
+        if (window.location.pathname.includes('diary.html') || 
+            window.location.pathname.includes('initial_info.html')) {
+          window.location.href = 'index.html';
+        }
+        return;
+      }
+      
       console.log('User is logged in:', user.email);
-// Käyttäjä on kirjautunut
       updateAuthUI(true);
       
-// Jos käyttäjä on päiväkirja sivulla, lataa päiväkirja
-      if (window.location.pathname.includes('diary.html')) {
-        console.log('On diary page, loading entries');
-        if (typeof loadDiaryEntries === 'function') {
-          loadDiaryEntries();
-        } else {
-          console.warn('loadDiaryEntries function not found');
-        }
+      // Jos käyttäjä on initial_info.html sivulla, ei tarvitse tarkistaa esitietoja
+      if (window.location.pathname.includes('initial_info.html')) {
+        return;
       }
-    } else {
-      console.log('User is not logged in');
-// Käyttäjä ei ole kirjautunut
+      
+      // Tarkista käyttäjän esitiedot ja ohjaa käyttäjä oikealle sivulle
+      const userId = user.user_id;
+      
+      if (userId) {
+        console.log('Found user ID:', userId);
+        checkUserInitialInfo(userId);
+      } else {
+        console.error('User ID not found in stored user data. User data:', user);
+        // Jos userId:tä ei ole, ohjaamme käyttäjän initial_info.html-sivulle
+        window.location.href = 'initial_info.html';
+      }
+    } catch (error) {
+      console.error('Error checking auth status:', error);
+      // Virhetilanteessa poistetaan user tieto local storagesta
+      localStorage.removeItem('user');
       updateAuthUI(false);
       
-// Jos käyttäjä on päiväkirja sivulla, ohjaa hänet etusivulle
-      if (window.location.pathname.includes('diary.html')) {
-        console.log('Redirecting from diary page to home page');
+      if (window.location.pathname.includes('diary.html') || 
+          window.location.pathname.includes('initial_info.html')) {
         window.location.href = 'index.html';
       }
     }
   }
 
-// Päivittää käyttöliittymän kirjautumisen tilan mukaan
+// Tarkistaa käyttäjän esitiedot
+  function checkUserInitialInfo(userId) {
+    console.log('Checking if user has initial info filled, userId:', userId);
+    
+    try {
+      // Asetaan virheenkäsittely fetch-pyyntöön
+      let fetchOptions = {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+      };
+      
+      // Tehdään fetch-pyyntö ilman async/await ja odotusta, koska tarvitaan error handling
+      fetch(`${API_URL}/users/${userId}/health_metrics`, fetchOptions)
+        .then(response => {
+          console.log('Health metrics response status:', response.status);
+          
+          // Jos vastaus ei ole ok (404 Not Found), terveysmetriikoita ei löydy
+          if (!response.ok) {
+            console.log('Health metrics not found, redirecting to initial_info.html');
+            window.location.href = 'initial_info.html';
+            return null;
+          }
+          
+          return response.json();
+        })
+        .then(data => {
+          if (!data) return; // Jos aiempi then palautti null
+          
+          console.log('Health metrics data:', data);
+          
+          // Tarkista onko terveysmetriikat täytetty
+          if (!data || !data.data || !data.data.metric_id) {
+            console.log('Health metrics not completed, redirecting to initial_info.html');
+            window.location.href = 'initial_info.html';
+            return;
+          }
+          
+          console.log('Health metrics ok, not redirecting');
+          
+          // Jos käyttäjä on diary-sivulla, lataa päiväkirja
+          if (window.location.pathname.includes('diary.html')) {
+            if (typeof loadDiaryEntries === 'function') {
+              loadDiaryEntries();
+            }
+          } else if (!window.location.pathname.includes('initial_info.html')) {
+            // Muussa tapauksessa päivitä sivu, mutta älä päivitä jos ollaan jo initial_info.html sivulla
+            window.location.reload();
+          }
+        })
+        .catch(error => {
+          console.error('Error checking health metrics:', error);
+          // Virhetilanteessa ohjaa käyttäjä esitietolomakkeelle
+          window.location.href = 'initial_info.html';
+        });
+    } catch (error) {
+      console.error('Error initiating health metrics check:', error);
+      // Virhetilanteessa ohjaa käyttäjä esitietolomakkeelle
+      window.location.href = 'initial_info.html';
+    }
+  }
 
+// Päivittää käyttöliittymän kirjautumisen tilan mukaan
   function updateAuthUI(isLoggedIn) {
     console.log('Updating UI for authentication status:', isLoggedIn);
     if (isLoggedIn) {
@@ -419,10 +545,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Hakee autentikaatio tokenin local storagesta
-
 function getAuthToken() {
-  const user = JSON.parse(localStorage.getItem('user'));
-  return user ? user.token : null;
+  try {
+    const userJson = localStorage.getItem('user');
+    if (!userJson) {
+      return null;
+    }
+    const user = JSON.parse(userJson);
+    return user && user.token ? user.token : null;
+  } catch (error) {
+    console.error('Error getting auth token:', error);
+    return null;
+  }
 }
 
 // Tarkistaa onko käyttäjä kirjautunut
@@ -431,7 +565,6 @@ function isAuthenticated() {
 }
 
 // Näyttää viestin käyttäjälle (yleinen funktio)
-
 function showMessage(message, type = 'info') {
 // Luo viesti elementin, jos sitä ei ole olemassa
   let messageElement = document.getElementById('status-message');
