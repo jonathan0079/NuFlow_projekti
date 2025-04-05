@@ -15,23 +15,25 @@
             <li><a href="/index.html">Etusivu</a></li>
             <li><a href="/myinfo.html">Omat tiedot</a></li>
             <li><a href="/diary.html">Päiväkirja</a></li>
-            <li class="settings-link">
-              <a href="/settings.html">
-                  <button id="settings-icon">⚙️</button>
-              </a>
-          </li>
-            <li><button id="logoutButton" style="display: none;">Kirjaudu ulos</button></li>
             <div class="auth-container">
                 <button id="login-button" class="login-button">Kirjaudu sisään</button>
+                <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+
                 <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
                     <span id="user-greeting">Hei, käyttäjä!</span>
                     <span class="dropdown-icon">▼</span>
                     <div id="user-menu-content" class="user-menu-content"></div>
                 </div>
+            </div>
+            <li class="settings-link">
+                <a href="settings.html">
+                  <img src="/src/img/settings.png" alt="Asetukset" width="20" height="20">
+              </a>  
         </ul>   
     </nav>
     <main>
         <h1>Esitietolomake</h1>
+        <div class="form-container">
         <form id="infoForm">
             <label>Etunimi: <input type="text" name="etunimi" required></label>
             <label>Sukunimi: <input type="text" name="sukunimi" required></label>
@@ -54,6 +56,7 @@
 
             <button type="submit" id="submit-button">Jatka</button>
         </form>
+    </div>
     </main>
     <footer>NuFlow © 2025</footer>
     <script type="module" src="/src/js/auth.js"></script>

@@ -17,25 +17,107 @@
             <li><a href="/myinfo.html">Omat tiedot</a></li>
             <!--<li class="auth-link"><a href="src/pages/diary.html">Päiväkirja</a></li>-->
             <li><a href="/diary.html">Päiväkirja</a></li>
-            <li class="settings-link">
-              <a href="/settings.html">
-                  <button id="settings-icon">⚙️</button>
-              </a>
-          </li>
-            <li><button id="logoutButton" style="display: none;">Kirjaudu ulos</button></li>
             <div class="auth-container">
                 <button id="login-button" class="login-button">Kirjaudu sisään</button>
+                <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+
                 <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
                     <span id="user-greeting">Hei, käyttäjä!</span>
                     <span class="dropdown-icon">▼</span>
                     <div id="user-menu-content" class="user-menu-content"></div>
                 </div>
+            </div>
+            <li class="settings-link">
+              <a href="settings.html">
+                <img src="/src/img/settings.png" alt="Settings" width="20" height="20">
+            </a>  
         </ul>   
         </nav>
     <main>
       <h1>Omat tietoni</h1>
-      <a href="/initial_info.html">Muokkaa esitietoja</a>
-  </body>
+        <div id="infoForm" class="form-container">
+          <label>Etunimi:
+              <span id="etunimiText">Anni</span>
+          </label>
+          <label>Sukunimi:
+              <span id="sukunimiText">S</span>
+          </label>
+          <label>Syntymäaika:
+              <span id="syntymäaikaText">2002-07-02</span>
+          </label>
+          <label>Pituus:
+              <span id="pituusText">160</span>
+          </label>
+          <label>Paino:
+              <span id="painoText">55</span>
+          </label>
+          <label>Sukupuoli:
+              <span id="sukupuoliText">Nainen</span>
+          </label>
+          <label>Nikotiinituotteet, alkoholi ja muut päihteet:
+              <span id="päihteetText">En käytä</span>
+          </label>
+          <label>Sairaudet ja lääkitykset:
+              <span id="sairaudetText">Ei ole</span>
+          </label>
+          <label>Uni:
+              <span id="uniText">Hyvin</span>
+          </label>
+          <label>Vointi:
+              <span id="vointiText">Hyvä</span>
+          </label>
+      
+          <button id="submit-button" onclick="editInfo()">Muokkaa</button>
+      </div>
+      
+    
+        <div id="editView" class="hidden">
+            <form id="infoForm">
+                <label>Etunimi:
+                    <input type="text" id="etunimiInput" required />
+                </label>
+                <label>Sukunimi:
+                    <input type="text" id="sukunimiInput" required />
+                </label>
+                <label>Syntymäaika:
+                    <input type="date" id="syntymäaikaInput" required />
+                </label>
+                <label>Pituus:
+                    <input type="number" id="pituusInput" />
+                </label>
+                <label>Paino:
+                    <input type="number" id="painoInput" />
+                </label>
+                <label>Sukupuoli:
+                    <input type="text" id="sukupuoliInput" />
+                </label>
+    
+                <label>Nikotiinituotteet, alkoholi ja muut päihteet:
+                    <textarea id="päihteetInput"></textarea>
+                </label>
+    
+                <label>Sairaudet ja lääkitykset:
+                    <textarea id="sairaudetInput"></textarea>
+                </label>
+    
+                <label>Nukun mielestäni hyvin (kyllä/ei, miksi?):
+                    <textarea id="uniInput"></textarea>
+                </label>
+    
+                <label>Oma arvio voinnistani:
+                    <textarea id="vointiInput"></textarea>
+                </label>
+    
+                <button type="submit" class="form-button" onclick="saveInfo(event)">Tallenna</button>
+                <button type="button" class="form-button secondary" onclick="cancelEdit()">Peruuta</button>
+            </form>
+        </div>
+    </div>
+    
+        </div>
+    </div>
+    
+    
 </main>
 <footer>NuFlow © 2025</footer>
 <script type="module" src="/src/js/auth.js"></script>
