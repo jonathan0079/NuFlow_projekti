@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.2.2 (Python 3.13.1 on darwin)" generated="2025-04-07T10:21:26.449551" rpa="false" schemaversion="5">
+<suite id="s1" name="Login Testi" source="/Users/annisaarelma/Opiskelu/Metropolia/NuFlow/tests/login_testi.robot">
+<test id="s1-t1" name="Test Login Flow" line="6">
+<kw name="New Browser" owner="Browser">
+<msg time="2025-04-07T10:21:26.537663" level="INFO">{"browser": "chromium", "headless": false, "chromiumSandbox": false, "devtools": false, "handleSIGHUP": true, "handleSIGINT": true, "handleSIGTERM": true, "slowMo": 0.0, "timeout": 30000.0, "tracesDir": "/Users/annisaarelma/Opiskelu/Metropolia/NuFlow/browser/traces/temp/f89b5b0a-4808-4b7e-aca0-b057598cc741"}</msg>
+<msg time="2025-04-07T10:21:26.601730" level="INFO">Starting Browser process /Users/annisaarelma/Library/Python/3.13/lib/python/site-packages/Browser/wrapper/index.js using port 63497</msg>
+<msg time="2025-04-07T10:21:26.601854" level="INFO">Node startup parameters: ['node', '/Users/annisaarelma/Library/Python/3.13/lib/python/site-packages/Browser/wrapper/index.js', '63497']</msg>
+<msg time="2025-04-07T10:21:29.092366" level="INFO">Successfully created browser with options: {"browser":"chromium","headless":false,"chromiumSandbox":false,"devtools":false,"handleSIGHUP":true,"handleSIGINT":true,"handleSIGTERM":true,"slowMo":0,"timeout":30000,"tracesDir":"/Users/annisaarelma/Opiskelu/Metropolia/NuFlow/browser/traces/temp/f89b5b0a-4808-4b7e-aca0-b057598cc741"}</msg>
+<arg>chromium</arg>
+<arg>headless=No</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Create a new playwright Browser with specified options.</doc>
+<status status="PASS" start="2025-04-07T10:21:26.537402" elapsed="2.555449"/>
+</kw>
+<kw name="New Page" owner="Browser">
+<msg time="2025-04-07T10:21:29.745536" level="INFO">Successfully initialized new page object and opened url: http://localhost:5500</msg>
+<msg time="2025-04-07T10:21:29.745907" level="INFO">No context was open. New context was automatically opened when this page is created.</msg>
+<arg>${URL}</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Open a new Page.</doc>
+<status status="PASS" start="2025-04-07T10:21:29.093498" elapsed="0.653038"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-04-07T10:21:29.750195" level="INFO">Clicks the element 'id=login-button'.</msg>
+<arg>id=login-button</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-04-07T10:21:29.747323" elapsed="0.692395"/>
+</kw>
+<kw name="Fill Text" owner="Browser">
+<msg time="2025-04-07T10:21:30.440946" level="INFO">Fills the text 'elsikubios@gmail.com' in the given field.</msg>
+<arg>id=login-username</arg>
+<arg>${username}</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Clears and fills the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-04-07T10:21:30.439898" elapsed="0.018156"/>
+</kw>
+<kw name="Fill Text" owner="Browser">
+<msg time="2025-04-07T10:21:30.458653" level="INFO">Fills the text '750GmuduMdLX' in the given field.</msg>
+<arg>id=login-password</arg>
+<arg>${password}</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Clears and fills the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-04-07T10:21:30.458295" elapsed="0.014094"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-04-07T10:21:30.472848" level="INFO">Clicks the element 'css=form#login-form button[type="submit"]'.</msg>
+<arg>css=form#login-form button[type="submit"]</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-04-07T10:21:30.472568" elapsed="0.044966"/>
+</kw>
+<msg time="2025-04-07T10:21:30.520093" level="INFO">Set timeout to: 10000</msg>
+<status status="PASS" start="2025-04-07T10:21:26.537038" elapsed="3.980693"/>
+</test>
+<status status="PASS" start="2025-04-07T10:21:26.450020" elapsed="4.070832"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Login Testi" id="s1" pass="1" fail="0" skip="0">Login Testi</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

@@ -123,16 +123,16 @@ document.addEventListener('DOMContentLoaded', function() {
     e.preventDefault();
     console.log('Login form submitted');
     
-    const email = document.getElementById('login-username').value;
+    const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
     
 // Validoi käyttäjän syötteet
-    if (!email || !password) {
+    if (!username || !password) {
       loginError.textContent = 'Käyttäjänimi ja salasana vaaditaan';
       return;
     }
     
-    console.log('Attempting login with username:', email);
+    console.log('Attempting login with username:', username);
     
 // Näyttää lataus tilan
     const submitButton = loginForm.querySelector('button[type="submit"]');
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ username, password })
       });
       
       const data = await response.json();
@@ -196,12 +196,12 @@ document.addEventListener('DOMContentLoaded', function() {
       registerError.className = 'login-error';
     }
     
-    const email = document.getElementById('register-email').value;
+    const username = document.getElementById('register-username').value;
     const password = document.getElementById('register-password').value;
     const confirmPassword = document.getElementById('register-confirm-password').value;
     
 // Validoi käyttäjän syötteet
-    if (!email || !password || !confirmPassword) {
+    if (!username || !password || !confirmPassword) {
       registerError.textContent = 'Kaikki kentät vaaditaan';
       return;
     }
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     
-    console.log('Attempting to register user:', { email });
+    console.log('Attempting to register user:', { username });
     
     try {
 // Näyttää lataus tilan
@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ username, password })
       });
       
       const data = await response.json();
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const user = JSON.parse(localStorage.getItem('user'));
     
     if (user && user.token) {
-      console.log('User is logged in:', user.email);
+      console.log('User is logged in:', user.username);
 // Käyttäjä on kirjautunut
       updateAuthUI(true);
       
@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (userMenuTrigger) {
         userMenuTrigger.style.display = 'flex';
         if (userGreeting) {
-          userGreeting.textContent = `Hei, ${user.email}!`;
+          userGreeting.textContent = `Hei, ${user.username}!`;
         }
         console.log('User menu displayed');
       } else {
