@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <title>NuFlow</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/diary.css">
+</head>
+<body>
+    <nav>
+        <div id="modal-overlay"></div>
+        <div class="otsikko">NuFlow</div>
+        <ul>
+            <li><a href="/index.html">Etusivu</a></li>
+            <!-- <li class="auth-link"><a href="src/pages/myinfo.html">Omat tietoni</a></li> -->
+            <li><a href="/myinfo.html">Omat tiedot</a></li>
+            <!--<li class="auth-link"><a href="src/pages/diary.html">Päiväkirja</a></li>-->
+            <li><a href="/diary.html">Päiväkirja</a></li>
+            <li class="settings-link">
+                <a href="/settings.html">
+                    <button id="settings-icon">⚙️</button>
+                </a>
+            </li>
+            <li><button id="logoutButton" style="display: none;">Kirjaudu ulos</button></li>
+            <div class="auth-container">
+                <button id="login-button" class="login-button">Kirjaudu sisään</button>
+                <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+                    <span id="user-greeting">Hei, käyttäjä!</span>1
+                    <span class="dropdown-icon">▼</span>
+                    <div id="user-menu-content" class="user-menu-content"></div>
+                </div>
+            </div>
+        </ul>   
+        </nav>
+        <main>
+            <h1>Päiväkirja</h1>
+            <form id="diaryForm">
+                <fieldset>
+                    <legend>Kirjauksen ajankohta:</legend>
+                    <label><input type="checkbox" name="time" value="aamu"> Aamu</label>
+                    <label><input type="checkbox" name="time" value="ilta"> Ilta</label>
+                </fieldset>
+                
+                <div class="hrv-container">
+                    <h2>HRV arvot</h2>
+                    <div class="hrv-grid">
+                        <div><strong>Syke:</strong> <span id="hrv-syke">-</span></div>
+                        <div><strong>RMSSD:</strong> <span id="hrv-rmssd">-</span></div>
+                        <div><strong>Mean RR:</strong> <span id="hrv-meanrr">-</span></div>
+                        <div><strong>SDNN:</strong> <span id="hrv-sdnn">-</span></div>
+                        <div><strong>PNS indeksi:</strong> <span id="hrv-pns">-</span></div>
+                        <div><strong>SNS indeksi:</strong> <span id="hrv-sns">-</span></div>
+                    </div>
+                </div>
+    
+                <h2>Uni:</h2>
+                <div class="mood-selector">
+                    <label><input type="radio" name="sleep" value="1"> 😡</label>
+                    <label><input type="radio" name="sleep" value="2"> 🟡</label>
+                    <label><input type="radio" name="sleep" value="3"> 🙂</label>
+                    <label><input type="radio" name="sleep" value="4"> 🟢</label>
+                </div>
+                <textarea placeholder="Lisätietoa..."></textarea>
+    
+                <h2>Oloni juuri nyt</h2>
+                <div class="mood-selector">
+                    <label><input type="radio" name="mood" value="1"> 😡</label>
+                    <label><input type="radio" name="mood" value="2"> 🟡</label>
+                    <label><input type="radio" name="mood" value="3"> 🙂</label>
+                    <label><input type="radio" name="mood" value="4"> 🟢</label>
+                </div>
+                <textarea placeholder="Tähän voit kirjoittaa muita muistiinpanoja..."></textarea>
+                
+                <button id="submit-button" type="submit">Tallenna</button>
+            </form>
+            <script type="module" src="/src/js/diary.js"></script>
+
+
+ 
+        </body>
+      </main>
+      <footer>NuFlow © 2025</footer>
+      </html>

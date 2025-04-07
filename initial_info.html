@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <title>NuFlow</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/initial_info.css">
+    <title>Vite App</title>
+</head>
+<body>
+    <nav>
+      <div id="modal-overlay"></div>
+        <div class="otsikko">NuFlow</div>
+        <ul>
+            <li><a href="/index.html">Etusivu</a></li>
+            <li><a href="/myinfo.html">Omat tiedot</a></li>
+            <li><a href="/diary.html">Päiväkirja</a></li>
+            <li class="settings-link">
+              <a href="/settings.html">
+                  <button id="settings-icon">⚙️</button>
+              </a>
+              <li><a href="http://localhost:3000/docs/" target="_blank">API Dokumentaatio</a></li>
+          </li>
+            <li><button id="logoutButton" style="display: none;">Kirjaudu ulos</button></li>
+            <div class="auth-container">
+                <button id="login-button" class="login-button">Kirjaudu sisään</button>
+                <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+                    <span id="user-greeting">Hei, käyttäjä!</span>
+                    <span class="dropdown-icon">▼</span>
+                    <div id="user-menu-content" class="user-menu-content"></div>
+                </div>
+        </ul>   
+    </nav>
+    <main>
+        <h1>Esitietolomake</h1>
+        <form id="infoForm">
+            <label>Etunimi: <input type="text" name="etunimi" required></label>
+            <label>Sukunimi: <input type="text" name="sukunimi" required></label>
+            <label>Syntymäaika: <input type="date" name="syntymäaika" required></label>
+            <label>Pituus: <input type="number" name="pituus"></label>
+            <label>Paino: <input type="number" name="paino"></label>
+            <label>Sukupuoli: <input type="text" name="sukupuoli"></label>
+
+            <label>Nikotiinituotteet, alkoholi ja muut päihteet:</label>
+            <textarea name="päihteet"></textarea>
+
+            <label>Sairaudet ja lääkitykset:</label>
+            <textarea name="sairaudet"></textarea>
+
+            <label>Nukun mielestäni hyvin (kyllä/ei, miksi?):</label>
+            <textarea name="uni"></textarea>
+
+            <label>Oma arvio voinnistani:</label>
+            <textarea name="vointi"></textarea>
+
+            <button type="submit" id="submit-button">Jatka</button>
+        </form>
+    </main>
+    <footer>NuFlow © 2025</footer>
+    <script type="module" src="/src/js/auth.js"></script>
+</body>
+</html>

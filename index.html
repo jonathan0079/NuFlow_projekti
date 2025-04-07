@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <title>NuFlow</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
+    <link rel="stylesheet" href="/src/css/snackbar.css">
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/index.css">
+    <title>Vite App</title>
+</head>
+<body>
+    <div id="modal-overlay"></div>
+    <nav>
+        <div class="otsikko">NuFlow</div>
+        <ul>
+            <li><a href="/index.html">Etusivu</a></li>
+           <!-- <li class="auth-link"><a href="src/pages/myinfo.html">Omat tietoni</a></li> -->
+            <li><a href="/myinfo.html">Omat tiedot</a></li>
+            <!--<li class="auth-link"><a href="src/pages/diary.html">Päiväkirja</a></li>-->
+            <li><a href="/diary.html">Päiväkirja</a></li>
+            <li class="settings-link">
+              <a href="/settings.html">
+                  <button id="settings-icon">⚙️</button>
+              </a>
+            
+          </li>
+            <li><button id="logoutButton" style="display: none;">Kirjaudu ulos</button></li>
+            <div class="auth-container">
+                <button id="login-button" class="login-button">Kirjaudu sisään</button>
+                
+                <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+                    <span id="user-greeting">Hei, käyttäjä!</span>
+                    <span class="dropdown-icon">▼</span>
+                    <div id="user-menu-content" class="user-menu-content"></div>
+                </div>
+            </div>
+        </ul>   
+        </nav>
+    <main>
+        <div class="hero-text">
+            <div class="hero-container">
+                <h1>NuFlow – Seuraa ja ymmärrä hyvinvointiasi</h1>
+                <p>NuFlow auttaa sinua seuraamaan päivittäistä hyvinvointiasi helposti ja järjestelmällisesti. Syötä aamulla ja illalla tietosi valmiiseen lomakkeeseen ja saat kattavan kuvan terveydestäsi ajan mittaan.</p>
+                <p>Sovellus kokoaa vastauksistasi viikko- ja kuukausikoosteet, jotka auttavat tunnistamaan muutoksia hyvinvoinnissasi.</p>
+                <p>Jos tuloksissa ilmenee huolestuttavia merkkejä, voit helposti lähettää tietosi suoraan ammattilaisen arvioitavaksi.</p>
+                </div>
+    </main>
+    
+<!-- Kirjautumis- ja rekisteröintimodaali -->
+<div id="login-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close-modal">&times;</span>
+  
+      <div class="modal-tabs">
+        <div id="login-tab" class="modal-tab active">Kirjaudu sisään</div>
+        <div id="register-tab" class="modal-tab">Rekisteröidy</div>
+      </div>
+  
+      <!-- Kirjautumislomake -->
+      <form id="login-form" class="modal-form active">
+        <div class="form-group">
+          <label for="login-username">Käyttäjänimi:</label>
+          <input type="text" id="login-username" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Salasana:</label>
+          <input type="password" id="login-password" required>
+        </div>
+        <p id="login-error" class="login-error"></p>
+        <button type="submit" class="form-button">Kirjaudu sisään</button>
+      </form>
+  
+      <!-- Rekisteröitymislomake -->
+      <form id="register-form" class="modal-form">
+        <div class="form-group">
+          <label for="register-email">Sähköposti:</label>
+          <input type="email" id="register-email" required>
+        </div>
+        <div class="form-group">
+          <label for="register-password">Salasana:</label>
+          <input type="password" id="register-password" required>
+        </div>
+        <div class="form-group">
+          <label for="register-confirm-password">Vahvista salasana:</label>
+          <input type="password" id="register-confirm-password" required>
+        </div>
+        <p id="register-error" class="login-error"></p>
+        <button type="submit" class="form-button">Rekisteröidy</button>
+      </form>
+    </div>
+  </div>
+    <script type="module" src="/src/js/auth.js"></script>
+</body>
+<footer>NuFlow © 2025</footer>
+</html>
