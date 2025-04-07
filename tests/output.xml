@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.2.2 (Python 3.13.1 on win32)" generated="2025-04-07T10:19:23.576893" rpa="false" schemaversion="5">
+<suite id="s1" name="Login Test" source="C:\KOULU\Koodi\NuFlow_projekti\tests\login_test.robot">
+<test id="s1-t1" name="Test Login Flow" line="6">
+<kw name="New Browser" owner="Browser">
+<msg time="2025-04-07T10:19:23.720483" level="INFO">{"browser": "chromium", "headless": false, "chromiumSandbox": false, "devtools": false, "handleSIGHUP": true, "handleSIGINT": true, "handleSIGTERM": true, "slowMo": 0.0, "timeout": 30000.0, "tracesDir": "C:\\KOULU\\Koodi\\NuFlow_projekti\\tests\\browser\\traces\\temp\\72cc4871-6971-49c8-aaa9-ac91f9c7e301"}</msg>
+<msg time="2025-04-07T10:19:23.748194" level="INFO">Starting Browser process C:\KOULU\Koodi\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\index.js using port 54379</msg>
+<msg time="2025-04-07T10:19:23.748316" level="INFO">Node startup parameters: ['node', 'C:\\KOULU\\Koodi\\NuFlow_projekti\\.venv\\Lib\\site-packages\\Browser\\wrapper\\index.js', '54379']</msg>
+<msg time="2025-04-07T10:19:24.999303" level="INFO">Successfully created browser with options: {"browser":"chromium","headless":false,"chromiumSandbox":false,"devtools":false,"handleSIGHUP":true,"handleSIGINT":true,"handleSIGTERM":true,"slowMo":0,"timeout":30000,"tracesDir":"C:\\KOULU\\Koodi\\NuFlow_projekti\\tests\\browser\\traces\\temp\\72cc4871-6971-49c8-aaa9-ac91f9c7e301"}</msg>
+<arg>chromium</arg>
+<arg>headless=No</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Create a new playwright Browser with specified options.</doc>
+<status status="PASS" start="2025-04-07T10:19:23.719622" elapsed="1.279889"/>
+</kw>
+<kw name="New Page" owner="Browser">
+<msg time="2025-04-07T10:19:25.650928" level="INFO">Successfully initialized new page object and opened url: http://localhost:5500</msg>
+<msg time="2025-04-07T10:19:25.651005" level="INFO">No context was open. New context was automatically opened when this page is created.</msg>
+<arg>${URL}</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Open a new Page.</doc>
+<status status="PASS" start="2025-04-07T10:19:25.000068" elapsed="0.651081"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-04-07T10:19:25.651892" level="INFO">Clicks the element 'id=login-button'.</msg>
+<arg>id=login-button</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-04-07T10:19:25.651424" elapsed="0.039374"/>
+</kw>
+<kw name="Fill Text" owner="Browser">
+<msg time="2025-04-07T10:19:25.691704" level="INFO">Fills the text 'jonathsh@metropolia.fi' in the given field.</msg>
+<arg>id=login-username</arg>
+<arg>${username}</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Clears and fills the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-04-07T10:19:25.691098" elapsed="0.010170"/>
+</kw>
+<kw name="Fill Text" owner="Browser">
+<msg time="2025-04-07T10:19:25.702139" level="INFO">Fills the text 'Salasana0079' in the given field.</msg>
+<arg>id=login-password</arg>
+<arg>${password}</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Clears and fills the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-04-07T10:19:25.701548" elapsed="0.008992"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-04-07T10:19:25.711316" level="INFO">Clicks the element 'css=form#login-form button[type="submit"]'.</msg>
+<arg>css=form#login-form button[type="submit"]</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-04-07T10:19:25.710834" elapsed="0.022587"/>
+</kw>
+<msg time="2025-04-07T10:19:25.735751" level="INFO">Set timeout to: 10000</msg>
+<status status="PASS" start="2025-04-07T10:19:23.718591" elapsed="2.015098"/>
+</test>
+<status status="PASS" start="2025-04-07T10:19:23.578314" elapsed="2.158403"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Login Test" id="s1" pass="1" fail="0" skip="0">Login Test</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
