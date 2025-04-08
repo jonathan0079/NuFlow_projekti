@@ -385,68 +385,67 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 // Tarkistaa käyttäjän esitiedot
-  function checkUserInitialInfo(userId) {
-    console.log('Checking if user has initial info filled, userId:', userId);
+function checkUserInitialInfo(userId) {
+  console.log('Checking if user has initial info filled, userId:', userId);
+  
+  try {
+    // Asetaan virheenkäsittely fetch-pyyntöön
+    let fetchOptions = {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`
+      }
+    };
     
-    try {
-      // Asetaan virheenkäsittely fetch-pyyntöön
-      let fetchOptions = {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${getAuthToken()}`
-        }
-      };
-      
-      // Tehdään fetch-pyyntö ilman async/await ja odotusta, koska tarvitaan error handling
-      fetch(`${API_URL}/users/${userId}/health_metrics`, fetchOptions)
-        .then(response => {
-          console.log('Health metrics response status:', response.status);
-          
-          // Jos vastaus ei ole ok (404 Not Found), terveysmetriikoita ei löydy
-          if (!response.ok) {
-            console.log('Health metrics not found, redirecting to initial_info.html');
-            window.location.href = 'initial_info.html';
-            return null;
-          }
-          
-          return response.json();
-        })
-        .then(data => {
-          if (!data) return; // Jos aiempi then palautti null
-          
-          console.log('Health metrics data:', data);
-          
-          // Tarkista onko terveysmetriikat täytetty
-          if (!data || !data.data || !data.data.metric_id) {
-            console.log('Health metrics not completed, redirecting to initial_info.html');
-            window.location.href = 'initial_info.html';
-            return;
-          }
-          
-          console.log('Health metrics ok, not redirecting');
-          
-          // Jos käyttäjä on diary-sivulla, lataa päiväkirja
-          if (window.location.pathname.includes('diary.html')) {
-            if (typeof loadDiaryEntries === 'function') {
-              loadDiaryEntries();
-            }
-          } else if (!window.location.pathname.includes('initial_info.html')) {
-            // Muussa tapauksessa päivitä sivu, mutta älä päivitä jos ollaan jo initial_info.html sivulla
-            window.location.reload();
-          }
-        })
-        .catch(error => {
-          console.error('Error checking health metrics:', error);
-          // Virhetilanteessa ohjaa käyttäjä esitietolomakkeelle
+    // KORJATTU REITTI - Oikea endpoint terveystietojen hakemiseen
+    fetch(`${API_URL}/metrics/user/${userId}`, fetchOptions)
+      .then(response => {
+        console.log('Health metrics response status:', response.status);
+        
+        // Jos vastaus ei ole ok (404 Not Found), terveysmetriikoita ei löydy
+        if (!response.ok) {
+          console.log('Health metrics not found, redirecting to initial_info.html');
           window.location.href = 'initial_info.html';
-        });
-    } catch (error) {
-      console.error('Error initiating health metrics check:', error);
-      // Virhetilanteessa ohjaa käyttäjä esitietolomakkeelle
-      window.location.href = 'initial_info.html';
-    }
+          return null;
+        }
+        
+        return response.json();
+      })
+      .then(data => {
+        if (!data) return; // Jos aiempi then palautti null
+        
+        console.log('Health metrics data:', data);
+        
+        // Tarkista onko terveysmetriikat täytetty
+        if (!data || data.length === 0) { // Korjattu tarkistus, koska vastaus on array
+          console.log('Health metrics not completed, redirecting to initial_info.html');
+          window.location.href = 'initial_info.html';
+          return;
+        }
+        
+        console.log('Health metrics ok, not redirecting');
+        
+        // Jos käyttäjä on diary-sivulla, lataa päiväkirja
+        if (window.location.pathname.includes('diary.html')) {
+          if (typeof loadDiaryEntries === 'function') {
+            loadDiaryEntries();
+          }
+        } else if (!window.location.pathname.includes('initial_info.html')) {
+          // Muussa tapauksessa päivitä sivu, mutta älä päivitä jos ollaan jo initial_info.html sivulla
+          window.location.reload();
+        }
+      })
+      .catch(error => {
+        console.error('Error checking health metrics:', error);
+        // Virhetilanteessa ohjaa käyttäjä esitietolomakkeelle
+        window.location.href = 'initial_info.html';
+      });
+  } catch (error) {
+    console.error('Error initiating health metrics check:', error);
+    // Virhetilanteessa ohjaa käyttäjä esitietolomakkeelle
+    window.location.href = 'initial_info.html';
   }
-
+}
 // Päivittää käyttöliittymän kirjautumisen tilan mukaan
   function updateAuthUI(isLoggedIn) {
     console.log('Updating UI for authentication status:', isLoggedIn);
