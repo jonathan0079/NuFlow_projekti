@@ -9,7 +9,7 @@ Variables         load_env.py
  
 
 *** Test Cases ***
-Test Login Flow
+Test Login NuFlow
     New Browser    chromium    headless=No
     New Page       ${URL}
 
