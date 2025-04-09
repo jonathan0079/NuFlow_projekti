@@ -1,6 +1,6 @@
 
-form {
-    max-width: 500px;
+.form-container {
+    max-width: 600px;
     margin: auto;
     background: white;
     padding: 20px;
@@ -21,6 +21,7 @@ input, textarea {
     border-radius: 5px;
 }
 
+
 #submit-button {
     margin-top: 15px;
     padding: 10px;
@@ -32,4 +33,21 @@ input, textarea {
 }
 #submit-button:hover {
     background-color: #528777;
+}
+.edit-link {
+    color: rgb(255, 255, 255);
+}
+
+#infoForm label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#infoForm span {
+    display: block;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
 }

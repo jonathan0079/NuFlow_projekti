@@ -21,10 +21,21 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       
       const user = JSON.parse(userData);
-      const userId = user.user_id;
-      const token = user.token;
       
-      console.log('Current user ID:', userId);
+      // Tämä on avainmuutos: käsitellään molemmat mahdolliset kenttänimet
+      // Kubiosin token käyttää 'user_id' kenttää, tavallinen login käyttää 'id' kenttää
+      const userId = user.user_id || user.id;
+      
+      console.log('User data from storage:', user);
+      console.log('Using user ID:', userId);
+      
+      if (!userId) {
+        alert('Käyttäjän tunnistus epäonnistui. Kirjaudu ulos ja sisään uudelleen.');
+        console.error('User ID not found in stored user data:', user);
+        return;
+      }
+      
+      const token = user.token;
       
       // 2. Haetaan lomakkeen tiedot
       const drugUse = document.querySelector('textarea[name="drug_use"]').value.trim();
@@ -51,12 +62,11 @@ document.addEventListener('DOMContentLoaded', function() {
         self_assessment: selfAssessment
       };
       
-      console.log('Sending health data:', healthData);
+      console.log('Sending health data with explicit user_id:', healthData);
       
-      // 5. Lähetetään data backendiin - KORJATTU REITTI
+      // 5. Lähetetään data backendiin
       const API_URL = 'http://localhost:3000/api';
       
-      // OIKEA REITTI terveystietojen tallentamiseen
       const response = await fetch(`${API_URL}/metrics/insert`, {
         method: 'POST',
         headers: {
@@ -68,12 +78,17 @@ document.addEventListener('DOMContentLoaded', function() {
       
       console.log('Response status:', response.status);
       
-      if (!response.ok) {
-        throw new Error(`Palvelinvirhe: ${response.status}`);
+      if (response.ok) {
+        // 6. Merkitään terveystiedot tallennetuiksi
+        localStorage.setItem('healthMetricsCompleted', 'true');
+        alert('Tiedot tallennettu onnistuneesti!');
+        window.location.href = 'diary.html';
+      } else {
+        // Yritetään lukea virheilmoitus
+        const errorText = await response.text();
+        console.error('Server error response:', errorText);
+        throw new Error(`Palvelinvirhe: ${response.status} - ${errorText || 'Tuntematon virhe'}`);
       }
-      
-      alert('Tiedot tallennettu onnistuneesti!');
-      window.location.href = 'diary.html';
       
     } catch (error) {
       console.error('Error:', error);

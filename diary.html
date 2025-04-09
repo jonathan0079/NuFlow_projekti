@@ -37,39 +37,66 @@
         <main>
             <h1>Päiväkirja</h1>
             <form id="diaryForm">
-                <fieldset>
-                    <legend>Kirjauksen ajankohta:</legend>
-                    <label><input type="checkbox" name="time" value="aamu"> Aamu</label>
-                    <label><input type="checkbox" name="time" value="ilta"> Ilta</label>
-                </fieldset>
-                
-                <div class="hrv-container">
-                    <h2>HRV arvot</h2>
-                    <div class="hrv-grid">
-                        <div><strong>Syke:</strong> <span id="hrv-syke">-</span></div>
-                        <div><strong>RMSSD:</strong> <span id="hrv-rmssd">-</span></div>
-                        <div><strong>Mean RR:</strong> <span id="hrv-meanrr">-</span></div>
-                        <div><strong>SDNN:</strong> <span id="hrv-sdnn">-</span></div>
-                        <div><strong>PNS indeksi:</strong> <span id="hrv-pns">-</span></div>
-                        <div><strong>SNS indeksi:</strong> <span id="hrv-sns">-</span></div>
+                <div class="time-selector">
+                    <span>Kirjauksen ajankohta:</span>
+                    <div class="time-options">
+                      <label><input type="radio" name="time" value="aamu"> Aamu</label>
+                      <label><input type="radio" name="time" value="ilta"> Ilta</label>
                     </div>
-                </div>
-    
-                <h2>Uni:</h2>
-                <div class="mood-selector">
-                    <label><input type="radio" name="sleep" value="1"> 😡</label>
-                    <label><input type="radio" name="sleep" value="2"> 🟡</label>
-                    <label><input type="radio" name="sleep" value="3"> 🙂</label>
-                    <label><input type="radio" name="sleep" value="4"> 🟢</label>
+                  </div>                  
+                    <div class="hrv-container">
+                        <h2>HRV arvot</h2>
+                        <div class="hrv-grid">
+                          <div>
+                            <div class="hrv-label">Syke</div>
+                            <div class="hrv-value" id="hrv-syke">-</div>
+                          </div>
+                          <div>
+                            <div class="hrv-label">RMSSD</div>
+                            <div class="hrv-value" id="hrv-rmssd">-</div>
+                          </div>
+                          <div>
+                            <div class="hrv-label">Mean RR</div>
+                            <div class="hrv-value" id="hrv-meanrr">-</div>
+                          </div>
+                          <div>
+                            <div class="hrv-label">SDNN</div>
+                            <div class="hrv-value" id="hrv-sdnn">-</div>
+                          </div>
+                          <div>
+                            <div class="hrv-label">PNS indeksi</div>
+                            <div class="hrv-value" id="hrv-pns">-</div>
+                          </div>
+                          <div>
+                            <div class="hrv-label">SNS indeksi</div>
+                            <div class="hrv-value" id="hrv-sns">-</div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                <h2>Uni</h2>
+                <div class="slidecontainer">
+                    <div class="labels">
+                        <span>Huono</span>
+                        <span>Kohtalainen</span>
+                        <span>Ok</span>
+                        <span>Hyvä</span>
+                        <span>Erinomainen</span>
+                      </div>
+                    <input type="range" min="1" max="5" value="3" class="slider" id="sleepRange">
                 </div>
                 <textarea placeholder="Lisätietoa..."></textarea>
-    
+                
                 <h2>Oloni juuri nyt</h2>
-                <div class="mood-selector">
-                    <label><input type="radio" name="mood" value="1"> 😡</label>
-                    <label><input type="radio" name="mood" value="2"> 🟡</label>
-                    <label><input type="radio" name="mood" value="3"> 🙂</label>
-                    <label><input type="radio" name="mood" value="4"> 🟢</label>
+                <div class="slidecontainer">
+                    <div class="labels">
+                        <span>Huono</span>
+                        <span>Kohtalainen</span>
+                        <span>Ok</span>
+                        <span>Hyvä</span>
+                        <span>Erinomainen</span>
+                      </div>
+                    <input type="range" min="1" max="5" value="3" class="slider" id="moodRange">
                 </div>
                 <textarea placeholder="Tähän voit kirjoittaa muita muistiinpanoja..."></textarea>
                 
@@ -79,4 +106,5 @@
         </body>
       </main>
       <footer>NuFlow © 2025</footer>
+      <script type="module" src="/src/js/diary.js"></script>
       </html>

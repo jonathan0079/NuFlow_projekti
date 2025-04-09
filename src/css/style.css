@@ -23,6 +23,7 @@ h1 {
     color: white;
     text-align: center;
 }
+
 #modal-overlay {
     position: fixed;
     top: 0;
@@ -46,12 +47,9 @@ nav {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-#settings-icon {
-    font-size: 20px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: white;
+.settings-link {
+    margin: auto;
+    height: auto;
 }
 
 .auth-link {
@@ -108,7 +106,28 @@ li a:hover {
     align-items: right;
   }
   
-  button:hover {
+  login-button:hover {
+    background-color: #dddddd;
+  }
+.hidden {
+    display: none;
+}
+
+#logoutButton {
+    background-color: #477668;
+    font-size: 14px;
+    color: rgb(255, 255, 255);;
+    width: auto;
+    padding: 10px 15px;
+    margin: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    align-items: right;
+  }
+
+  logoutButton:hover {
     background-color: #dddddd;
   }
 .hidden {
@@ -151,29 +170,6 @@ li a:hover {
     cursor: pointer;
 }
 
-/* Tabit */
-.modal-tabs {
-    display: flex;
-    justify-content: space-around;
-    border-bottom: 2px solid #ddd;
-    margin-bottom: 10px;
-}
-
-.modal-tab {
-    cursor: pointer;
-    padding: 10px;
-    flex: 1;
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-    color: #555;
-}
-
-.modal-tab.active {
-    color: #477668;
-    border-bottom: 2px solid #477668;
-}
-
 .modal-form {
     display: none; /* Oletuksena piilossa */
     flex-direction: column;
@@ -211,23 +207,6 @@ input {
     background-color: #528777;
 }
 
-#logoutButton {
-    font-size: 20px;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    margin: 13px;
-    background: none;
-    border: 2px solid white;
-    text-decoration: none;
-    white-space: nowrap;
-    
-}
-
-#logoutButton:hover {
-    color: rgb(68, 149, 68);
-    cursor: pointer;
-}
 #logo {
     color: rgb(153, 243, 153);
     font-size: 25px;
