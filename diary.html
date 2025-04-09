@@ -18,20 +18,20 @@
             <li><a href="/myinfo.html">Omat tiedot</a></li>
             <!--<li class="auth-link"><a href="src/pages/diary.html">Päiväkirja</a></li>-->
             <li><a href="/diary.html">Päiväkirja</a></li>
-            <li class="settings-link">
-                <a href="/settings.html">
-                    <button id="settings-icon">⚙️</button>
-                </a>
-            </li>
-            <li><button id="logoutButton" style="display: none;">Kirjaudu ulos</button></li>
             <div class="auth-container">
                 <button id="login-button" class="login-button">Kirjaudu sisään</button>
+                <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+
                 <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
                     <span id="user-greeting">Hei, käyttäjä!</span>
                     <span class="dropdown-icon">▼</span>
                     <div id="user-menu-content" class="user-menu-content"></div>
                 </div>
             </div>
+            <li class="settings-link">
+                <a href="settings.html">
+                  <img src="/src/img/settings.png" alt="Settings" width="20" height="20">
+              </a>  
         </ul>   
         </nav>
         <main>
@@ -39,8 +39,8 @@
             <form id="diaryForm">
                 <fieldset>
                     <legend>Kirjauksen ajankohta:</legend>
-                    <label><input type="checkbox" name="time" value="aamu"> Aamu</label>
-                    <label><input type="checkbox" name="time" value="ilta"> Ilta</label>
+                    <label><input type="checkbox" name="time" value="morning"> Aamu</label>
+                    <label><input type="checkbox" name="time" value="evening"> Ilta</label>
                 </fieldset>
                 
                 <div class="hrv-container">
@@ -75,6 +75,9 @@
                 
                 <button id="submit-button" type="submit">Tallenna</button>
             </form>
+            <script type="module" src="/src/js/diary.js"></script>
+
+
 
         </body>
       </main>
