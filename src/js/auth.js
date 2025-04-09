@@ -1,6 +1,3 @@
-//import { loadDiaryEntries } from './diary.js';
-// Oletetaan, että tämä funktio on määritelty diary.js-tiedostossa
-
 const API_URL = 'http://localhost:3000/api';
 
 // Odottaa, että koko sivu on ladattu
@@ -73,11 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 // Käsittelee register formia
-  if (registerForm) {
-    registerForm.addEventListener('submit', handleRegister);
-  } else {
-    console.warn('Register form not found in the DOM');
-  }
+
 
 // Käsittelee logout nappia
   if (logoutButton) {
@@ -166,8 +159,10 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       
 // Tallentaa käyttäjän datan local storageen
-      localStorage.setItem('user', JSON.stringify(data.data));
-      console.log('User data stored in localStorage:', data.data);
+
+      // Tämä korjattiin
+      localStorage.setItem('user', JSON.stringify(data));
+      console.log('User data stored in localStorage:', data);
       
 // Sulkee login modalin
       modal.style.display = 'none';
@@ -292,20 +287,19 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 // Tarkistaa käyttäjän kirjautumistilan
+  function checkAuthStatus() {
+    console.log('Checking authentication status');
 
-function checkAuthStatus() {
-  console.log('Checking authentication status');
- const user = JSON.parse(localStorage.getItem('user'));
-  
-  if (user && user.token) {
-   console.log('User is logged in:', user.username);
-   
-
-  
+    // Mitä jos on undefined tai tyhjä? Kaataa scriptin tähän
+    const user = JSON.parse(localStorage.getItem('user'));
+    
+    if (user && user.token) {
+      console.log('User is logged in:', user.user.given_name);
 // Käyttäjä on kirjautunut
       updateAuthUI(true);
       
 // Jos käyttäjä on päiväkirja sivulla, lataa päiväkirja
+// Harkitse poistoa, nyt ei tee mitään
       if (window.location.pathname.includes('diary.html')) {
         console.log('On diary page, loading entries');
         if (typeof loadDiaryEntries === 'function') {
@@ -345,7 +339,7 @@ function checkAuthStatus() {
       if (userMenuTrigger) {
         userMenuTrigger.style.display = 'flex';
         if (userGreeting) {
-          userGreeting.textContent = `Hei, ${user.username}!`;
+          userGreeting.textContent = `Hei, ${user.user.given_name}!`;
         }
         console.log('User menu displayed');
       } else {
@@ -493,7 +487,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Sulje modaali ja näytä hero-container uudelleen
   closeModal.addEventListener("click", function () {
-      modal.style.display = "none";o
+      modal.style.display = "none";
       heroContainer.style.display = "block"; // Näytä hero-container uudelleen
   });
 

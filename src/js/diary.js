@@ -1,175 +1,178 @@
-// Tuodaan tyylitiedosto (CSS)
 import '../css/style.css';
-
-// Tuodaan kirjautumiseen liittyvät toiminnot (esim. tokenin tarkistus)
+import '../css/snackbar.css';
 import './auth.js';
 
-// Kun koko HTML on ladattu selaimessa
+console.log("diary.js ladattu");
+
+// Hakee autentikaatio tokenin local storagesta
+
+function getAuthToken() {
+  const user = JSON.parse(localStorage.getItem('user'));
+  return user ? user.token : null;
+}
+
+//  Kun sivun HTML on ladattu selaimessa
 document.addEventListener('DOMContentLoaded', () => {
+  const token = getAuthToken(); // Haetaan käyttäjän token (auth.js tiedostosta)
 
-  // Haetaan käyttäjän tiedot localStoragesta
-  const rawUserData = localStorage.getItem('user');
+  console.log("Haettu token:", token);
 
-  // Jos käyttäjätietoa ei ole tai se on merkkijono "undefined", ohjataan etusivulle
-  if (!rawUserData || rawUserData === 'undefined') {
-    alert("Et ole kirjautunut. Siirrytään etusivulle.");
-    window.location.href = "index.html";
-    return;
+  // Jos token puuttuu, ohjataan takaisin kirjautumissivulle
+  //if (!token) {
+  //  console.warn("Token puuttuu – ohjataan kirjautumaan.");
+   // window.location.href = "/index.html";
+  //  return;
+  //}
+  if (!token) {
+    alert("Et ole kirjautunut sisään."); // ← Tämä näkyy!
+    // mutta mitään ei tapahdu, koska ohjaus puuttuu
+    return
   }
 
-  let token;
-  try {
-    // Yritetään muuttaa käyttäjätiedot objektiksi
-    const parsedUser = JSON.parse(rawUserData);
-
-    // Haetaan kirjautumistunnus (token)
-    token = parsedUser?.token;
-
-    // Jos token puuttuu, ohjataan etusivulle
-    if (!token) {
-      alert("Kirjautumistunnus puuttuu. Siirrytään etusivulle.");
-      window.location.href = "index.html";
-      return;
-    }
-
-  } catch (err) {
-    // Jos JSON-parsinta epäonnistuu, ilmoitetaan virhe ja ohjataan pois
-    alert("Kirjautumistiedot ovat virheelliset. Siirrytään etusivulle.");
-    localStorage.removeItem("user");
-    window.location.href = "index.html";
-    return;
-  }
-
-  // Jos kaikki ok, käynnistetään päiväkirjan logiikka tokenilla
+  // Käynnistetään päiväkirjan päätoiminnallisuus
   initDiary(token);
 });
 
-// Päiväkirjalomakkeen käsittely ja lähetys palvelimelle
+
+// 750GmuduMdLX Päätoiminnallisuus: lomakkeen käsittely ja HRV-datan nouto
 function initDiary(token) {
-  // Haetaan päiväkirjalomake
-  const diaryForm = document.getElementById('diaryForm');
+  const diaryForm = document.getElementById('diaryForm'); // Lomake-elementti
+  const submitButton = document.querySelector('#submit-button'); // Tallennusnappi
+  const API_URL = 'http://localhost:3000/api/entries/insert'; // Backend-osoite merkintöjen lisäykseen
 
-  // Haetaan lomakkeen lähetyspainike
-  const submitButton = document.querySelector('#submit-button');
+  fetchAndDisplayHrvData(token); // Ladataan HRV-arvot automaattisesti heti sivun alussa
 
-  // Määritetään backendin API-osoite merkinnän tallentamiseen
-  const API_URL = 'http://localhost:3000/api/entries/insert';
-
-  // Näytetään käyttäjälle viimeisimmät HRV-arvot
-  fetchAndDisplayHrvData(token);
-
-  // Kun käyttäjä lähettää lomakkeen
+  //  Kun lomake lähetetään
   diaryForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Estetään sivun uudelleenlataus
+    e.preventDefault(); // Estetään oletustoiminto (sivun uudelleenlataus)
 
-    submitButton.disabled = true; // Estetään tuplanapautukset
-    const originalText = submitButton.textContent;
-    submitButton.textContent = 'Tallennetaan...'; // Näytetään tallennustila
+    toggleSubmitButton(submitButton, true); // Näytetään, että tallennus on käynnissä
 
-    // Poimitaan lomakkeen valinnat
-    const timeCheckboxes = document.querySelectorAll('input[name="time"]:checked');
-    const time_of_day = timeCheckboxes.length ? timeCheckboxes[0].value : "";
-
-    // HRV-arvot lomakkeelta (näkyvät arvot)
-    const heart_rate = document.getElementById('hrv-syke').textContent.trim();
-    const rmssd = document.getElementById('hrv-rmssd').textContent.trim();
-    const mean_rr = document.getElementById('hrv-meanrr').textContent.trim();
-    const sdnn = document.getElementById('hrv-sdnn').textContent.trim();
-    const pns_index = document.getElementById('hrv-pns').textContent.trim();
-    const sns_index = document.getElementById('hrv-sns').textContent.trim();
-
-    // Uni ja mieliala valinnat
-    const sleep_duration = document.querySelector('input[name="sleep"]:checked')?.value || "";
-    const current_mood = document.querySelector('input[name="mood"]:checked')?.value || "";
-
-    // Lisätiedot ja aktiivisuus – otetaan ensimmäinen ja toinen textarea
-    const sleep_notes = document.querySelectorAll('textarea')[0]?.value || "";
-    const activity = document.querySelectorAll('textarea')[1]?.value || "";
-
-    // Päivämäärä (esim. "2025-04-06")
-    const entry_date = new Date().toISOString().split('T')[0];
-
-    // Kootaan kaikki tiedot yhteen objektiin
+    //  Kerätään kaikki tiedot lomakkeesta objektiin
     const entryData = {
-      entry_date,
-      time_of_day,
-      heart_rate,
-      rmssd,
-      mean_rr,
-      sdnn,
-      pns_index,
-      sns_index,
-      sleep_duration,
-      sleep_notes,
-      current_mood,
-      activity
+      entry_date: new Date().toISOString().split('T')[0], // Päivämäärä (esim. "2025-04-08")
+      time_of_day: getRadioValue('time'), // Aamu / Ilta valinta
+      heart_rate: getText('hrv-syke'), // HRV: syke
+      rmssd: getText('hrv-rmssd'),
+      mean_rr: getText('hrv-meanrr'),
+      sdnn: getText('hrv-sdnn'),
+      pns_index: getText('hrv-pns'),
+      sns_index: getText('hrv-sns'),
+      sleep_duration: getRadioValue('sleep'), // Uni-laadun valinta (hymiöt)
+      current_mood: getRadioValue('mood'), // Mieliala (hymiöt)
+      sleep_notes: getTextareaValue(0), // Ensimmäinen tekstialue (uni)
+      activity: getTextareaValue(1), // Toinen tekstialue (muistiinpanot)
     };
 
+    //  Lähetetään tiedot backendille
     try {
-      // Lähetetään tiedot palvelimelle (POST-pyyntö)
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // Vahvistetaan kuka käyttäjä on
+          'Authorization': `Bearer ${token}` // Lähetetään käyttäjän token
         },
-        body: JSON.stringify(entryData) // Muutetaan objekti tekstiksi
+        body: JSON.stringify(entryData) // Muutetaan JS-objekti JSON-muotoon
       });
 
-      const result = await response.json(); // Otetaan vastaus talteen
+      const result = await response.json(); // Luetaan palvelimen vastaus
 
+      // ⚠️ Jos palvelin ei vastannut OK
       if (!response.ok) {
-        // Jos vastaus ei ollut onnistunut, näytetään virhe
         alert("Tallennus epäonnistui: " + (result.message || "Tuntematon virhe"));
       } else {
-        // Onnistui – näytetään viesti ja tyhjennetään lomake
+        //  Onnistunut tallennus
         alert("Päiväkirjamerkintä tallennettu!");
-        diaryForm.reset(); // Tyhjentää valinnat
-        fetchAndDisplayHrvData(token); // Haetaan HRV-arvot uudestaan
+        diaryForm.reset(); // Tyhjennetään lomake
+        resetHrvDisplay(); // Nollataan HRV-näyttö
+        fetchAndDisplayHrvData(token); // Ladataan HRV-arvot uudelleen
+        showSuccessFeedback(submitButton); // Näytetään vihreä palaute napissa
       }
 
     } catch (error) {
-      // Jos jotain meni pahasti pieleen
-      alert("Palvelinvirhe. Yritä myöhemmin uudelleen.");
-      console.error("Yhteysvirhe:", error);
+      alert("Palvelinvirhe. Yritä myöhemmin."); // Virhe esim. yhteydessä
+      console.error("[TALLENNUS VIRHE]", error);
     }
 
-    // Palautetaan painike normaalitilaan
-    submitButton.disabled = false;
-    submitButton.textContent = originalText;
+    toggleSubmitButton(submitButton, false); // Palautetaan nappi normaaliksi
   });
 }
 
-// Haetaan HRV-tiedot käyttäjälle palvelimelta
+
+//  HRV-arvojen nouto backendiltä ja näyttö sivulla
 async function fetchAndDisplayHrvData(token) {
-  const today = new Date().toISOString().split('T')[0]; // Haetaan tämän päivän päivämäärä
+  const today = new Date().toISOString().split('T')[0]; // Tänään (esim. "2025-04-08")
+  console.log("📡 Haetaan HRV päivälle:", today);
 
   try {
-    // Kysytään tämän päivän HRV-arvot palvelimelta
     const response = await fetch(`http://localhost:3000/api/entries/hrv/${today}`, {
       headers: {
-        'Authorization': `Bearer ${token}` // Käytetään tokenia tunnistukseen
+        'Authorization': `Bearer ${token}` // Käyttäjän token mukaan
       }
     });
 
-    if (!response.ok) {
-      console.warn('HRV-tietojen haku epäonnistui:', response.status);
+    // 🔐 Jos käyttäjä ei ole enää kirjautunut
+    if (response.status === 401) {
+      alert("Istunto vanhentunut. Kirjaudu uudelleen.");
+      window.location.href = "/index.html";
       return;
     }
 
-    const hrv = await response.json(); // Puretaan vastaus JSON-muotoon
+    if (!response.ok) {
+      console.warn('[HRV HAKU] status:', response.status); // Muu virhe
+      return;
+    }
 
-    // Näytetään arvot HTML:ssä (tai "-" jos tyhjää)
-    document.getElementById('hrv-syke').textContent = hrv.heart_rate || '-';
-    document.getElementById('hrv-rmssd').textContent = hrv.rmssd || '-';
-    document.getElementById('hrv-meanrr').textContent = hrv.mean_rr || '-';
-    document.getElementById('hrv-sdnn').textContent = hrv.sdnn || '-';
-    document.getElementById('hrv-pns').textContent = hrv.pns_index || '-';
-    document.getElementById('hrv-sns').textContent = hrv.sns_index || '-';
+    const hrv = await response.json(); // Luetaan HRV-arvot
+
+    //  Asetetaan arvot HTML:ään
+    setText('hrv-syke', hrv.heart_rate);
+    setText('hrv-rmssd', hrv.rmssd);
+    setText('hrv-meanrr', hrv.mean_rr);
+    setText('hrv-sdnn', hrv.sdnn);
+    setText('hrv-pns', hrv.pns_index);
+    setText('hrv-sns', hrv.sns_index);
 
   } catch (err) {
-    // Jos virhe yhteydessä
-    console.error('Virhe HRV-arvojen haussa:', err);
+    console.error('[HRV VIRHE]', err.message); // Virhe yhteydessä
   }
 }
 
+
+//  Asettaa tekstin tiettyyn elementtiin id:n perusteella
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value ?? '-';
+}
+
+//  Hakee tekstin näkyvästä spanista (esim. HRV-syke)
+function getText(id) {
+  return document.getElementById(id)?.textContent.trim() || "-";
+}
+
+// Palauttaa valitun radion arvon (esim. uni/mieliala)
+function getRadioValue(name) {
+  return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
+}
+
+// Hakee tekstialueen (textarea) sisällön järjestyksessä
+function getTextareaValue(index) {
+  return document.querySelectorAll('textarea')[index]?.value || "";
+}
+
+// Nollaa HRV-näytön arvot takaisin "-"
+function resetHrvDisplay() {
+  ['hrv-syke', 'hrv-rmssd', 'hrv-meanrr', 'hrv-sdnn', 'hrv-pns', 'hrv-sns'].forEach(id => setText(id, '-'));
+}
+
+// Muuttaa tallennusnapin tilaa (lataus päällä tai ei)
+function toggleSubmitButton(button, loading) {
+  button.disabled = loading;
+  button.textContent = loading ? 'Tallennetaan...' : 'Tallenna';
+}
+
+// Näyttää vihreän onnistumisefektin napissa
+function showSuccessFeedback(button) {
+  button.classList.add('success');
+  setTimeout(() => button.classList.remove('success'), 2000); // Palauttaa normaaliksi 2s jälkeen
+}
