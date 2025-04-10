@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Tarkistaa käyttäjän esitiedot
 function checkUserInitialInfo(userId) {
-  console.log('VÄLIAIKAINEN KORJAUS: Ohitetaan terveystietojen tarkistus userId:', userId);
+  console.log('Checking if user has initial info filled, userId:', userId);
   
   // Jos olemme jo initial_info.html -sivulla, älä tee mitään
   if (window.location.pathname.includes('initial_info.html')) {
@@ -399,50 +399,52 @@ function checkUserInitialInfo(userId) {
   
   // Jos terveystietoja ei ole vielä merkitty tallennetuiksi
   if (!healthMetricsCompleted) {
-    // Initial_info.js-tiedostossa tallennetaan tämä tieto onnistuneen tallennuksen jälkeen
-    console.log('Health metrics not marked as completed, checking once...');
+    console.log('Health metrics not marked as completed, checking with API');
     
     // Tehdään kertaluontoinen tarkistus
+    const token = getAuthToken();
+    if (!token) {
+      console.error('No auth token available');
+      return;
+    }
+    
     let fetchOptions = {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${getAuthToken()}`
+        'Authorization': `Bearer ${token}`
       }
     };
     
     // Kokeillaan hakea terveystiedot
-    fetch(`${API_URL}/metrics/user/${userId}`, fetchOptions)
+    fetch(`${API_URL}/metrics/${userId}`, fetchOptions)
       .then(response => {
-        // Jos vastaus on OK, merkitään terveystiedot tallennetuiksi
         if (response.ok) {
           console.log('Health metrics found, marking as completed');
           localStorage.setItem('healthMetricsCompleted', 'true');
+          return response.json();
         } else {
-          // Jos tietoja ei löydy JA käyttäjä ei ole millään muulla sivulla
-          // ohjataan initial_info.html-sivulle
+          console.log('Health metrics not found, status:', response.status);
+          // Ohjataan initial_info.html-sivulle vain jos käyttäjä ei ole etusivulla tai asetuksissa
           if (!window.location.pathname.includes('index.html') && 
-              !window.location.pathname.includes('diary.html') && 
-              !window.location.pathname.includes('settings.html') && 
-              !window.location.pathname.includes('myinfo.html')) {
-            console.log('Health metrics not found, redirecting to initial_info.html');
+              !window.location.pathname.includes('settings.html')) {
+            console.log('Redirecting to initial_info.html');
             window.location.href = 'initial_info.html';
           }
+          return null;
+        }
+      })
+      .then(data => {
+        if (data) {
+          console.log('Health metrics data:', data);
         }
       })
       .catch(error => {
         console.error('Error checking health metrics:', error);
+        // Virhetilanteessa ei automaattisesti ohjata käyttäjää muualle
       });
   } else {
     console.log('Health metrics already marked as completed, skipping check');
-  }
-  
-  // Jos käyttäjä on diary-sivulla, lataa päiväkirja
-  if (window.location.pathname.includes('diary.html')) {
-    if (typeof loadDiaryEntries === 'function') {
-      loadDiaryEntries();
-    }
-  }
-}
+  }}
 // Päivittää käyttöliittymän kirjautumisen tilan mukaan
   function updateAuthUI(isLoggedIn) {
     console.log('Updating UI for authentication status:', isLoggedIn);

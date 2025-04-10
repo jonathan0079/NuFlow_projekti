@@ -21,21 +21,27 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       
       const user = JSON.parse(userData);
-      
-      // Tämä on avainmuutos: käsitellään molemmat mahdolliset kenttänimet
-      // Kubiosin token käyttää 'user_id' kenttää, tavallinen login käyttää 'id' kenttää
-      const userId = user.user_id || user.id;
-      
       console.log('User data from storage:', user);
+      
+      // Tarkistetaan eri mahdolliset kenttänimet käyttäjätunnukselle
+      // Kubiosin token käyttää 'user_id' kenttää, tavallinen login voi käyttää 'id', tai response.user.id kenttää
+      const userId = user.user_id || (user.user && user.user.id) || user.id;
+      
       console.log('Using user ID:', userId);
       
       if (!userId) {
+        // Jos käyttäjä-ID:tä ei löydy, tarkistetaan onko siellä muita kenttiä, joista se voisi löytyä
+        console.error('User ID not found. Full user object:', JSON.stringify(user));
         alert('Käyttäjän tunnistus epäonnistui. Kirjaudu ulos ja sisään uudelleen.');
-        console.error('User ID not found in stored user data:', user);
         return;
       }
       
       const token = user.token;
+      if (!token) {
+        console.error('Token not found in user data');
+        alert('Istunto vanhentunut. Kirjaudu sisään uudelleen.');
+        return;
+      }
       
       // 2. Haetaan lomakkeen tiedot
       const drugUse = document.querySelector('textarea[name="drug_use"]').value.trim();
@@ -50,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // 3. Näytetään latausanimaatio
       const submitButton = document.getElementById('submit-button');
+      const originalButtonText = submitButton.textContent;
       submitButton.textContent = 'Tallennetaan...';
       submitButton.disabled = true;
       
@@ -62,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         self_assessment: selfAssessment
       };
       
-      console.log('Sending health data with explicit user_id:', healthData);
+      console.log('Sending health data:', healthData);
       
       // 5. Lähetetään data backendiin
       const API_URL = 'http://localhost:3000/api';
@@ -81,8 +88,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (response.ok) {
         // 6. Merkitään terveystiedot tallennetuiksi
         localStorage.setItem('healthMetricsCompleted', 'true');
-        alert('Tiedot tallennettu onnistuneesti!');
-        window.location.href = 'diary.html';
+        showMessage('Tiedot tallennettu onnistuneesti!', 'success');
+        setTimeout(() => {
+          window.location.href = 'diary.html';
+        }, 1500);
       } else {
         // Yritetään lukea virheilmoitus
         const errorText = await response.text();
@@ -92,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
     } catch (error) {
       console.error('Error:', error);
-      alert(`Virhe: ${error.message}`);
+      showMessage(`Virhe: ${error.message}`, 'error');
       
       // Palautetaan nappi normaalitilaan
       const submitButton = document.getElementById('submit-button');
@@ -101,5 +110,41 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.disabled = false;
       }
     }
+  }
+  
+  // Helper function to show messages to the user
+  function showMessage(message, type = 'info') {
+    let messageElement = document.getElementById('status-message');
+    if (!messageElement) {
+      messageElement = document.createElement('div');
+      messageElement.id = 'status-message';
+      messageElement.style.position = 'fixed';
+      messageElement.style.top = '20px';
+      messageElement.style.right = '20px';
+      messageElement.style.padding = '10px 20px';
+      messageElement.style.borderRadius = '5px';
+      messageElement.style.zIndex = '1000';
+      messageElement.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+      document.body.appendChild(messageElement);
+    }
+  
+    messageElement.textContent = message;
+    
+    if (type === 'error') {
+      messageElement.style.backgroundColor = '#f44336';
+      messageElement.style.color = 'white';
+    } else if (type === 'success') {
+      messageElement.style.backgroundColor = '#4CAF50';
+      messageElement.style.color = 'white';
+    } else {
+      messageElement.style.backgroundColor = '#2196F3';
+      messageElement.style.color = 'white';
+    }
+  
+    messageElement.style.display = 'block';
+  
+    setTimeout(() => {
+      messageElement.style.display = 'none';
+    }, 3000);
   }
 });
