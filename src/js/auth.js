@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Login endpoint (full URL):', loginUrl);
     
     try {
-      const response = await fetch(loginUrl, {
+      const response = await secureFetch(loginUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -153,37 +153,27 @@ document.addEventListener('DOMContentLoaded', function() {
         body: JSON.stringify({ username, password })
       });
       
-      // Virhe vastauksessa
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        loginError.textContent = errorData.message || 'Kirjautuminen epäonnistui';
-        console.error('Login failed:', errorData.message);
+      // Tarkistaa onko vastaus null (secureFetch voi palauttaa null jos tapahtuu 401)
+      if (!response) {
+        console.error('Login failed: No response from server');
+        loginError.textContent = 'Kirjautuminen epäonnistui';
         return;
       }
       
       // Jäsennetään vastaus
-      const responseText = await response.text();
-      
-      if (!responseText) {
-        loginError.textContent = 'Palvelin palautti tyhjän vastauksen';
-        return;
-      }
-      
-      const data = JSON.parse(responseText);
+      const data = await response.json();
       console.log('Login response:', data);
       
-      // Tarkistetaan onko data.data olemassa vai onko data suoraan käyttäjäobjekti
-      const userData = data.data || data;
-      console.log('User data structure:', userData);
-      
-      if (!userData.token) {
-        loginError.textContent = 'Kirjautuminen epäonnistui: tokenia ei löytynyt';
+      // Tarkistetaan vastauksen tila
+      if (!response.ok) {
+        loginError.textContent = data.message || 'Kirjautuminen epäonnistui';
+        console.error('Login failed:', data.message);
         return;
       }
       
       // Tallentaa käyttäjän datan local storageen
-      localStorage.setItem('user', JSON.stringify(userData));
-      console.log('User data stored in localStorage:', userData);
+      localStorage.setItem('user', JSON.stringify(data));
+      console.log('User data stored in localStorage:', data);
       
       // Sulkee login modalin
       modal.style.display = 'none';
@@ -193,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
       showMessage('Kirjautuminen onnistui!', 'success');
       
       // Tarkistaa onko käyttäjällä esitietoja ja ohjaa käyttäjän oikealle sivulle
-      const userId = userData.user_id;
+      const userId = data.user_id;
       console.log('User ID for checking health metrics:', userId);
       
       if (userId) {
@@ -249,13 +239,20 @@ document.addEventListener('DOMContentLoaded', function() {
       submitButton.textContent = 'Rekisteröidään...';
       submitButton.disabled = true;
       
-      const response = await fetch(`${API_URL}/users`, {
+      const response = await secureFetch(`${API_URL}/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ username, password })
       });
+      
+      // Tarkistaa onko vastaus null (secureFetch voi palauttaa null jos tapahtuu 401)
+      if (!response) {
+        console.error('Registration failed: No response from server');
+        registerError.textContent = 'Rekisteröinti epäonnistui';
+        return;
+      }
       
       const data = await response.json();
       console.log('Registration response:', data);
@@ -321,68 +318,85 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 // Tarkistaa käyttäjän kirjautumistilan
-  function checkAuthStatus() {
-    console.log('Checking authentication status');
-    try {
-      const userJson = localStorage.getItem('user');
-      if (!userJson) {
-        console.log('No user data in localStorage');
-        updateAuthUI(false);
-        
-        // Jos käyttäjä on suojatulla sivulla, ohjaa etusivulle
-        if (window.location.pathname.includes('diary.html') || 
-            window.location.pathname.includes('initial_info.html')) {
-          window.location.href = 'index.html';
-        }
-        return;
-      }
-      
-      const user = JSON.parse(userJson);
-      console.log('User data from localStorage:', user);
-      
-      if (!user || !user.token) {
-        console.log('Invalid user data in localStorage');
-        updateAuthUI(false);
-        localStorage.removeItem('user');
-        
-        if (window.location.pathname.includes('diary.html') || 
-            window.location.pathname.includes('initial_info.html')) {
-          window.location.href = 'index.html';
-        }
-        return;
-      }
-      
-      console.log('User is logged in:', user.username);
-      updateAuthUI(true);
-      
-      // Jos käyttäjä on initial_info.html sivulla, ei tarvitse tarkistaa esitietoja
-      if (window.location.pathname.includes('initial_info.html')) {
-        return;
-      }
-      
-      // Tarkista käyttäjän esitiedot ja ohjaa käyttäjä oikealle sivulle
-      const userId = user.user_id;
-      
-      if (userId) {
-        console.log('Found user ID:', userId);
-        checkUserInitialInfo(userId);
-      } else {
-        console.error('User ID not found in stored user data. User data:', user);
-        // Jos userId:tä ei ole, ohjaamme käyttäjän initial_info.html-sivulle
-        window.location.href = 'initial_info.html';
-      }
-    } catch (error) {
-      console.error('Error checking auth status:', error);
-      // Virhetilanteessa poistetaan user tieto local storagesta
-      localStorage.removeItem('user');
+function checkAuthStatus() {
+  console.log('Checking authentication status');
+  try {
+    const userJson = localStorage.getItem('user');
+    if (!userJson) {
+      console.log('No user data in localStorage');
       updateAuthUI(false);
+      
+      // Jos käyttäjä on suojatulla sivulla, ohjaa etusivulle
+      if (window.location.pathname.includes('diary.html') || 
+          window.location.pathname.includes('initial_info.html')) {
+        window.location.href = 'index.html';
+      }
+      return;
+    }
+    
+    const user = JSON.parse(userJson);
+    console.log('User data from localStorage:', user);
+    
+    if (!user || !user.token) {
+      console.log('Invalid user data in localStorage');
+      updateAuthUI(false);
+      localStorage.removeItem('user');
       
       if (window.location.pathname.includes('diary.html') || 
           window.location.pathname.includes('initial_info.html')) {
         window.location.href = 'index.html';
       }
+      return;
+    }
+    
+    // Tarkistetaan tokenin voimassaolo
+    const tokenPayload = parseJwt(user.token);
+    const now = Math.floor(Date.now() / 1000);
+    
+    if (tokenPayload && tokenPayload.exp && tokenPayload.exp < now) {
+      console.warn('Token is expired, logging out.');
+      localStorage.removeItem('user');
+      updateAuthUI(false);
+      showMessage('Istunto vanhentunut. Kirjaudutaan ulos...', 'error');
+      
+      if (window.location.pathname.includes('diary.html') || 
+          window.location.pathname.includes('initial_info.html')) {
+        window.location.href = 'index.html';
+      }
+      return;
+    }
+    
+    console.log('User is logged in:', user.username);
+    updateAuthUI(true);
+    
+    // Jos käyttäjä on initial_info.html sivulla, ei tarvitse tarkistaa esitietoja
+    if (window.location.pathname.includes('initial_info.html')) {
+      return;
+    }
+    
+    // Tarkista käyttäjän esitiedot ja ohjaa käyttäjä oikealle sivulle
+    const userId = user.user_id;
+    
+    if (userId) {
+      console.log('Found user ID:', userId);
+      checkUserInitialInfo(userId);
+    } else {
+      console.error('User ID not found in stored user data. User data:', user);
+      // Jos userId:tä ei ole, ohjaamme käyttäjän initial_info.html-sivulle
+      window.location.href = 'initial_info.html';
+    }
+  } catch (error) {
+    console.error('Error checking auth status:', error);
+    // Virhetilanteessa poistetaan user tieto local storagesta
+    localStorage.removeItem('user');
+    updateAuthUI(false);
+    
+    if (window.location.pathname.includes('diary.html') || 
+        window.location.pathname.includes('initial_info.html')) {
+      window.location.href = 'index.html';
     }
   }
+}
 
 // Tarkistaa käyttäjän esitiedot
 function checkUserInitialInfo(userId) {
@@ -401,23 +415,14 @@ function checkUserInitialInfo(userId) {
   if (!healthMetricsCompleted) {
     console.log('Health metrics not marked as completed, checking with API');
     
-    // Tehdään kertaluontoinen tarkistus
-    const token = getAuthToken();
-    if (!token) {
-      console.error('No auth token available');
-      return;
-    }
-    
-    let fetchOptions = {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    };
-    
     // Kokeillaan hakea terveystiedot
-    fetch(`${API_URL}/metrics/${userId}`, fetchOptions)
+    secureFetch(`${API_URL}/metrics/${userId}`)
       .then(response => {
+        if (!response) {
+          console.error('No response when checking health metrics');
+          return null;
+        }
+        
         if (response.ok) {
           console.log('Health metrics found, marking as completed');
           localStorage.setItem('healthMetricsCompleted', 'true');
@@ -541,6 +546,55 @@ function checkUserInitialInfo(userId) {
     }, 3000);
   }
 });
+
+// Tarkistaa onko token vanhentunut / 401 ja ohjaa ulos
+async function secureFetch(url, options = {}) {
+  const token = getAuthToken();
+  
+  // Jos token on olemassa ja options.headers on olemassa, lisää token
+  if (token) {
+    options.headers = {
+      ...options.headers,
+      'Authorization': `Bearer ${token}`
+    };
+  }
+
+  try {
+    const response = await fetch(url, options);
+
+    if (response.status === 401) {
+      console.warn('Token expired or unauthorized. Logging out.');
+      localStorage.removeItem('user');
+      showMessage('Istunto vanhentunut. Kirjaudutaan ulos...', 'error');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1500);
+      return null;
+    }
+
+    return response;
+  } catch (err) {
+    console.error('secureFetch error:', err);
+    showMessage('Palvelinvirhe, yritä myöhemmin uudelleen.', 'error');
+    return null;
+  }
+}
+
+// Purkaa JWT tokenin ja palauttaa sen sisältämän datan
+function parseJwt(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    console.error('Failed to parse JWT token:', e);
+    return null;
+  }
+}
 
 // Hakee autentikaatio tokenin local storagesta
 function getAuthToken() {
