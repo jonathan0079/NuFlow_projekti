@@ -1,10 +1,8 @@
-
 import './auth.js';
 
 console.log("diary.js ladattu");
 
 // Hakee autentikaatio tokenin local storagesta
-
 function getAuthToken() {
   const user = JSON.parse(localStorage.getItem('user'));
   return user ? user.token : null;
@@ -17,11 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log("Haettu token:", token);
 
   // Jos token puuttuu, ohjataan takaisin kirjautumissivulle
-  //if (!token) {
-  //  console.warn("Token puuttuu – ohjataan kirjautumaan.");
-   // window.location.href = "/index.html";
-  //  return;
-  //}
   if (!token) {
     alert("Et ole kirjautunut sisään."); // ← Tämä näkyy!
     // mutta mitään ei tapahdu, koska ohjaus puuttuu
@@ -47,15 +40,24 @@ function initDiary(token) {
 
     toggleSubmitButton(submitButton, true); // Näytetään, että tallennus on käynnissä
 
+    // Tarkistetaan että aika on valittu
+    if (!getRadioValue('time')) {
+      alert("Valitse kirjauksen ajankohta (Aamu/Ilta)");
+      toggleSubmitButton(submitButton, false);
+      return;
+    }
+
     //  Kerätään kaikki tiedot lomakkeesta objektiin
     const entryData = {
       entry_date: new Date().toISOString().split('T')[0], // Päivämäärä (esim. "2025-04-08")
       time_of_day: getRadioValue('time'), // Aamu / Ilta valinta
-      sleep_duration: getRadioValue('sleep'), // Uni-laadun valinta (hymiöt)
-      current_mood: getRadioValue('mood'), // Mieliala (hymiöt)
+      sleep_duration: parseInt(document.getElementById('sleepRange').value, 10), // Uni-laatu (slider)
+      current_mood: parseInt(document.getElementById('moodRange').value, 10), // Mieliala (slider)
       sleep_notes: getTextareaValue(0), // Ensimmäinen tekstialue (uni)
       activity: getTextareaValue(1), // Toinen tekstialue (muistiinpanot)
     };
+
+    console.log("Lähetetään lomake:", entryData); // Tarkistus konsoliin
 
     //  Lähetetään tiedot backendille
     try {
@@ -73,6 +75,7 @@ function initDiary(token) {
       // ⚠️ Jos palvelin ei vastannut OK
       if (!response.ok) {
         alert("Tallennus epäonnistui: " + (result.message || "Tuntematon virhe"));
+        console.error("Palvelimen vastaus:", result);
       } else {
         //  Onnistunut tallennus
         alert("Päiväkirjamerkintä tallennettu!");
@@ -136,8 +139,6 @@ async function fetchAndDisplayHrvData(token) {
 }
 
   
-
-
 //  Asettaa tekstin tiettyyn elementtiin id:n perusteella
 function setText(id, value) {
   const el = document.getElementById(id);
@@ -175,3 +176,34 @@ function showSuccessFeedback(button) {
   button.classList.add('success');
   setTimeout(() => button.classList.remove('success'), 2000); // Palauttaa normaaliksi 2s jälkeen
 }
+
+function updateThumbColor(slider) {
+  const value = parseInt(slider.value, 10);
+  let color = "#477668";
+
+  // Päivitä väri sliderin mukaan
+  if (slider.id === "sleepRange" || slider.id === "moodRange") {
+    if (value === 1) {
+      color = "red";
+    } else if (value === 2) {
+      color = "orange";
+    } else if (value === 3) {
+      color = "yellow";
+    } else if (value === 4) {
+      color = "lightgreen";
+    } else if (value === 5) {
+      color = "green";
+    }
+  }
+
+  // Asetetaan väri dynaamisesti sliderin juureen
+  slider.style.setProperty('--thumb-color', color);
+}
+
+// Hae kaikki sliderit ja lisää tapahtumankuuntelijat
+const sliders = document.querySelectorAll(".slider");
+
+sliders.forEach(slider => {
+  slider.addEventListener("input", () => updateThumbColor(slider));
+  updateThumbColor(slider); // Aseta väri heti myös alussa
+});
