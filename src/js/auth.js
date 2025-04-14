@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://localhost:5000/api';
 
 // Odottaa, että koko sivu on ladattu
 document.addEventListener('DOMContentLoaded', function() {
@@ -70,11 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 // Käsittelee register formia
-  if (registerForm) {
-    registerForm.addEventListener('submit', handleRegister);
-  } else {
-    console.warn('Register form not found in the DOM');
-  }
+
 
 // Käsittelee logout nappia
   if (logoutButton) {
@@ -145,41 +141,32 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Login endpoint (full URL):', loginUrl);
     
     try {
-      const response = await fetch(loginUrl, {
+      const response = await secureFetch(loginUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ username, password })
       });
-      
+    
+      if (!response) return; // ← estää virheen jos response on null
+    
       const data = await response.json();
-      console.log('Login response:', data);
-      
+    
       if (!response.ok) {
         loginError.textContent = data.message || 'Kirjautuminen epäonnistui';
         console.error('Login failed:', data.message);
         return;
       }
-      
-// Tallentaa käyttäjän datan local storageen
-      localStorage.setItem('user', JSON.stringify(data.data));
-      console.log('User data stored in localStorage:', data.data);
-      
-// Sulkee login modalin
+    
+      localStorage.setItem('user', JSON.stringify(data));
       modal.style.display = 'none';
-      
-// Näyttää viestin onnistuneesta kirjautumisesta
       updateAuthUI(true);
-      
-// Lataa päiväkirja sivu, jos käyttäjä on siellä
       window.location.reload();
-      
     } catch (error) {
       console.error('Login error:', error);
       loginError.textContent = 'Palvelinvirhe, yritä myöhemmin uudelleen';
     } finally {
-// Palauttaa alkuperäisen tilan
       submitButton.textContent = originalButtonText;
       submitButton.disabled = false;
     }
@@ -220,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
       submitButton.textContent = 'Rekisteröidään...';
       submitButton.disabled = true;
       
-      const response = await fetch(`${API_URL}/users`, {
+      const response = await secureFetch(`${API_URL}/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -289,36 +276,42 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 // Tarkistaa käyttäjän kirjautumistilan
-  function checkAuthStatus() {
-    console.log('Checking authentication status');
-    const user = JSON.parse(localStorage.getItem('user'));
-    
-    if (user && user.token) {
-      console.log('User is logged in:', user.username);
-// Käyttäjä on kirjautunut
-      updateAuthUI(true);
-      
-// Jos käyttäjä on päiväkirja sivulla, lataa päiväkirja
-      if (window.location.pathname.includes('diary.html')) {
-        console.log('On diary page, loading entries');
-        if (typeof loadDiaryEntries === 'function') {
-          loadDiaryEntries();
-        } else {
-          console.warn('loadDiaryEntries function not found');
-        }
-      }
-    } else {
-      console.log('User is not logged in');
-// Käyttäjä ei ole kirjautunut
+function checkAuthStatus() {
+  console.log('Checking authentication status');
+
+  let user = null;
+  try {
+    user = JSON.parse(localStorage.getItem('user'));
+  } catch (e) {
+    console.warn('Invalid user data in localStorage');
+  }
+
+  if (user && user.token) {
+    const tokenPayload = parseJwt(user.token);
+    const now = Math.floor(Date.now() / 1000);
+
+    if (tokenPayload && tokenPayload.exp && tokenPayload.exp < now) {
+      console.warn('Token is expired, logging out.');
+      localStorage.removeItem('user');
       updateAuthUI(false);
-      
-// Jos käyttäjä on päiväkirja sivulla, ohjaa hänet etusivulle
-      if (window.location.pathname.includes('diary.html')) {
-        console.log('Redirecting from diary page to home page');
-        window.location.href = 'index.html';
+      return;
+    }
+
+    console.log('User is logged in:', user.user.given_name);
+    updateAuthUI(true);
+
+    if (window.location.pathname.includes('diary.html')) {
+      if (typeof loadDiaryEntries === 'function') {
+        loadDiaryEntries();
       }
     }
+  } else {
+    updateAuthUI(false);
+    if (window.location.pathname.includes('diary.html')) {
+      window.location.href = 'index.html';
+    }
   }
+}
 
 // Päivittää käyttöliittymän kirjautumisen tilan mukaan
 
@@ -338,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (userMenuTrigger) {
         userMenuTrigger.style.display = 'flex';
         if (userGreeting) {
-          userGreeting.textContent = `Hei, ${user.username}!`;
+          userGreeting.textContent = `Hei, ${user.user.given_name}!`;
         }
         console.log('User menu displayed');
       } else {
@@ -498,3 +491,48 @@ document.addEventListener("DOMContentLoaded", function () {
       }
   });
 });
+
+// Tarkistaa onko token vanhentunut / 401 ja ohjaa ulos
+async function secureFetch(url, options = {}) {
+  const token = getAuthToken();
+  const headers = {
+    ...options.headers,
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  };
+
+  try {
+    const response = await fetch(url, { ...options, headers });
+
+    if (response.status === 401) {
+      console.warn('Token expired or unauthorized. Logging out.');
+      localStorage.removeItem('user');
+      showMessage('Istunto vanhentunut. Kirjaudutaan ulos...', 'error');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1500);
+      return null;
+    }
+
+    return response;
+  } catch (err) {
+    console.error('secureFetch error:', err);
+    showMessage('Palvelinvirhe, yritä myöhemmin uudelleen.', 'error');
+    return null;
+  }
+}
+
+function parseJwt(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    console.error('Failed to parse JWT token:', e);
+    return null;
+  }
+};
