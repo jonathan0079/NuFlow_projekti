@@ -1,3 +1,4 @@
+import './auth.js';
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Health metrics form handler loaded');
   

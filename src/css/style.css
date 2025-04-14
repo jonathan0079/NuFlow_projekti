@@ -138,6 +138,10 @@ li a:hover {
     display: block;
     padding-top: 10px;
 }
+#user-greeting {
+    color: #fbfbfb;
+    text-align: right;
+}
 .modal {
     display: none; /* Aluksi piilotettu */
     position: fixed;

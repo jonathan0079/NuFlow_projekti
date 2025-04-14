@@ -1,174 +1,174 @@
 
 h2 {
-    font-size: 16px;
-    color: #010101; 
-    margin: auto;    
-    text-decoration: bold;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    text-align: center;
+  font-size: 16px;
+  color: #010101; 
+  margin: auto;    
+  text-decoration: bold;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
 }
 .time-selector {
-    font-size: 14px;
-    margin-bottom: 10px;
-    max-width: 30%;
-  }
-  
-  .time-selector span {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 4px;
-  }
-  
-  .time-options {
-    display: flex;
-    flex-direction:row;
-  }
-  
-  .time-options label {
-    display: flex;
-    align-items: right;
-    gap: 5px;
-  }  
+  font-size: 14px;
+  margin-bottom: 10px;
+  max-width: 30%;
+}
 
-  .hrv-container {
-    margin: 20px auto;
-    max-width: 700px;
-    text-align: center;
-  }
-  
-  .hrv-grid {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-  }
-  
-  .hrv-grid > div {
-    flex: 1 1 12%;
-    min-width: 100px;
-    max-width: 600px;
-    padding: 5px;
-  }
-  
-  .hrv-label {
-    font-weight: bold;
-    font-size: 13px;
-    margin-bottom: 5px;
-  }
-  
-  .hrv-value {
-    background-color: #bebebe;
-    border-color: black;
-    border-radius: 2%;
-    padding: 5px;
-    font-size: 16px;
-    color: #333;
-  }
-  
+.time-selector span {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.time-options {
+  display: flex;
+  flex-direction:row;
+}
+
+.time-options label {
+  display: flex;
+  align-items: right;
+  gap: 5px;
+}  
+
+.hrv-container {
+  margin: 20px auto;
+  max-width: 700px;
+  text-align: center;
+}
+
+.hrv-grid {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.hrv-grid > div {
+  flex: 1 1 12%;
+  min-width: 100px;
+  max-width: 600px;
+  padding: 5px;
+}
+
+.hrv-label {
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.hrv-value {
+  background-color: #bebebe;
+  border-color: black;
+  border-radius: 2%;
+  padding: 5px;
+  font-size: 16px;
+  color: #333;
+}
+
 
 .slidecontainer {
-    width: 70%;
-    margin: auto;
+  width: 70%;
+  margin: auto;
 }
-  
+
 .slider {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 30px; 
-    padding-top: 10px;
-    background: transparent; 
-    z-index: 1;
-    border: none;
-  }
-  
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 30px; 
+  padding-top: 10px;
+  background: transparent; 
+  z-index: 1;
+  border: none;
+}
+
 .slider::-webkit-slider-runnable-track { /* Chrome, Safari, Edge */
-    height: 2px;
-    background: #aaa; 
-    border-radius: 1px;
-  }
-  
-  .slider::-moz-range-track {/* Mozilla */
-    height: 2px;
-    background: #aaa;
-    border-radius: 1px;
-  }
+  height: 2px;
+  background: #aaa; 
+  border-radius: 1px;
+}
 
-  .slider::-webkit-slider-thumb { /* Chrome, Safari, Edge */
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background-color: var(--thumb-color, #477668);
-    cursor: pointer;
-    position: relative;
-    z-index: 1;
-    margin-top: -12px; 
-  }
-  
-  .slider::-moz-range-thumb { /* Mozilla */
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background-color: var(--thumb-color, #477668);
-    cursor: pointer;
-    position: relative;
-    z-index: 2;
-  }
-  
-  .slidecontainer {
-    position: relative;
-    margin-bottom: 20px;
-    margin-top: 20px;
-  }
-  
-  .slidecontainer .labels {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    z-index: 2; 
-  }
-  
-  .slidecontainer .labels span {
-    text-align: center;
-    font-size: 14px;
-    z-index: 2; 
-    margin-bottom: 10px; /* lisää tilaa labelien ja sliderin väliin */
+.slider::-moz-range-track {/* Mozilla */
+  height: 2px;
+  background: #aaa;
+  border-radius: 1px;
+}
 
-  }
+.slider::-webkit-slider-thumb { /* Chrome, Safari, Edge */
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: var(--thumb-color, #477668);
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  margin-top: -12px; 
+}
+
+.slider::-moz-range-thumb { /* Mozilla */
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: var(--thumb-color, #477668);
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+.slidecontainer {
+  position: relative;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.slidecontainer .labels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  z-index: 2; 
+}
+
+.slidecontainer .labels span {
+  text-align: center;
+  font-size: 14px;
+  z-index: 2; 
+  margin-bottom: 10px; /* lisää tilaa labelien ja sliderin väliin */
+
+}
 
 form {
-    max-width: 650px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 650px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 label {
-    display: block;
-    margin-top: 10px;
+  display: block;
+  margin-top: 10px;
 }
 
 input, textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
 ;   border: 1px solid #ccc;
-    border-radius: 5px;
+  border-radius: 5px;
 }
 
 #submit-button {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: #477668;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #477668;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
 }
 #submit-button:hover {
-    background-color: #528777;
+  background-color: #528777;
 }

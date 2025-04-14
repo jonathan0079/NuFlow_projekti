@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const registerError = document.getElementById('register-error');
   const userMenuTrigger = document.getElementById('user-menu-trigger');
   const userMenuContent = document.getElementById('user-menu-content');
-  const logoutButton = document.getElementById('logout-button');
+  const logoutButton = document.getElementById('logoutButton');
   const userGreeting = document.getElementById('user-greeting');
 
  // Tarkistaa käyttäjän kirjautumistilan
