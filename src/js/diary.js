@@ -16,17 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Jos token puuttuu, ohjataan takaisin kirjautumissivulle
   if (!token) {
-    alert("Et ole kirjautunut sisään."); // ← Tämä näkyy!
-    // mutta mitään ei tapahdu, koska ohjaus puuttuu
-    return
+    alert("Et ole kirjautunut sisään.");
+    window.location.href = "/index.html";
+    return;
   }
 
   // Käynnistetään päiväkirjan päätoiminnallisuus
   initDiary(token);
 });
 
-
-// 750GmuduMdLX Päätoiminnallisuus: lomakkeen käsittely ja HRV-datan nouto
+// Päätoiminnallisuus: lomakkeen käsittely ja HRV-datan nouto
 function initDiary(token) {
   const diaryForm = document.getElementById('diaryForm'); // Lomake-elementti
   const submitButton = document.querySelector('#submit-button'); // Tallennusnappi
@@ -34,9 +33,15 @@ function initDiary(token) {
 
   fetchAndDisplayHrvData(token); // Ladataan HRV-arvot automaattisesti heti sivun alussa
 
-  //  Kun lomake lähetetään
+  // Kun lomake lähetetään
   diaryForm.addEventListener('submit', async (e) => {
     e.preventDefault(); // Estetään oletustoiminto (sivun uudelleenlataus)
+
+    // Näyttää vihreän onnistumisefektin napissa
+function showSuccessFeedback(button) {
+  button.classList.add('success');
+  setTimeout(() => button.classList.remove('success'), 2000); // Palauttaa normaaliksi 2s jälkeen
+}
 
     toggleSubmitButton(submitButton, true); // Näytetään, että tallennus on käynnissä
 
@@ -92,12 +97,73 @@ function initDiary(token) {
 
     toggleSubmitButton(submitButton, false); // Palautetaan nappi normaaliksi
   });
-}
 
+  // Kuuntelee kalenterista tulevaa päivämäärätapahtumaa
+  window.addEventListener('selectedDateChanged', async (event) => {
+    const { date, entries } = event.detail;
+    
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user.user_id || user.id || user.userId;
+    const token = user.token;
+    
+    if (entries && entries.length > 0) {
+      // Täytä päiväkirjalomake valitun päivän tiedoilla
+      populateDiaryForm(entries[entries.length - 1]);
+      
+      // Hae HRV-data valitulle päivämäärälle
+      try {
+        await fetchHrvDataForSelectedDate(token, date);
+      } catch (error) {
+        console.error('HRV-datan haku epäonnistui:', error);
+      }
+    } else {
+      // Tyhjennä lomake ja HRV-arvot jos ei kirjauksia
+      resetDiaryForm();
+      
+      // Yritä hakea HRV-data silti, koska käyttäjällä voi olla kirjaus päivältä
+      try {
+        await fetchHrvDataForSelectedDate(token, date);
+      } catch (error) {
+        console.error('HRV-datan haku epäonnistui tyhjälle päivälle:', error);
+      }
+    }
+  });
+
+// Täyttää päiväkirjalomakkeen annetuilla tiedoilla
+function populateDiaryForm(entry) {
+  // Aseta ajankohta (aamu/ilta)
+  const timeRadios = document.querySelectorAll('input[name="time"]');
+  timeRadios.forEach(radio => {
+    radio.checked = radio.value === (entry.time_of_day === 'morning' ? 'morning' : 'evening');
+  });
+
+  // Aseta uni-arvio
+  const sleepSlider = document.getElementById('sleepRange');
+  if (sleepSlider) {
+    sleepSlider.value = entry.sleep_duration || 3;
+    updateThumbColor(sleepSlider);
+  }
+
+  // Aseta mieliala
+  const moodSlider = document.getElementById('moodRange');
+  if (moodSlider) {
+    moodSlider.value = entry.current_mood || 3;
+    updateThumbColor(moodSlider);
+  }
+
+  // Aseta tekstialueet
+  const textareas = document.querySelectorAll('textarea');
+  if (textareas.length >= 1) {
+    textareas[0].value = entry.sleep_notes || '';
+    if (textareas.length > 1) {
+      textareas[1].value = entry.activity || '';
+    }
+  }
+}
 
 //  HRV-arvojen nouto backendiltä ja näyttö sivulla
 async function fetchAndDisplayHrvData(token) {
-    const staticDate = "2025-02-14"; // Kovakoodattu päivämäärä
+    const staticDate = new Date().toISOString().split('T')[0]; // Tämän hetkinen päivämäärä
     console.log("📡 Haetaan HRV päivälle:", staticDate);
   
     try {
@@ -138,6 +204,109 @@ async function fetchAndDisplayHrvData(token) {
     }
 }
 
+// Hakee HRV-datan valitulle päivämäärälle
+async function fetchHrvDataForSelectedDate(token, date) {
+  console.log("📡 Haetaan HRV päivälle:", date);
+  
+  try {
+    const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${date}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    // Jos käyttäjä ei ole enää kirjautunut
+    if (response.status === 401) {
+      alert("Istunto vanhentunut. Kirjaudu uudelleen.");
+      window.location.href = "/index.html";
+      return;
+    }
+
+    if (!response.ok) {
+      console.warn('[HRV HAKU] status:', response.status);
+      resetHrvDisplay();
+      return;
+    }
+
+    const data = await response.json();
+    console.log(data);
+
+    // Haetaan 'results' taulukosta ensimmäinen objekti
+    const hrv = data.results[0];
+
+    // Asetetaan arvot HTML:ään
+    setText('hrv-syke', hrv.heart_rate);
+    setText('hrv-rmssd', hrv.rmssd);
+    setText('hrv-meanrr', hrv.mean_rr);
+    setText('hrv-sdnn', hrv.sdnn);
+    setText('hrv-pns', hrv.pns_index);
+    setText('hrv-sns', hrv.sns_index);
+
+  } catch (err) {
+    console.error('[HRV VIRHE]', err.message);
+    resetHrvDisplay();
+  }
+}
+
+// Täyttää päiväkirjalomakkeen annetuilla tiedoilla
+function populateDiaryForm(entry) {
+  // Aseta ajankohta (aamu/ilta)
+  const timeRadios = document.querySelectorAll('input[name="time"]');
+  timeRadios.forEach(radio => {
+    radio.checked = radio.value === (entry.time_of_day === 'morning' ? 'morning' : 'evening');
+  });
+
+  // Aseta uni-arvio
+  const sleepSlider = document.getElementById('sleepRange');
+  if (sleepSlider) {
+    sleepSlider.value = entry.sleep_duration || 3;
+    updateThumbColor(sleepSlider);
+  }
+
+  // Aseta mieliala
+  const moodSlider = document.getElementById('moodRange');
+  if (moodSlider) {
+    moodSlider.value = entry.current_mood || 3;
+    updateThumbColor(moodSlider);
+  }
+
+  // Aseta tekstialueet
+  const textareas = document.querySelectorAll('textarea');
+  if (textareas.length >= 1) {
+    textareas[0].value = entry.sleep_notes || '';
+    if (textareas.length > 1) {
+      textareas[1].value = entry.activity || '';
+    }
+  }
+}
+
+// Tyhjentää päiväkirjalomakkeen
+function resetDiaryForm() {
+  // Nollaa radiot
+  const timeRadios = document.querySelectorAll('input[name="time"]');
+  timeRadios.forEach(radio => radio.checked = false);
+
+  // Nollaa sliderit
+  const sleepSlider = document.getElementById('sleepRange');
+  const moodSlider = document.getElementById('moodRange');
+  
+  if (sleepSlider) {
+    sleepSlider.value = 3;
+    updateThumbColor(sleepSlider);
+  }
+  
+  if (moodSlider) {
+    moodSlider.value = 3;
+    updateThumbColor(moodSlider);
+  }
+
+  // Tyhjennä tekstialueet
+  const textareas = document.querySelectorAll('textarea');
+  textareas.forEach(textarea => textarea.value = '');
+
+  // Nollaa HRV-arvot
+  resetHrvDisplay();
+}
   
 //  Asettaa tekstin tiettyyn elementtiin id:n perusteella
 function setText(id, value) {
@@ -171,12 +340,7 @@ function toggleSubmitButton(button, loading) {
   button.textContent = loading ? 'Tallennetaan...' : 'Tallenna';
 }
 
-// Näyttää vihreän onnistumisefektin napissa
-function showSuccessFeedback(button) {
-  button.classList.add('success');
-  setTimeout(() => button.classList.remove('success'), 2000); // Palauttaa normaaliksi 2s jälkeen
-}
-
+// Päivittää sliderin värin
 function updateThumbColor(slider) {
   const value = parseInt(slider.value, 10);
   let color = "#477668";
@@ -207,3 +371,77 @@ sliders.forEach(slider => {
   slider.addEventListener("input", () => updateThumbColor(slider));
   updateThumbColor(slider); // Aseta väri heti myös alussa
 });
+function autoLoadTodayData() {
+  const today = new Date().toISOString().split('T')[0];
+  
+  // Käyttäjän kirjaukset on jo haettu fetchUserEntries-funktiossa
+  const userEntries = window.userEntries || [];
+  const todayEntries = userEntries.filter(entry => entry.entry_date === today);
+  
+  // Lähetetään tapahtuma
+  const todayDateEvent = new CustomEvent('selectedDateChanged', {
+      detail: {
+          date: today,
+          entries: todayEntries
+      }
+  });
+  window.dispatchEvent(todayDateEvent);
+}
+
+// Muokkaa initDiary-funktiota
+function initDiary(token) {
+  // ... (aiempi koodi säilyy ennallaan)
+
+  // Lisää tämä rivin loppuun
+  autoLoadTodayData();
+}
+
+// Muokkaa fetchAndDisplayHrvData-funktiota
+async function fetchAndDisplayHrvData(token) {
+  const staticDate = new Date().toISOString().split('T')[0]; // Tämän hetkinen päivämäärä
+  console.log("📡 Haetaan HRV päivälle:", staticDate);
+
+  try {
+    const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${staticDate}`, {
+      headers: {
+        'Authorization': `Bearer ${token}` // Käyttäjän token mukaan
+      }
+    });
+
+    // 🔐 Jos käyttäjä ei ole enää kirjautunut
+    if (response.status === 401) {
+      alert("Istunto vanhentunut. Kirjaudu uudelleen.");
+      window.location.href = "/index.html";
+      return;
+    }
+
+    if (!response.ok) {
+      console.warn('[HRV HAKU] status:', response.status); // Muu virhe
+      resetHrvDisplay(); // Nollaa HRV-arvot, jos haku epäonnistuu
+      return;
+    }
+
+    const data = await response.json(); // Luetaan vastaus
+    console.log(data); // Tarkista konsolista, että data on oikein
+
+    // Haetaan 'results' taulukosta ensimmäinen objekti
+    if (data.results && data.results.length > 0) {
+      const hrv = data.results[0];  // Oletetaan, että aina tulee vain yksi tulos kyseiseltä päivältä
+
+      // Asetetaan arvot HTML:ään
+      setText('hrv-syke', hrv.heart_rate);
+      setText('hrv-rmssd', hrv.rmssd);
+      setText('hrv-meanrr', hrv.mean_rr);
+      setText('hrv-sdnn', hrv.sdnn);
+      setText('hrv-pns', hrv.pns_index);
+      setText('hrv-sns', hrv.sns_index);
+    } else {
+      resetHrvDisplay(); // Nollaa arvot, jos dataa ei löydy
+    }
+
+  } catch (err) {
+    console.error('[HRV VIRHE]', err.message); // Virhe yhteydessä
+    resetHrvDisplay(); // Nollaa arvot virhetilanteessa
+  }
+}
+}

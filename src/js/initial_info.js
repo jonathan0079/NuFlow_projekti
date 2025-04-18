@@ -25,8 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('User data from storage:', user);
       
       // Tarkistetaan eri mahdolliset kenttänimet käyttäjätunnukselle
-      // Kubiosin token käyttää 'user_id' kenttää, tavallinen login voi käyttää 'id', tai response.user.id kenttää
-      const userId = user.user_id || (user.user && user.user.id) || user.id;
+      const userId = 
+        user.user_id || 
+        user.id || 
+        user.userId || 
+        (user.user && user.user.id) ||
+        (user.data && user.data.id);
       
       console.log('Using user ID:', userId);
       

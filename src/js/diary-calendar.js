@@ -183,11 +183,18 @@ function selectDate(dayElement) {
     const userEntries = window.userEntries || [];
     const dayEntries = userEntries.filter(entry => entry.entry_date === selectedDate);
     
+    // Lähetetään tapahtuma diary.js-tiedostolle
+    const selectedDateEvent = new CustomEvent('selectedDateChanged', {
+        detail: {
+            date: selectedDate,
+            entries: dayEntries
+        }
+    });
+    window.dispatchEvent(selectedDateEvent);
+    
     if (dayEntries && dayEntries.length > 0) {
-        populateFormWithEntries(dayEntries);
         showCalendarNotification(`Päivän ${selectedDate} kirjaukset ladattu`, 'success');
     } else {
-        resetForm();
         showCalendarNotification(`Ei kirjauksia päivälle ${selectedDate}`, 'info');
     }
 }
@@ -238,8 +245,8 @@ function fetchUserEntries() {
         return;
     }
     
-    // Haetaan käyttäjän ID lokaalista varastosta
-    const userId = user.user_id || user.id;
+    // Haetaan käyttäjän ID lokaalista varastosta - muokattu tämä rivi
+    const userId = user.user_id || user.id || user.userId;
     if (!userId) {
         showCalendarNotification('Käyttäjätunnus puuttuu', 'error');
         return;
@@ -273,153 +280,6 @@ function fetchUserEntries() {
     .catch(error => {
         console.error('Virhe kirjausten hakemisessa:', error);
         showCalendarNotification('Kirjausten hakeminen epäonnistui', 'error');
-    });
-}
-
-/**
- * Päivittää lomakkeen tiedot valitun päivän kirjausten perusteella
- * @param {Array} entries - Päivän kirjaukset
- */
-function populateFormWithEntries(entries) {
-    // Jos kirjauksia ei ole tai ne ovat tyhjä taulukko
-    if (!entries || entries.length === 0) {
-        // Tyhjennä lomake
-        resetForm();
-        return;
-    }
-    
-    // Oletetaan, että käytämme viimeisintä kirjausta (jos niitä on useita)
-    const entry = entries[entries.length - 1];
-    
-    // Asetetaan ajankohta (aamu/ilta)
-    const timeCheckboxes = document.querySelectorAll('input[name="time"]');
-    timeCheckboxes.forEach(checkbox => {
-        if (checkbox.value === 'aamu' && entry.time_of_day === 'morning') {
-            checkbox.checked = true;
-        } else if (checkbox.value === 'ilta' && entry.time_of_day === 'evening') {
-            checkbox.checked = true;
-        } else {
-            checkbox.checked = false;
-        }
-    });
-    
-    // Asetetaan uni-arvio (voi olla slider tai radio/checkbox)
-    if (entry.sleep_duration !== undefined) {
-        // Tarkistetaan, onko Slider-elementti
-        const slider = document.querySelector('.slider');
-        if (slider) {
-            slider.value = entry.sleep_duration;
-            // Päivitetään mahdollinen näkyvä arvo
-            const sliderValueElement = document.querySelector('.slider-value');
-            if (sliderValueElement) {
-                sliderValueElement.textContent = entry.sleep_duration;
-            }
-        }
-        
-        // Tarkistetaan, onko radio-nappeja
-        const sleepRadios = document.querySelectorAll('input[name="sleep"]');
-        sleepRadios.forEach(radio => {
-            radio.checked = parseInt(radio.value) === Math.round(entry.sleep_duration);
-        });
-    }
-    
-    // Asetetaan mielialatieto (voi olla slider tai radio/checkbox)
-    if (entry.current_mood !== undefined) {
-        // Tarkistetaan, onko Slider-elementti mielialalle
-        const moodSlider = document.querySelector('input[name="mood"].slider');
-        if (moodSlider) {
-            moodSlider.value = entry.current_mood;
-            // Päivitetään mahdollinen näkyvä arvo
-            const moodValueElement = document.querySelector('.mood-value');
-            if (moodValueElement) {
-                moodValueElement.textContent = entry.current_mood;
-            }
-        }
-        
-        // Tarkistetaan, onko radio-nappeja
-        const moodRadios = document.querySelectorAll('input[name="mood"][type="radio"]');
-        moodRadios.forEach(radio => {
-            radio.checked = parseInt(radio.value) === Math.round(entry.current_mood);
-        });
-    }
-    
-    // Asetetaan tekstialueet
-    const textareas = document.querySelectorAll('textarea');
-    if (textareas.length >= 1) {
-        // Jos lomakkeessa on vain yksi textarea, käytetään sitä
-        if (textareas.length === 1 && (entry.sleep_notes || entry.activity)) {
-            textareas[0].value = entry.sleep_notes || entry.activity || '';
-        } 
-        // Jos lomakkeessa on useampi textarea
-        else if (textareas.length >= 2) {
-            // Oletetaan että ensimmäinen textarea on unitiedoille
-            if (entry.sleep_notes) {
-                textareas[0].value = entry.sleep_notes;
-            }
-            
-            // Oletetaan että toinen textarea on aktiviteettitiedoille
-            if (entry.activity) {
-                textareas[1].value = entry.activity;
-            }
-        }
-    }
-    
-    // Päivitetään HRV-arvot, jos ne ovat saatavilla
-    if (entry.hrv) {
-        // Haetaan HRV-arvoja näyttävät elementit
-        const hrv_syke = document.getElementById('hrv-syke');
-        const hrv_rmssd = document.getElementById('hrv-rmssd');
-        const hrv_meanrr = document.getElementById('hrv-meanrr');
-        const hrv_sdnn = document.getElementById('hrv-sdnn');
-        const hrv_pns = document.getElementById('hrv-pns');
-        const hrv_sns = document.getElementById('hrv-sns');
-        
-        // Päivitetään arvot, jos elementit löytyvät
-        if (hrv_syke) hrv_syke.textContent = entry.hrv.heart_rate || '-';
-        if (hrv_rmssd) hrv_rmssd.textContent = entry.hrv.rmssd || '-';
-        if (hrv_meanrr) hrv_meanrr.textContent = entry.hrv.mean_rr || '-';
-        if (hrv_sdnn) hrv_sdnn.textContent = entry.hrv.sdnn || '-';
-        if (hrv_pns) hrv_pns.textContent = entry.hrv.pns_index || '-';
-        if (hrv_sns) hrv_sns.textContent = entry.hrv.sns_index || '-';
-    }
-}
-
-/**
- * Tyhjentää lomakkeen
- */
-function resetForm() {
-    // Tyhjennetään checkboxit
-    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-        checkbox.checked = false;
-    });
-    
-    // Tyhjennetään radiobuttonit
-    document.querySelectorAll('input[type="radio"]').forEach(radio => {
-        radio.checked = false;
-    });
-    
-    // Tyhjennetään sliderit
-    document.querySelectorAll('input[type="range"]').forEach(slider => {
-        // Asetetaan slider keskelle (tai oletusarvoon)
-        const min = parseInt(slider.min) || 0;
-        const max = parseInt(slider.max) || 100;
-        slider.value = Math.floor((min + max) / 2);
-    });
-    
-    // Tyhjennetään tekstikentät
-    document.querySelectorAll('textarea').forEach(textarea => {
-        textarea.value = '';
-    });
-    
-    // Tyhjennetään HRV-arvot
-    const hrvValues = [
-        'hrv-syke', 'hrv-rmssd', 'hrv-meanrr', 
-        'hrv-sdnn', 'hrv-pns', 'hrv-sns'
-    ];
-    
-    hrvValues.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) element.textContent = '-';
     });
 }
 
