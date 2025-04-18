@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initDiary(token) {
   const diaryForm = document.getElementById('diaryForm'); // Lomake-elementti
   const submitButton = document.querySelector('#submit-button'); // Tallennusnappi
-  const API_URL = 'http://localhost:3000/api/entries/insert'; // Backend-osoite merkintöjen lisäykseen
+  const API_URL = 'http://localhost:5000/api/entries/insert'; // Backend-osoite merkintöjen lisäykseen
 
   fetchAndDisplayHrvData(token); // Ladataan HRV-arvot automaattisesti heti sivun alussa
 
@@ -101,7 +101,7 @@ async function fetchAndDisplayHrvData(token) {
     console.log("📡 Haetaan HRV päivälle:", staticDate);
   
     try {
-      const response = await fetch(`http://localhost:3000/api/kubios/hrv/by-date/${staticDate}`, {
+      const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${staticDate}`, {
         headers: {
           'Authorization': `Bearer ${token}` // Käyttäjän token mukaan
         }

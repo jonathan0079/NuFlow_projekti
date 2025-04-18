@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Sending health data:', healthData);
       
       // 5. Lähetetään data backendiin
-      const API_URL = 'http://localhost:3000/api';
+      const API_URL = 'http://localhost:5000/api';
       
       const response = await fetch(`${API_URL}/metrics/insert`, {
         method: 'POST',
