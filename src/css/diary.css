@@ -219,3 +219,8 @@ input, textarea {
   height: 250px;         
   box-sizing: border-box;
 }
+
+canvas {
+  transition: all 0.4s ease-in-out;
+}
+

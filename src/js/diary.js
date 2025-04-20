@@ -184,8 +184,8 @@ function showSuccessFeedback(button) {
 }
 
 //chart.js
-// ✅ OLETUS: sinulla on mockdata.json polussa /public/
-// ✅ Chart.js on asennettu ja ladattu
+//  OLETUS: sinulla on mockdata.json polussa /public/
+//  Chart.js on asennettu ja ladattu
 import Chart from 'chart.js/auto';
 
 const modal = document.getElementById('chartModal'); // Modaali-ikkuna, jossa kaaviot näkyvät
@@ -236,6 +236,7 @@ btn30.onclick = () => {
   title.textContent = 'HRV-arvot (viimeiset 30 päivää)';
   drawLineCharts(30);
 };
+
 //Polar-kaavion piirtäminen yhdelle päivälle
 function drawPieChart(day) {
   if (!pieCanvas) return;
@@ -278,6 +279,7 @@ function drawPieChart(day) {
     }
   });
 }
+
 //Viivakaavioiden piirtäminen useammalle päivälle
 function drawLineCharts(days) {
   if (!chartGrid) return;
@@ -304,7 +306,8 @@ function drawLineCharts(days) {
     container.appendChild(canvas);
 
     chartGrid.appendChild(container);
-    new Chart(canvas.getContext('2d'), {
+
+    const chart = new Chart(canvas.getContext('2d'), {
       type: 'line',
       data: {
         labels,
@@ -318,37 +321,40 @@ function drawLineCharts(days) {
           pointRadius: 3,
         }]
       },
-       options: {
-          responsive: true,
-          maintainAspectRatio: false, 
-          plugins: {
-            title: {
-              display: true,
-              text: `${field.label} – Viimeiset ${days} päivää`
-            },
-            legend: {
-              display: true
-            }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false, 
+        plugins: {
+          title: {
+            display: true,
+            text: `${field.label} – Viimeiset ${days} päivää`
           },
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          },
-          animation: {
-           duration: 2000,
-          easing: 'easeOutQuart'
-          },
-          animations: {
-            tension: {
-              duration: 2000,
-              easing: 'linear',
-              from: 1,
-              to: 0,
-              loop: true
-            }
+          legend: {
+            display: true
           }
-        }        
-      });
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+        animation: {
+          duration: 2000,
+          easing: 'easeOutQuart'
+        },
+        animations: {
+          tension: {
+            duration: 2000,
+            easing: 'linear',
+            from: 1,
+            to: 0,
+            loop: true
+          }
+        }
+      }        
     });
-  }        
+
+    // Animaation jatkuva päivitys
+    setInterval(() => chart.update(), 2000);
+  });
+}
