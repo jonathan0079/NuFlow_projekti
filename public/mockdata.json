@@ -1,0 +1,37 @@
+{
+  "results": [
+    { "daily_result": "2025-03-18", "result": { "rmssd": 48, "sdnn": 62, "mean_rr": 860, "bpm": 70, "pns_index": 2.4, "sns_index": 1.1 } },
+    { "daily_result": "2025-03-19", "result": { "rmssd": 50, "sdnn": 63, "mean_rr": 865, "bpm": 68, "pns_index": 2.6, "sns_index": 1.2 } },
+    { "daily_result": "2025-03-20", "result": { "rmssd": 52, "sdnn": 60, "mean_rr": 870, "bpm": 67, "pns_index": 2.7, "sns_index": 1.3 } },
+    { "daily_result": "2025-03-21", "result": { "rmssd": 51, "sdnn": 61, "mean_rr": 875, "bpm": 66, "pns_index": 2.5, "sns_index": 1.2 } },
+    { "daily_result": "2025-03-22", "result": { "rmssd": 49, "sdnn": 59, "mean_rr": 880, "bpm": 68, "pns_index": 2.4, "sns_index": 1.1 } },
+    { "daily_result": "2025-03-23", "result": { "rmssd": 53, "sdnn": 64, "mean_rr": 885, "bpm": 67, "pns_index": 2.7, "sns_index": 1.3 } },
+    { "daily_result": "2025-03-24", "result": { "rmssd": 55, "sdnn": 66, "mean_rr": 890, "bpm": 66, "pns_index": 2.9, "sns_index": 1.2 } },
+    { "daily_result": "2025-03-25", "result": { "rmssd": 54, "sdnn": 65, "mean_rr": 895, "bpm": 65, "pns_index": 2.8, "sns_index": 1.1 } },
+    { "daily_result": "2025-03-26", "result": { "rmssd": 52, "sdnn": 63, "mean_rr": 900, "bpm": 66, "pns_index": 2.7, "sns_index": 1.2 } },
+    { "daily_result": "2025-03-27", "result": { "rmssd": 50, "sdnn": 62, "mean_rr": 905, "bpm": 67, "pns_index": 2.6, "sns_index": 1.3 } },
+    { "daily_result": "2025-03-28", "result": { "rmssd": 48, "sdnn": 60, "mean_rr": 910, "bpm": 68, "pns_index": 2.4, "sns_index": 1.4 } },
+    { "daily_result": "2025-03-29", "result": { "rmssd": 46, "sdnn": 58, "mean_rr": 915, "bpm": 69, "pns_index": 2.3, "sns_index": 1.5 } },
+    { "daily_result": "2025-03-30", "result": { "rmssd": 45, "sdnn": 57, "mean_rr": 920, "bpm": 70, "pns_index": 2.2, "sns_index": 1.6 } },
+    { "daily_result": "2025-03-31", "result": { "rmssd": 47, "sdnn": 59, "mean_rr": 925, "bpm": 69, "pns_index": 2.3, "sns_index": 1.5 } },
+    { "daily_result": "2025-04-01", "result": { "rmssd": 49, "sdnn": 61, "mean_rr": 930, "bpm": 68, "pns_index": 2.5, "sns_index": 1.4 } },
+    { "daily_result": "2025-04-02", "result": { "rmssd": 51, "sdnn": 63, "mean_rr": 935, "bpm": 67, "pns_index": 2.6, "sns_index": 1.3 } },
+    { "daily_result": "2025-04-03", "result": { "rmssd": 53, "sdnn": 65, "mean_rr": 940, "bpm": 66, "pns_index": 2.7, "sns_index": 1.2 } },
+    { "daily_result": "2025-04-04", "result": { "rmssd": 55, "sdnn": 67, "mean_rr": 945, "bpm": 65, "pns_index": 2.8, "sns_index": 1.1 } },
+    { "daily_result": "2025-04-05", "result": { "rmssd": 54, "sdnn": 66, "mean_rr": 950, "bpm": 66, "pns_index": 2.7, "sns_index": 1.2 } },
+    { "daily_result": "2025-04-06", "result": { "rmssd": 52, "sdnn": 64, "mean_rr": 955, "bpm": 67, "pns_index": 2.6, "sns_index": 1.3 } },
+    { "daily_result": "2025-04-07", "result": { "rmssd": 50, "sdnn": 62, "mean_rr": 960, "bpm": 68, "pns_index": 2.5, "sns_index": 1.4 } },
+    { "daily_result": "2025-04-08", "result": { "rmssd": 48, "sdnn": 60, "mean_rr": 965, "bpm": 69, "pns_index": 2.4, "sns_index": 1.5 } },
+    { "daily_result": "2025-04-09", "result": { "rmssd": 46, "sdnn": 58, "mean_rr": 970, "bpm": 70, "pns_index": 2.3, "sns_index": 1.6 } },
+    { "daily_result": "2025-04-10", "result": { "rmssd": 47, "sdnn": 59, "mean_rr": 975, "bpm": 71, "pns_index": 2.4, "sns_index": 1.7 } },
+    { "daily_result": "2025-04-11", "result": { "rmssd": 48, "sdnn": 60, "mean_rr": 980, "bpm": 72, "pns_index": 2.5, "sns_index": 1.6 } },
+    { "daily_result": "2025-04-12", "result": { "rmssd": 49, "sdnn": 61, "mean_rr": 985, "bpm": 71, "pns_index": 2.6, "sns_index": 1.5 } },
+    { "daily_result": "2025-04-13", "result": { "rmssd": 50, "sdnn": 62, "mean_rr": 990, "bpm": 70, "pns_index": 2.7, "sns_index": 1.4 } },
+    { "daily_result": "2025-04-14", "result": { "rmssd": 52, "sdnn": 64, "mean_rr": 995, "bpm": 69, "pns_index": 2.8, "sns_index": 1.3 } },
+    { "daily_result": "2025-04-15", "result": { "rmssd": 53, "sdnn": 65, "mean_rr": 1000, "bpm": 68, "pns_index": 2.9, "sns_index": 1.2 } },
+    { "daily_result": "2025-04-16", "result": { "rmssd": 54, "sdnn": 66, "mean_rr": 1005, "bpm": 67, "pns_index": 3.0, "sns_index": 1.1 } },
+    { "daily_result": "2025-04-17", "result": { "rmssd": 55, "sdnn": 67, "mean_rr": 1010, "bpm": 66, "pns_index": 3.1, "sns_index": 1.0 } }
+  ]
+}
+
+  
