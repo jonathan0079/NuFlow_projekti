@@ -186,7 +186,7 @@ function showSuccessFeedback(button) {
 //chart.js
 //  OLETUS: sinulla on mockdata.json polussa /public/
 //  Chart.js on asennettu ja ladattu
-import Chart from 'chart.js/auto';
+import Chart from 'chart.js/auto'; // Ladataan Chart.js
 
 const modal = document.getElementById('chartModal'); // Modaali-ikkuna, jossa kaaviot näkyvät
 const btnOpen = document.getElementById('openChartBtn'); // Nappi: Näytä HRV-kaaviot
@@ -210,6 +210,14 @@ btnOpen.onclick = async () => {
     const res = await fetch('/mockdata.json'); // Haetaan tiedot mockdata.json-tiedostosta
     const data = await res.json(); // Muutetaan JSONiksi
     rawData = data.results;
+     // Käytetään backendin dataa, jos se on saatavilla
+    //const res = await fetch('http://localhost:3000/api/kubios/user-data', {
+    // headers: {
+    //   Authorization: `Bearer ${localStorage.getItem('token')}`
+      //}
+    //});
+    //const data = await res.json();
+    //rawData = data.results;
     const latest = rawData[rawData.length - 1]; // Otetaan uusin päivä
     drawPieChart(latest); // Piirretään polar-kaavio
   } catch (err) {
@@ -306,7 +314,6 @@ function drawLineCharts(days) {
     container.appendChild(canvas);
 
     chartGrid.appendChild(container);
-
     const chart = new Chart(canvas.getContext('2d'), {
       type: 'line',
       data: {
