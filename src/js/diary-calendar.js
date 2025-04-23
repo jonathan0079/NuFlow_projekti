@@ -19,6 +19,8 @@ function initializeCalendar() {
     calendarContainer.id = 'calendar-container';
     calendarContainer.className = 'calendar-container';
     mainElement.appendChild(calendarContainer);
+    mainElement.insertBefore(calendarContainer, document.getElementById('openDiaryBtn, openChartBtn'));
+
 
     // Lisää kalenterin otsikko (header) ja navigointipainikkeet
     const calendarHeader = document.createElement('div');
