@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeCalendar();
     const today = new Date();
     updateCalendar(today.getFullYear(), today.getMonth());
+    
+    // Haetaan käyttäjän merkinnät heti aluksi
+    fetchUserEntries();
 });
 
 /**
@@ -16,12 +19,6 @@ function initializeCalendar() {
     calendarContainer.id = 'calendar-container';
     calendarContainer.className = 'calendar-container';
     mainElement.appendChild(calendarContainer);
-
-    // Oletetaan, että kalenterissa on seuraavat osat jo olemassa:
-    // - header
-    // - grid
-    // - legend
-    // - notification
 
     // Lisää kalenterin otsikko (header) ja navigointipainikkeet
     const calendarHeader = document.createElement('div');
@@ -135,11 +132,16 @@ function updateCalendar(year, month) {
         day.textContent = '';
         day.style.backgroundColor = '';
         day.classList.remove('current-month', 'today', 'selected');
+        day.removeAttribute('data-date'); // Poista vanha päivämäärä
+        day.removeAttribute('data-entries'); // Poista vanhat merkinnät
+        
+        // Poista kaikki aiemmat lapsielementit
         while (day.firstChild) {
             day.removeChild(day.firstChild);
         }
     });
 
+    // Määritä ensimmäisen päivän indeksi (0 = maanantai, 6 = sunnuntai)
     let firstDayIndex = firstDay.getDay() - 1;
     if (firstDayIndex < 0) firstDayIndex = 6;
 
@@ -150,12 +152,14 @@ function updateCalendar(year, month) {
         const dayElement = dayElements[firstDayIndex + i];
         const dayNumber = i + 1;
 
+        // Lisää päivän numero
         const dayNumberSpan = document.createElement('span');
         dayNumberSpan.textContent = dayNumber;
         dayElement.appendChild(dayNumberSpan);
 
         dayElement.classList.add('current-month');
 
+        // Muotoile päivämäärä muotoon YYYY-MM-DD
         const monthStr = (month + 1).toString().padStart(2, '0');
         const dayStr = dayNumber.toString().padStart(2, '0');
         const dateStr = `${year}-${monthStr}-${dayStr}`;
@@ -165,12 +169,138 @@ function updateCalendar(year, month) {
             dayElement.classList.add('today');
         }
 
+        // Lisää merkintäindikaattorit, jos kyseisellä päivällä on merkintöjä
+        if (window.userEntries) {
+            const dayEntries = window.userEntries.filter(entry => entry.entry_date === dateStr);
+            
+            if (dayEntries.length > 0) {
+                // Tallenna merkinnät data-attribuuttiin
+                dayElement.dataset.entries = JSON.stringify(dayEntries);
+                
+                // Lisää merkintäindikaattorit
+                const indicatorsContainer = document.createElement('div');
+                indicatorsContainer.style.display = 'flex';
+                indicatorsContainer.style.justifyContent = 'center';
+                indicatorsContainer.style.gap = '2px';
+                indicatorsContainer.style.marginTop = '2px';
+                
+                // Tarkista onko aamumerkintä
+                if (dayEntries.some(entry => entry.time_of_day === 'morning')) {
+                    const morningDot = document.createElement('span');
+                    morningDot.classList.add('morning-indicator');
+                    morningDot.style.width = '5px';
+                    morningDot.style.height = '5px';
+                    morningDot.style.borderRadius = '50%';
+                    morningDot.style.display = 'inline-block';
+                    indicatorsContainer.appendChild(morningDot);
+                }
+                
+                // Tarkista onko iltamerkintä
+                if (dayEntries.some(entry => entry.time_of_day === 'evening')) {
+                    const eveningDot = document.createElement('span');
+                    eveningDot.classList.add('evening-indicator');
+                    eveningDot.style.width = '5px';
+                    eveningDot.style.height = '5px';
+                    eveningDot.style.borderRadius = '50%';
+                    eveningDot.style.display = 'inline-block';
+                    indicatorsContainer.appendChild(eveningDot);
+                }
+                
+                dayElement.appendChild(indicatorsContainer);
+            }
+        }
+
+        // Lisää tapahtumakäsittelijä päivälle
         dayElement.addEventListener('click', function() {
             selectDate(this);
         });
     }
+}
 
-    fetchUserEntries();
+/**
+ * Hakee käyttäjän merkinnät palvelimelta
+ */
+async function fetchUserEntries() {
+    try {
+        // Haetaan kirjautuneen käyttäjän tiedot
+        const userData = localStorage.getItem('user');
+        if (!userData) {
+            console.error('Käyttäjätietoja ei löydy');
+            return;
+        }
+        
+        const user = JSON.parse(userData);
+        const token = user.token;
+        
+        if (!token) {
+            console.error('Token puuttuu käyttäjätiedoista');
+            return;
+        }
+        
+        // Haetaan käyttäjän merkinnät
+        const response = await fetch('http://localhost:5000/api/entries/user/' + user.userId, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('Merkintöjen haku epäonnistui: ' + response.status);
+        }
+        
+        const entries = await response.json();
+        console.log('Käyttäjän merkinnät haettu:', entries);
+        
+        // Tallennetaan merkinnät globaaliin muuttujaan, jotta ne ovat saatavilla kalenterille
+        window.userEntries = entries;
+        
+        // Päivitä kalenteri näyttämään merkinnät
+        const [year, month] = getCurrentYearMonth();
+        updateCalendar(year, month);
+        
+    } catch (error) {
+        console.error('Virhe merkintöjen haussa:', error);
+        document.getElementById('calendar-notification').textContent = 'Merkintöjen haku epäonnistui';
+    }
+}
+
+/**
+ * Käsittelee päivämäärän valinnan kalenterissa
+ * @param {HTMLElement} dayElement - Valittu päiväelementti
+ */
+function selectDate(dayElement) {
+    // Poista aiempi valinta
+    document.querySelectorAll('.calendar-day.selected').forEach(day => {
+        day.classList.remove('selected');
+    });
+    
+    // Merkitse uusi valinta
+    dayElement.classList.add('selected');
+    
+    // Hae valitun päivän päivämäärä
+    const selectedDate = dayElement.dataset.date;
+    if (!selectedDate) return;
+    
+    // Näytä merkinnän tiedot lomakkeessa
+    const entriesData = dayElement.dataset.entries;
+    const entries = entriesData ? JSON.parse(entriesData) : [];
+    
+    // Lähetä päivämäärän valinnan tapahtuma
+    const dateChangedEvent = new CustomEvent('selectedDateChanged', {
+        detail: {
+            date: selectedDate,
+            entries: entries
+        }
+    });
+    window.dispatchEvent(dateChangedEvent);
+    
+    // Päivitä ilmoitusalue
+    const notification = document.getElementById('calendar-notification');
+    if (entries.length > 0) {
+        notification.textContent = `${entries.length} merkintää päivälle ${selectedDate}`;
+    } else {
+        notification.textContent = `Ei merkintöjä päivälle ${selectedDate}`;
+    }
 }
 
 /**
