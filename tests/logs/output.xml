@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.2.2 (Python 3.13.1 on win32)" generated="2025-04-07T10:28:20.955590" rpa="false" schemaversion="5">
+<suite id="s1" name="Logintest" source="C:\Users\attek\NuFlow\NuFlow_projekti\logintest.robot">
+<test id="s1-t1" name="Test Login Flow" line="12">
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-04-07T10:28:21.454782" level="INFO">${Username} = attek</msg>
+<var>${Username}</var>
+<arg>%{USERNAME}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-04-07T10:28:21.452931" elapsed="0.001958"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-04-07T10:28:21.456842" level="FAIL">Environment variable '%{PASSWORD}' not found.</msg>
+<var>${Password}</var>
+<arg>%{PASSWORD}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="FAIL" start="2025-04-07T10:28:21.455578" elapsed="0.001417">Environment variable '%{PASSWORD}' not found.</status>
+</kw>
+<kw name="New Browser" owner="Browser">
+<arg>chromium</arg>
+<arg>headless=No</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Create a new playwright Browser with specified options.</doc>
+<status status="NOT RUN" start="2025-04-07T10:28:21.457628" elapsed="0.000286"/>
+</kw>
+<kw name="New Page" owner="Browser">
+<arg>${URL}</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Open a new Page.</doc>
+<status status="NOT RUN" start="2025-04-07T10:28:21.458353" elapsed="0.000236"/>
+</kw>
+<kw name="Click" owner="Browser">
+<arg>id=login-button</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="NOT RUN" start="2025-04-07T10:28:21.459000" elapsed="0.000424"/>
+</kw>
+<kw name="Fill Text" owner="Browser">
+<arg>id=login-username</arg>
+<arg>${username}</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Clears and fills the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="NOT RUN" start="2025-04-07T10:28:21.460696" elapsed="0.000379"/>
+</kw>
+<kw name="Fill Text" owner="Browser">
+<arg>id=login-password</arg>
+<arg>${password}</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Clears and fills the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="NOT RUN" start="2025-04-07T10:28:21.461649" elapsed="0.000392"/>
+</kw>
+<kw name="Click" owner="Browser">
+<arg>css=form#login-form button[type="submit"]</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="NOT RUN" start="2025-04-07T10:28:21.465164" elapsed="0.000431"/>
+</kw>
+<msg time="2025-04-07T10:28:21.520443" level="INFO">Starting Browser process C:\Users\attek\AppData\Roaming\Python\Python313\site-packages\Browser\wrapper\index.js using port 62541</msg>
+<msg time="2025-04-07T10:28:21.520667" level="INFO">Node startup parameters: ['node', 'C:\\Users\\attek\\AppData\\Roaming\\Python\\Python313\\site-packages\\Browser\\wrapper\\index.js', '62541']</msg>
+<status status="FAIL" start="2025-04-07T10:28:21.450203" elapsed="0.016085">Environment variable '%{PASSWORD}' not found.</status>
+</test>
+<status status="FAIL" start="2025-04-07T10:28:20.959123" elapsed="2.959008"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Logintest" id="s1" pass="0" fail="1" skip="0">Logintest</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2025-04-07T10:28:21.441312" level="ERROR">Error in file 'C:\Users\attek\NuFlow\NuFlow_projekti\logintest.robot' on line 5: Importing library 'dotenv' failed: ModuleNotFoundError: No module named 'dotenv'
+Traceback (most recent call last):
+  None
+PYTHONPATH:
+  C:\Users\attek\NuFlow\NuFlow_projekti
+  C:\Python313\python313.zip
+  C:\Python313\DLLs
+  C:\Python313\Lib
+  C:\Python313
+  C:\Users\attek\AppData\Roaming\Python\Python313\site-packages
+  C:\Python313\Lib\site-packages</msg>
+<msg time="2025-04-07T10:28:21.445076" level="ERROR">Error in file 'C:\Users\attek\NuFlow\NuFlow_projekti\logintest.robot' on line 6: Resource file 'Keywords.robot' does not exist.</msg>
+<msg time="2025-04-07T10:28:21.446839" level="ERROR">Error in file 'C:\Users\attek\NuFlow\NuFlow_projekti\logintest.robot' on line 8: Variable file 'load_env.py' does not exist.</msg>
+</errors>
+</robot>
