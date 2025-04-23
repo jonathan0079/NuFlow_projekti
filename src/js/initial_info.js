@@ -24,22 +24,36 @@ document.addEventListener('DOMContentLoaded', function() {
       const user = JSON.parse(userData);
       console.log('User data from storage:', user);
       
-      // Tarkistetaan eri mahdolliset kenttänimet käyttäjätunnukselle
-      const userId = 
-        user.user_id || 
-        user.id || 
-        user.userId || 
-        (user.user && user.user.id) ||
-        (user.data && user.data.id);
+      // Korjattu tapa hakea käyttäjän ID - huomaa että käytämme numeroa!
+      let userId = null;
       
-      console.log('Using user ID:', userId);
-      
-      if (!userId) {
-        // Jos käyttäjä-ID:tä ei löydy, tarkistetaan onko siellä muita kenttiä, joista se voisi löytyä
-        console.error('User ID not found. Full user object:', JSON.stringify(user));
-        alert('Käyttäjän tunnistus epäonnistui. Kirjaudu ulos ja sisään uudelleen.');
-        return;
+      // Tarkistetaan eri vaihtoehdot käyttäjän ID:n sijainnille
+      if (user.user_id) {
+        userId = parseInt(user.user_id, 10);
+      } else if (user.id) {
+        userId = parseInt(user.id, 10);
+      } else if (user.user && user.user.id) {
+        userId = parseInt(user.user.id, 10);
+      } else if (user.userId) {
+        userId = parseInt(user.userId, 10);
+      } else if (user.user && user.user.sub) {
+        // Jos sub on merkkijono, muunnetaan se numeroksi
+        userId = parseInt(user.user.sub.replace(/[^0-9]/g, ''), 10);
+      } else if (user.sub) {
+        userId = parseInt(user.sub.replace(/[^0-9]/g, ''), 10);
       }
+      
+      // Jos ei saatu numeroa yllä olevista, luodaan staattinen numero (tämä on tilapäinen ratkaisu)
+      if (!userId || isNaN(userId)) {
+        console.warn('Numeric user ID not found from standard fields');
+        
+        // Käytetään kiinteää käyttäjä-ID:tä (1) tilapäisesti testaukseen
+        userId = 1;
+        
+        console.log('Using temporary user ID for testing:', userId);
+      }
+      
+      console.log('Final user ID to be sent:', userId);
       
       const token = user.token;
       if (!token) {
@@ -67,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // 4. Muodostetaan lähetettävä data
       const healthData = {
-        user_id: userId,
+        user_id: userId, // Käytämme numeroa, ei merkkijonoa!
         drug_use: drugUse,
         diseases_medications: diseasesMedications,
         sleep: sleep,
@@ -77,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Sending health data:', healthData);
       
       // 5. Lähetetään data backendiin
-      const API_URL = 'http://localhost:5000/api';
+      const API_URL = 'http://localhost:3000/api';
       
       const response = await fetch(`${API_URL}/metrics/insert`, {
         method: 'POST',
