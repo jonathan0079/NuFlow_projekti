@@ -192,12 +192,12 @@ async function fetchAndDisplayHrvData(token) {
       const hrv = data.results[0];  // Oletetaan, että aina tulee vain yksi tulos kyseiseltä päivältä
   
       // Asetetaan arvot HTML:ään
-      setText('hrv-syke', hrv.heart_rate);
-      setText('hrv-rmssd', hrv.rmssd);
-      setText('hrv-meanrr', hrv.mean_rr);
-      setText('hrv-sdnn', hrv.sdnn);
-      setText('hrv-pns', hrv.pns_index);
-      setText('hrv-sns', hrv.sns_index);
+      setText('hrv-syke', Number(hrv.heart_rate).toFixed(2));
+      setText('hrv-rmssd', Number(hrv.rmssd).toFixed(2));
+      setText('hrv-meanrr', Number(hrv.mean_rr).toFixed(2));
+      setText('hrv-sdnn', Number(hrv.sdnn).toFixed(2));
+      setText('hrv-pns', Number(hrv.pns_index).toFixed(2));
+      setText('hrv-sns', Number(hrv.sns_index).toFixed(2));
   
     } catch (err) {
       console.error('[HRV VIRHE]', err.message); // Virhe yhteydessä

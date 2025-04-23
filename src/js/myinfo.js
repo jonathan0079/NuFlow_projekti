@@ -17,6 +17,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const user = JSON.parse(userJson);
   console.log('User data from localStorage:', user);
   
+  // Täytetään lomakkeen tiedot Kubios-profiilista, jos ne ovat saatavilla
+  populateFormWithKubiosData(user);
+  
+  // Merkitse ei-muokattavat kentät harmaaksi
+  markNonEditableFields();
+  
   // Tarkistetaan onko user_id saatavilla
   // Huom: Tämä voi olla eri nimellä riippuen siitä, miten se on tallennettu kirjautumisen aikana
   const userId = user.user_id || user.id || user.userId;
@@ -38,6 +44,87 @@ document.addEventListener('DOMContentLoaded', function() {
     submitButton.addEventListener('click', handleSubmit);
   }
 });
+
+// Merkitsee ei-muokattavat kentät harmaaksi ja disabloiduiksi
+function markNonEditableFields() {
+  // Lista ei-muokattavista kentistä
+  const nonEditableFields = ['birthday', 'email']; // Syntymäaika & sähköposti
+  
+  nonEditableFields.forEach(fieldId => {
+    const field = document.getElementById(fieldId);
+    if (field) {
+      // Aseta kenttä ei-muokattavaksi
+      field.disabled = true;
+      
+      // Tyylittelyt on nyt siirretty CSS:ään
+    }
+  });
+}
+
+// Täyttää lomakkeen Kubios-profiilin tiedoilla
+function populateFormWithKubiosData(userData) {
+  // Tarkistetaan onko Kubios-profiilin tiedot saatavilla
+  if (userData && userData.user) {
+    const kubiosUser = userData.user;
+    console.log('Kubios user data:', kubiosUser);
+    
+    // Täytetään perustiedot, jos ne löytyvät
+    const firstNameField = document.getElementById('first_name');
+    const lastNameField = document.getElementById('last_name');
+    const birthdayField = document.getElementById('birthday');
+    const heightField = document.getElementById('height');
+    const weightField = document.getElementById('weight');
+    const genderField = document.getElementById('gender');
+    const emailField = document.getElementById('email'); // Lisätty sähköposti
+    
+    // Etunimi
+    if (kubiosUser.given_name && firstNameField) {
+      firstNameField.value = kubiosUser.given_name;
+    }
+    
+    // Sukunimi
+    if (kubiosUser.family_name && lastNameField) {
+      lastNameField.value = kubiosUser.family_name;
+    }
+    
+    // Syntymäaika - muotoillaan ISO-muodosta suomalaiseen muotoon (YYYY-MM-DD)
+    if (kubiosUser.birthdate && birthdayField) {
+      // Oletetaan, että syntymäaika on muodossa "YYYY-MM-DD" tai vastaava
+      birthdayField.value = kubiosUser.birthdate;
+    }
+    
+    // Sähköposti
+    if (kubiosUser.email && emailField) {
+      emailField.value = kubiosUser.email;
+    }
+    
+    // Pituus (senttimetreinä)
+    if (kubiosUser.height && heightField) {
+      // Kubios tallentaa pituuden metreinä, muunnetaan senttimetreiksi
+      const heightInCm = Math.round(kubiosUser.height * 100);
+      heightField.value = heightInCm;
+    }
+    
+    // Paino (kiloina)
+    if (kubiosUser.weight && weightField) {
+      weightField.value = kubiosUser.weight;
+    }
+    
+    // Sukupuoli
+    if (kubiosUser.gender && genderField) {
+      // Muunnetaan englanniksi, jos tarpeen
+      let finnishGender = kubiosUser.gender;
+      if (kubiosUser.gender === 'male') {
+        finnishGender = 'mies';
+      } else if (kubiosUser.gender === 'female') {
+        finnishGender = 'nainen';
+      } else if (kubiosUser.gender === 'other') {
+        finnishGender = 'muu';
+      }
+      genderField.value = finnishGender;
+    }
+  }
+}
 
 // Hakee käyttäjän terveysmetriikat API:sta
 async function fetchHealthMetrics(userId) {
@@ -218,11 +305,84 @@ async function handleSubmit(event) {
       }
     }
     
+    // Päivitetään Kubios-profiilia
+    await updateKubiosProfile();
+    
     // Päivitetään näkymä
     fetchHealthMetrics(userId);
   } catch (error) {
     console.error('Error submitting form:', error);
     showMessage('Virhe lomakkeen lähetyksessä', 'error');
+  }
+}
+
+// Päivittää Kubios-profiilin tiedot jos ne ovat muuttuneet
+async function updateKubiosProfile() {
+  try {
+    const userJson = localStorage.getItem('user');
+    if (!userJson) return;
+    
+    const user = JSON.parse(userJson);
+    if (!user.token) return;
+    
+    // Kerätään lomakkeen tiedot
+    const given_name = document.getElementById('first_name').value;
+    const family_name = document.getElementById('last_name').value;
+    const height = parseFloat(document.getElementById('height').value) / 100; // Muunna cm → m
+    const weight = parseFloat(document.getElementById('weight').value);
+    
+    // Sukupuoli (muunna englanniksi jos tarpeen)
+    let gender = document.getElementById('gender').value.toLowerCase();
+    if (gender === 'mies') gender = 'male';
+    else if (gender === 'nainen') gender = 'female';
+    else if (gender === 'muu') gender = 'other';
+    
+    // Nykyinen käyttäjä Kubioksessa
+    const kubiosUser = user.user || {};
+    
+    // Tarkista, onko tietoja muutettu
+    const updateData = {};
+    if (given_name && given_name !== kubiosUser.given_name) updateData.given_name = given_name;
+    if (family_name && family_name !== kubiosUser.family_name) updateData.family_name = family_name;
+    if (height && height !== kubiosUser.height) updateData.height = height;
+    if (weight && weight !== kubiosUser.weight) updateData.weight = weight;
+    if (gender && gender !== kubiosUser.gender) updateData.gender = gender;
+    
+    // Vain jos on päivitettävää, lähetetään pyyntö
+    if (Object.keys(updateData).length > 0) {
+      console.log('Updating Kubios profile:', updateData);
+      
+      // Käytä uutta userinfo-endpointia
+      const response = await fetch(`${API_URL}/kubios/userinfo`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: JSON.stringify(updateData)
+      });
+      
+      if (response.ok) {
+        console.log('Kubios profile updated successfully');
+        
+        // Päivitä käyttäjän tiedot localStoragessa
+        const updatedUser = { ...user };
+        if (updatedUser.user) {
+          updatedUser.user = { ...updatedUser.user, ...updateData };
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+        }
+        
+        showMessage('Profiili päivitetty onnistuneesti!', 'success');
+      } else {
+        console.error('Failed to update Kubios profile:', response.status);
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Error details:', errorData);
+        showMessage('Profiilin päivitys epäonnistui', 'error');
+      }
+    }
+  } catch (error) {
+    console.error('Error updating Kubios profile:', error);
+    showMessage('Virhe profiilin päivityksessä', 'error');
   }
 }
 
