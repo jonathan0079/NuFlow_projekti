@@ -4,37 +4,34 @@
     <title>NuFlow</title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
-    <link rel="stylesheet" href="/src/css/snackbar.css">
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/index.css">
 </head>
 <body>
-    <div id="modal-overlay"></div>
-    <nav>
-        <div class="otsikko">NuFlow</div>
-        <ul>
-            <li><a href="/index.html">Etusivu</a></li>
-           <!-- <li class="auth-link"><a href="src/pages/myinfo.html">Omat tietoni</a></li> -->
-            <li><a href="/myinfo.html">Omat tiedot</a></li>
-            <!--<li class="auth-link"><a href="src/pages/diary.html">Päiväkirja</a></li>-->
-            <li><a href="/diary.html">Päiväkirja</a></li>          
-          </li>
-          <li>
-            <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
-              <span id="user-greeting">Hei, käyttäjä!</span>
-          </li>
-            <div class="auth-container">
-                <button id="login-button" class="login-button">Kirjaudu sisään</button>
-                <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
-                </div>
-            </div>
-            <li class="settings-link">
-              <a href="settings.html">
-                <img src="/src/img/settings.png" alt="Settings" width="20" height="20">
-            </a>  
-            </li>
-        </ul>   
-        </nav>
+      <nav>
+      <div id="modal-overlay"></div>
+      <div class="otsikko">NuFlow</div>
+    
+      <ul>
+        <li><a href="/index.html">Etusivu</a></li>
+        <li><a href="/myinfo.html">Omat tiedot</a></li>
+        <li><a href="/diary.html">Päiväkirja</a></li>
+      </ul>
+    
+      <div class="auth-container">
+        <button id="login-button" class="login-button">Kirjaudu sisään</button>
+        <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+    
+        <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+          <span id="user-greeting">Hei, Käyttäjä!</span>
+        </div>
+
+    
+        <a href="settings.html" class="settings-link">
+          <img src="/src/img/settings.png" alt="Asetukset" width="20" height="20">
+        </a>
+      </div>
+    </nav> 
     <main>
         <div class="hero-text">
             <div class="hero-container">
@@ -64,9 +61,10 @@
         <p id="login-error" class="login-error"></p>
         <button type="submit" class="form-button">Kirjaudu sisään</button>
       </form>
+      <div id="loginResponse"></div>
     </div>
   </div>
-    <script type="module" src="/src/js/auth.js"></script>
+  <footer>NuFlow © 2025</footer>
+  <script type="module" src="/src/js/auth.js"></script>
 </body>
-<footer>NuFlow © 2025</footer>
 </html>

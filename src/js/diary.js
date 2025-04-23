@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initDiary(token) {
   const diaryForm = document.getElementById('diaryForm'); // Lomake-elementti
   const submitButton = document.querySelector('#submit-button'); // Tallennusnappi
-  const API_URL = 'http://localhost:5000/api/entries/insert'; // Backend-osoite merkintöjen lisäykseen
+  const API_URL = 'http://localhost:3000/api/entries/insert'; // Backend-osoite merkintöjen lisäykseen
 
   fetchAndDisplayHrvData(token); // Ladataan HRV-arvot automaattisesti heti sivun alussa
 
@@ -73,16 +73,32 @@ function initDiary(token) {
       const result = await response.json(); // Luetaan palvelimen vastaus
 
       // ⚠️ Jos palvelin ei vastannut OK
+      const saveContainer = document.getElementById('saveMessageContainer');
+      const saveResponse = document.getElementById('saveResponse');
+      
       if (!response.ok) {
-        alert("Tallennus epäonnistui: " + (result.message || "Tuntematon virhe"));
+        saveResponse.textContent = 'Tallennus epäonnistui: ' + (result.message || 'Tuntematon virhe');
+        saveContainer.className = 'error show'; // Näytetään punainen laatikko
         console.error("Palvelimen vastaus:", result);
+      
+        setTimeout(() => {
+          saveContainer.className = ''; // Piilotetaan laatikko
+          saveResponse.textContent = '';
+        }, 3000);
+      
       } else {
-        //  Onnistunut tallennus
-        alert("Päiväkirjamerkintä tallennettu!");
-        diaryForm.reset(); // Tyhjennetään lomake
-        resetHrvDisplay(); // Nollataan HRV-näyttö
-        fetchAndDisplayHrvData(token); // Ladataan HRV-arvot uudelleen
-        showSuccessFeedback(submitButton); // Näytetään vihreä palaute napissa
+        saveResponse.textContent = 'Päiväkirjamerkintä tallennettu!';
+        saveContainer.className = 'success show'; // Näytetään vihreä laatikko
+      
+        diaryForm.reset();
+        resetHrvDisplay();
+        fetchAndDisplayHrvData(token);
+        showSuccessFeedback(submitButton);
+      
+        setTimeout(() => {
+          saveContainer.className = ''; // Piilotetaan laatikko
+          saveResponse.textContent = '';
+        }, 3000);
       }
 
     } catch (error) {
@@ -101,7 +117,7 @@ async function fetchAndDisplayHrvData(token) {
     console.log("📡 Haetaan HRV päivälle:", staticDate);
   
     try {
-      const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${staticDate}`, {
+      const response = await fetch(`http://localhost:3000/api/kubios/hrv/by-date/${staticDate}`, {
         headers: {
           'Authorization': `Bearer ${token}` // Käyttäjän token mukaan
         }
@@ -126,19 +142,18 @@ async function fetchAndDisplayHrvData(token) {
       const hrv = data.results[0];  // Oletetaan, että aina tulee vain yksi tulos kyseiseltä päivältä
   
       // Asetetaan arvot HTML:ään
-      setText('hrv-syke', hrv.heart_rate);
-      setText('hrv-rmssd', hrv.rmssd);
-      setText('hrv-meanrr', hrv.mean_rr);
-      setText('hrv-sdnn', hrv.sdnn);
-      setText('hrv-pns', hrv.pns_index);
-      setText('hrv-sns', hrv.sns_index);
+      setText('hrv-syke', Number(hrv.heart_rate).toFixed(2));
+      setText('hrv-rmssd', Number(hrv.rmssd).toFixed(2));
+      setText('hrv-meanrr', Number(hrv.mean_rr).toFixed(2));
+      setText('hrv-sdnn', Number(hrv.sdnn).toFixed(2));
+      setText('hrv-pns', Number(hrv.pns_index).toFixed(2));
+      setText('hrv-sns', Number(hrv.sns_index).toFixed(2));
   
     } catch (err) {
       console.error('[HRV VIRHE]', err.message); // Virhe yhteydessä
     }
 }
 
-  
 //  Asettaa tekstin tiettyyn elementtiin id:n perusteella
 function setText(id, value) {
   const el = document.getElementById(id);
@@ -186,9 +201,9 @@ function updateThumbColor(slider) {
     if (value === 1) {
       color = "red";
     } else if (value === 2) {
-      color = "orange";
+      color = "coral";
     } else if (value === 3) {
-      color = "yellow";
+      color = "orange";
     } else if (value === 4) {
       color = "lightgreen";
     } else if (value === 5) {
@@ -207,3 +222,4 @@ sliders.forEach(slider => {
   slider.addEventListener("input", () => updateThumbColor(slider));
   updateThumbColor(slider); // Aseta väri heti myös alussa
 });
+

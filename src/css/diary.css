@@ -27,7 +27,7 @@ h2 {
   
   .time-options label {
     display: flex;
-    align-items: right;
+    align-items: center;
     gap: 5px;
   }  
 
@@ -171,4 +171,181 @@ input, textarea {
 }
 #submit-button:hover {
     background-color: #528777;
+}
+#saveMessageContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  padding: 12px;
+  text-align: center;
+  font-size: 1.1em;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Näkyvä tila */
+#saveMessageContainer.show {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.5s ease, visibility 0s;
+}
+
+#saveMessageContainer.success {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+#saveMessageContainer.error {
+  background-color: #f44336;
+  color: white;
+  font-weight: bold;
+}
+/* UUDET KALENTERITYYLIT - TÄYSIN ERILLISET ALKUPERÄISISTÄ TYYLEISTÄ */
+
+/* Main-elementin asettelu jotta lomake ja kalenteri ovat vierekkäin */
+main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Otsikko vie koko leveyden */
+main > h1 {
+  width: 100%;
+  flex-basis: 100%;
+}
+
+/* Lomakkeen tyylit muutetaan vastaamaan flex-asettelua, mutta lomakkeen sisältö pysyy samana */
+main > form {
+  flex: 0 1 650px; /* Sama maksimileveys kuin alkuperäisellä */
+  margin: 0;       /* Ei enää auto-marginaalia, jotta se ei keskittyisi */
+}
+
+/* Kalenterin tyylit */
+.calendar-container {
+  flex: 0 0 350px;    /* Kiinteä leveys, ei kutistumista */
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  align-self: flex-start; /* Kalenteri pysyy ylhäällä */
+}
+
+/* Kalenterin ylätunniste */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.calendar-header h2 {
+  color: #477668;
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.month-nav-button {
+  background-color: #477668;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.month-nav-button:hover {
+  background-color: #528777;
+}
+
+/* Kalenterin ruudukko */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+/* Viikonpäivien otsikot */
+.calendar-day-header {
+  text-align: center;
+  font-weight: bold;
+  padding: 8px 0;
+  color: #555;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+/* Kalenterin päivät */
+.calendar-day {
+  height: 30px;
+  text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.9rem;
+}
+
+.calendar-day:hover {
+  background-color: #f0f0f0;
+}
+
+.calendar-day.today {
+  background-color: #e8f5e9;
+  font-weight: bold;
+}
+
+.calendar-day.selected {
+  background-color: #b3e5fc;
+}
+
+/* Kalenterin selitteet */
+.calendar-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  font-size: 0.85rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.morning-indicator {
+  background-color: #F9A825; /* Keltainen väri aamulle */
+}
+
+.evening-indicator {
+  background-color: #7E57C2; /* Violetti väri illalle */
 }

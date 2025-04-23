@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:3000/api';
 
 // Odottaa, että koko sivu on ladattu
 document.addEventListener('DOMContentLoaded', function() {
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const registerError = document.getElementById('register-error');
   const userMenuTrigger = document.getElementById('user-menu-trigger');
   const userMenuContent = document.getElementById('user-menu-content');
-  const logoutButton = document.getElementById('logout-button');
+  const logoutButton = document.getElementById('logoutButton');
   const userGreeting = document.getElementById('user-greeting');
 
  // Tarkistaa käyttäjän kirjautumistilan
@@ -68,9 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     console.warn('Login form not found in the DOM');
   }
-
-// Käsittelee register formia
-
 
 // Käsittelee logout nappia
   if (logoutButton) {
@@ -347,10 +344,17 @@ function checkAuthStatus() {
         console.warn('Diary nav link not found');
       }
     } else {
+
 // Näyttää login napin
       if (loginButton) {
         loginButton.style.display = 'inline-block';
         console.log('Login button displayed');
+      }
+
+// Piilottaa logout napin
+      if (logoutButton) {
+        logoutButton.style.display = 'none';
+        console.log('Logout button hidden');
       }
       
 // Piilottaa käyttäjävalikon
@@ -421,48 +425,6 @@ function getAuthToken() {
 // Tarkistaa onko käyttäjä kirjautunut
 function isAuthenticated() {
   return getAuthToken() !== null;
-}
-
-// Näyttää viestin käyttäjälle (yleinen funktio)
-
-function showMessage(message, type = 'info') {
-// Luo viesti elementin, jos sitä ei ole olemassa
-  let messageElement = document.getElementById('status-message');
-  if (!messageElement) {
-    messageElement = document.createElement('div');
-    messageElement.id = 'status-message';
-    messageElement.style.position = 'fixed';
-    messageElement.style.top = '20px';
-    messageElement.style.right = '20px';
-    messageElement.style.padding = '10px 20px';
-    messageElement.style.borderRadius = '5px';
-    messageElement.style.zIndex = '1000';
-    messageElement.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
-    document.body.appendChild(messageElement);
-  }
-
-// Asettaa viestin sisällön ja tyylin
-  messageElement.textContent = message;
-  
-// Asettaa värin viestin tyypin mukaan
-  if (type === 'error') {
-    messageElement.style.backgroundColor = '#f44336';
-    messageElement.style.color = 'white';
-  } else if (type === 'success') {
-    messageElement.style.backgroundColor = '#4CAF50';
-    messageElement.style.color = 'white';
-  } else {
-    messageElement.style.backgroundColor = '#2196F3';
-    messageElement.style.color = 'white';
-  }
-
-// Näyttää viestin
-  messageElement.style.display = 'block';
-
-// Piilottaa viestin 3 sekunnin kuluttua
-  setTimeout(() => {
-    messageElement.style.display = 'none';
-  }, 3000);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
