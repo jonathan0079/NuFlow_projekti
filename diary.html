@@ -9,32 +9,32 @@
     <link rel="stylesheet" href="/src/css/diary.css">
 </head>
 <body>
-  <nav>
-    <div id="modal-overlay"></div>
-    <div class="otsikko">NuFlow</div>
-  
-    <ul>
-      <li><a href="/index.html">Etusivu</a></li>
-      <li><a href="/myinfo.html">Omat tiedot</a></li>
-      <li><a href="/diary.html">Päiväkirja</a></li>
-    </ul>
-  
-    <div class="auth-container">
-      <button id="login-button" class="login-button">Kirjaudu sisään</button>
-      <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
-  
-      <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
-        <span id="user-greeting">Hei, Elsi!</span>
-      </div>
-  
-      <a href="settings.html" class="settings-link">
-        <img src="/src/img/settings.png" alt="Asetukset" width="20" height="20">
-      </a>
-    </div>
-  </nav> 
+    <nav>
+        <div id="modal-overlay"></div>
+        <div class="otsikko">NuFlow</div>
+        <ul>
+            <li><a href="/index.html">Etusivu</a></li>
+            <!-- <li class="auth-link"><a href="src/pages/myinfo.html">Omat tietoni</a></li> -->
+            <li><a href="/myinfo.html">Omat tiedot</a></li>
+            <!--<li class="auth-link"><a href="src/pages/diary.html">Päiväkirja</a></li>-->
+            <li><a href="/diary.html">Päiväkirja</a></li>
+            <div class="auth-container">
+                <button id="login-button" class="login-button">Kirjaudu sisään</button>
+                <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+
+                <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+                    <span id="user-greeting">Hei, käyttäjä!</span>
+                </div>
+            </div>
+            <li class="settings-link">
+                <a href="settings.html">
+                  <img src="/src/img/settings.png" alt="Settings" width="20" height="20">
+              </a>  
+        </ul>   
+        </nav>
         <main>
             <h1>Päiväkirja</h1>
-              <form id="diaryForm">
+            <form id="diaryForm">
                 <div class="time-selector">
                     <span>Kirjauksen ajankohta:</span>
                     <div class="time-options">
@@ -43,45 +43,35 @@
                     </div>
                   </div>                  
                     <div class="hrv-container">
-                      <h2>HRV arvot</h2>
-                      <div class="hrv-grid">
-                        <div>
-                          <div class="hrv-label tooltip">Syke
-                            <span class="tooltiptext">Sydämen lyöntitiheys (bpm)</span>
+                        <h2>HRV arvot</h2>
+                        <div class="hrv-grid">
+                          <div>
+                            <div class="hrv-label">Syke</div>
+                            <div class="hrv-value" id="hrv-syke">-</div>
                           </div>
-                          <div class="hrv-value" id="hrv-syke">-</div>
-                        </div>
-                        <div>
-                          <div class="hrv-label tooltip">RMSSD
-                            <span class="tooltiptext">Parasympaattista hermostoa mittaava arvo</span>
+                          <div>
+                            <div class="hrv-label">RMSSD</div>
+                            <div class="hrv-value" id="hrv-rmssd">-</div>
                           </div>
-                          <div class="hrv-value" id="hrv-rmssd">-</div>
-                        </div>
-                        <div>
-                          <div class="hrv-label tooltip">Mean RR
-                            <span class="tooltiptext">Keskimääräinen aika lyöntien välillä (ms)</span>
+                          <div>
+                            <div class="hrv-label">Mean RR</div>
+                            <div class="hrv-value" id="hrv-meanrr">-</div>
                           </div>
-                          <div class="hrv-value" id="hrv-meanrr">-</div>
-                        </div>
-                        <div>
-                          <div class="hrv-label tooltip">SDNN
-                            <span class="tooltiptext">Sykevälivaihtelun keskihajonta</span>
+                          <div>
+                            <div class="hrv-label">SDNN</div>
+                            <div class="hrv-value" id="hrv-sdnn">-</div>
                           </div>
-                          <div class="hrv-value" id="hrv-sdnn">-</div>
-                        </div>
-                        <div>
-                          <div class="hrv-label tooltip">PNS indeksi
-                            <span class="tooltiptext">Parasympaattisen hermoston aktiivisuusindeksi</span>
+                          <div>
+                            <div class="hrv-label">PNS indeksi</div>
+                            <div class="hrv-value" id="hrv-pns">-</div>
                           </div>
-                          <div class="hrv-value" id="hrv-pns">-</div>
-                        </div>
-                        <div>
-                          <div class="hrv-label tooltip">SNS indeksi
-                            <span class="tooltiptext">Sympaattisen hermoston aktiivisuusindeksi</span>
+                          <div>
+                            <div class="hrv-label">SNS indeksi</div>
+                            <div class="hrv-value" id="hrv-sns">-</div>
                           </div>
-                          <div class="hrv-value" id="hrv-sns">-</div>
                         </div>
-                      </div>                      
+                      </div>
+                      
                 <h2>Uni</h2>
                 <div class="slidecontainer">
                     <div class="labels">
@@ -109,23 +99,11 @@
                 <textarea placeholder="Tähän voit kirjoittaa muita muistiinpanoja..."></textarea>
                 
                 <button id="submit-button" type="submit">Tallenna</button>
-              </form>
-              <div id="saveMessageContainer">
-                <p id="saveResponse" class="save-message"></p>
-              </div>              
-            <div id="analysisModal" class="modal">
-              <div class="modal-content">
-                <span class="close-button">&times;</span>
-                <h2>HRV-analyysi</h2>
-                <canvas id="weeklyChart"></canvas>
-                <canvas id="monthlyChart"></canvas>
-              </div>
-            </div>          
+            </form>
+
         </body>
       </main>
       <footer>NuFlow © 2025</footer>
       <script type="module" src="/src/js/diary.js"></script>
-      <script type="module" src="/src/js/auth.js"></script>
       <script type="module" src="/src/js/diary-calendar.js"></script>
-
       </html>
