@@ -1,0 +1,117 @@
+.settingsForm {
+    max-width: 400px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+      
+    label {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    color: #070707;
+    margin-bottom: 20px;
+    }
+    
+    input, select {
+    width: 100%;
+    max-width: 600px;
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    }
+    
+    .button-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    }  
+    
+    #save-button{
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #477668;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 20px;
+    }
+    
+    #delete-account{
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #972610;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 20px;
+    
+    }
+    #save-button:hover {
+        background-color: #528777;
+    }
+    #delete-account:hover {
+        background-color: #bd3d3d;
+    }
+      /* Varmistusikkuna */
+      .delete-modal {
+        display: none; /* Aluksi piilotettu */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Taustahämy */
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 300px;
+      }
+      
+      .modal p {
+        font-size: 18px;
+        color: #333;
+      }
+      
+      .danger-button {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin: 5px;
+        font-size: 16px;
+        border-radius: 5px;
+      }
+      
+      .cancel-button {
+        background-color: grey;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin: 5px;
+        font-size: 16px;
+        border-radius: 5px;
+      }
+      
+      .danger-button:hover, .cancel-button:hover {
+        opacity: 0.8;
+      }
+      

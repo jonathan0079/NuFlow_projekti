@@ -19,6 +19,8 @@ function initializeCalendar() {
     calendarContainer.id = 'calendar-container';
     calendarContainer.className = 'calendar-container';
     mainElement.appendChild(calendarContainer);
+    mainElement.insertBefore(calendarContainer, document.getElementById('openDiaryBtn, openChartBtn'));
+
 
     // Lisää kalenterin otsikko (header) ja navigointipainikkeet
     const calendarHeader = document.createElement('div');
@@ -62,37 +64,7 @@ function initializeCalendar() {
 
     calendarContainer.appendChild(calendarGrid);
 
-    // Lisää kalenterin legenda
-    const calendarLegend = document.createElement('div');
-    calendarLegend.classList.add('calendar-legend');
-    
-    const morningLegend = document.createElement('div');
-    morningLegend.classList.add('legend-item');
-    const morningIndicator = document.createElement('span');
-    morningIndicator.classList.add('legend-indicator', 'morning-indicator');
-    morningLegend.appendChild(morningIndicator);
-    morningLegend.appendChild(document.createTextNode('Aamu'));
-
-    const eveningLegend = document.createElement('div');
-    eveningLegend.classList.add('legend-item');
-    const eveningIndicator = document.createElement('span');
-    eveningIndicator.classList.add('legend-indicator', 'evening-indicator');
-    eveningLegend.appendChild(eveningIndicator);
-    eveningLegend.appendChild(document.createTextNode('Ilta'));
-
-    calendarLegend.appendChild(morningLegend);
-    calendarLegend.appendChild(eveningLegend);
-    calendarContainer.appendChild(calendarLegend);
-
-    // Lisää ilmoitusalue
-    const notification = document.createElement('div');
-    notification.id = 'calendar-notification';
-    notification.style.textAlign = 'center';
-    notification.style.marginTop = '10px';
-    notification.style.color = '#666';
-    notification.style.fontSize = '0.9em';
-    calendarContainer.appendChild(notification);
-
+ 
     // Lisää tapahtumakäsittelijät
     prevButton.addEventListener('click', function() {
         const [year, month] = getCurrentYearMonth();
@@ -294,13 +266,6 @@ function selectDate(dayElement) {
     });
     window.dispatchEvent(dateChangedEvent);
     
-    // Päivitä ilmoitusalue
-    const notification = document.getElementById('calendar-notification');
-    if (entries.length > 0) {
-        notification.textContent = `${entries.length} merkintää päivälle ${selectedDate}`;
-    } else {
-        notification.textContent = `Ei merkintöjä päivälle ${selectedDate}`;
-    }
 }
 
 /**

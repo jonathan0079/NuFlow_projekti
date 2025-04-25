@@ -6,46 +6,31 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/initial_info.css">
-    <style>
-      /*tyyli ei-muokattaville kentille*/
-      input:disabled {
-        background-color: #f0f0f0;
-        color: #666666;
-        cursor: not-allowed;
-        border: 1px solid #ddd;
-      }
-      
-      .section-header {
-        margin-top: 25px;
-        margin-bottom: 15px;
-        color: #477668;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 5px;
-      }
-    </style>
 </head>
 <body>
-    <nav>
-      <div id="modal-overlay"></div>
-        <div class="otsikko">NuFlow</div>
-        <ul>
-            <li><a href="/index.html">Etusivu</a></li>
-            <li><a href="/myinfo.html">Omat tiedot</a></li>
-            <li><a href="/diary.html">Päiväkirja</a></li>
-            <li>
-                <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
-                  <span id="user-greeting">Hei, käyttäjä!</span>
-              </li>
-            <div class="auth-container">
-                <button id="login-button" class="login-button">Kirjaudu sisään</button>
-                <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
-            </div>
-            <li class="settings-link">
-              <a href="settings.html">
-                <img src="/src/img/settings.png" alt="Settings" width="20" height="20">
-            </a>  
-        </ul>   
-        </nav>
+  <nav>
+    <div id="modal-overlay"></div>
+    <div class="otsikko">NuFlow</div>
+  
+    <ul>
+      <li><a href="/index.html">Etusivu</a></li>
+      <li><a href="/myinfo.html">Omat tiedot</a></li>
+      <li><a href="/diary.html">Päiväkirja</a></li>
+    </ul>
+  
+    <div class="auth-container">
+      <button id="login-button" class="login-button">Kirjaudu sisään</button>
+      <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+  
+      <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+        <span id="user-greeting">Hei, käyttäjä!</span>
+      </div>
+  
+      <a href="settings.html" class="settings-link">
+        <img src="/src/img/settings.png" alt="Asetukset" width="20" height="20">
+      </a>
+    </div>
+  </nav> 
     <main>
       <h1>Omat tietoni</h1>
       <!--Kubios-->
@@ -88,9 +73,12 @@
         <label for="self_assessment">Tämän hetkinen vointi:</label>
         <input type="text" id="self_assessment" name="self_assessment"/>
     
+    
         <button type="submit" id="submit-button">Tallenna</button>
     </div>
 </main>
 <footer>NuFlow © 2025</footer>
+<script type="module" src="/src/js/auth.js"></script>
 <script type="module" src="/src/js/myinfo.js"></script>
+
 </html>

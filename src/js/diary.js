@@ -78,16 +78,32 @@ function showSuccessFeedback(button) {
       const result = await response.json(); // Luetaan palvelimen vastaus
 
       // ⚠️ Jos palvelin ei vastannut OK
+      const saveContainer = document.getElementById('saveMessageContainer');
+      const saveResponse = document.getElementById('saveResponse');
+      
       if (!response.ok) {
-        alert("Tallennus epäonnistui: " + (result.message || "Tuntematon virhe"));
+        saveResponse.textContent = 'Tallennus epäonnistui: ' + (result.message || 'Tuntematon virhe');
+        saveContainer.className = 'error show'; // Näytetään punainen laatikko
         console.error("Palvelimen vastaus:", result);
+      
+        setTimeout(() => {
+          saveContainer.className = ''; // Piilotetaan laatikko
+          saveResponse.textContent = '';
+        }, 5000);
+      
       } else {
-        //  Onnistunut tallennus
-        alert("Päiväkirjamerkintä tallennettu!");
-        diaryForm.reset(); // Tyhjennetään lomake
-        resetHrvDisplay(); // Nollataan HRV-näyttö
-        fetchAndDisplayHrvData(token); // Ladataan HRV-arvot uudelleen
-        showSuccessFeedback(submitButton); // Näytetään vihreä palaute napissa
+        saveResponse.textContent = 'Päiväkirjamerkintä tallennettu!';
+        saveContainer.className = 'success show'; // Näytetään vihreä laatikko
+      
+        resetDiaryForm();
+        resetHrvDisplay();
+        fetchAndDisplayHrvData(token);
+        showSuccessFeedback(submitButton);
+      
+        setTimeout(() => {
+          saveContainer.className = ''; // Piilotetaan laatikko
+          saveResponse.textContent = '';
+        }, 5000);
       }
 
     } catch (error) {
@@ -192,12 +208,12 @@ async function fetchAndDisplayHrvData(token) {
       const hrv = data.results[0];  // Oletetaan, että aina tulee vain yksi tulos kyseiseltä päivältä
   
       // Asetetaan arvot HTML:ään
-      setText('hrv-syke', Number(hrv.heart_rate).toFixed(2));
-      setText('hrv-rmssd', Number(hrv.rmssd).toFixed(2));
-      setText('hrv-meanrr', Number(hrv.mean_rr).toFixed(2));
-      setText('hrv-sdnn', Number(hrv.sdnn).toFixed(2));
-      setText('hrv-pns', Number(hrv.pns_index).toFixed(2));
-      setText('hrv-sns', Number(hrv.sns_index).toFixed(2));
+      setText('hrv-syke',hrv.heart_rate.toFixed(2));
+      setText('hrv-rmssd', hrv.rmssd.toFixed(2));
+      setText('hrv-meanrr', hrv.mean_rr.toFixed(2));
+      setText('hrv-sdnn', hrv.sdnn.toFixed(2));
+      setText('hrv-pns', hrv.pns_index.toFixed(2));
+      setText('hrv-sns', hrv.sns_index.toFixed(2));
   
     } catch (err) {
       console.error('[HRV VIRHE]', err.message); // Virhe yhteydessä
@@ -235,12 +251,12 @@ async function fetchHrvDataForSelectedDate(token, date) {
     const hrv = data.results[0];
 
     // Asetetaan arvot HTML:ään
-    setText('hrv-syke', hrv.heart_rate);
-    setText('hrv-rmssd', hrv.rmssd);
-    setText('hrv-meanrr', hrv.mean_rr);
-    setText('hrv-sdnn', hrv.sdnn);
-    setText('hrv-pns', hrv.pns_index);
-    setText('hrv-sns', hrv.sns_index);
+    setText('hrv-syke',hrv.heart_rate.toFixed(2));
+    setText('hrv-rmssd', hrv.rmssd.toFixed(2));
+    setText('hrv-meanrr', hrv.mean_rr.toFixed(2));
+    setText('hrv-sdnn', hrv.sdnn.toFixed(2));
+    setText('hrv-pns', hrv.pns_index.toFixed(2));
+    setText('hrv-sns', hrv.sns_index.toFixed(2));
 
   } catch (err) {
     console.error('[HRV VIRHE]', err.message);
@@ -340,6 +356,12 @@ function toggleSubmitButton(button, loading) {
   button.textContent = loading ? 'Tallennetaan...' : 'Tallenna';
 }
 
+// Näyttää vihreän onnistumisefektin napissa
+function showSuccessFeedback(button) {
+  button.classList.add('success');
+  setTimeout(() => button.classList.remove('success'), 2000); // Palauttaa normaaliksi 2s jälkeen
+}
+
 // Päivittää sliderin värin
 function updateThumbColor(slider) {
   const value = parseInt(slider.value, 10);
@@ -350,9 +372,9 @@ function updateThumbColor(slider) {
     if (value === 1) {
       color = "red";
     } else if (value === 2) {
-      color = "orange";
+      color = "coral";
     } else if (value === 3) {
-      color = "yellow";
+      color = "orange";
     } else if (value === 4) {
       color = "lightgreen";
     } else if (value === 5) {
@@ -390,58 +412,49 @@ function autoLoadTodayData() {
 
 // Muokkaa initDiary-funktiota
 function initDiary(token) {
-  // ... (aiempi koodi säilyy ennallaan)
 
   // Lisää tämä rivin loppuun
   autoLoadTodayData();
 }
-
-// Muokkaa fetchAndDisplayHrvData-funktiota
-async function fetchAndDisplayHrvData(token) {
-  const staticDate = new Date().toISOString().split('T')[0]; // Tämän hetkinen päivämäärä
-  console.log("📡 Haetaan HRV päivälle:", staticDate);
-
-  try {
-    const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${staticDate}`, {
-      headers: {
-        'Authorization': `Bearer ${token}` // Käyttäjän token mukaan
-      }
-    });
-
-    // 🔐 Jos käyttäjä ei ole enää kirjautunut
-    if (response.status === 401) {
-      alert("Istunto vanhentunut. Kirjaudu uudelleen.");
-      window.location.href = "/index.html";
-      return;
-    }
-
-    if (!response.ok) {
-      console.warn('[HRV HAKU] status:', response.status); // Muu virhe
-      resetHrvDisplay(); // Nollaa HRV-arvot, jos haku epäonnistuu
-      return;
-    }
-
-    const data = await response.json(); // Luetaan vastaus
-    console.log(data); // Tarkista konsolista, että data on oikein
-
-    // Haetaan 'results' taulukosta ensimmäinen objekti
-    if (data.results && data.results.length > 0) {
-      const hrv = data.results[0];  // Oletetaan, että aina tulee vain yksi tulos kyseiseltä päivältä
-
-      // Asetetaan arvot HTML:ään
-      setText('hrv-syke', hrv.heart_rate);
-      setText('hrv-rmssd', hrv.rmssd);
-      setText('hrv-meanrr', hrv.mean_rr);
-      setText('hrv-sdnn', hrv.sdnn);
-      setText('hrv-pns', hrv.pns_index);
-      setText('hrv-sns', hrv.sns_index);
-    } else {
-      resetHrvDisplay(); // Nollaa arvot, jos dataa ei löydy
-    }
-
-  } catch (err) {
-    console.error('[HRV VIRHE]', err.message); // Virhe yhteydessä
-    resetHrvDisplay(); // Nollaa arvot virhetilanteessa
-  }
 }
-}
+// HRV-kaavio modaali
+const chartModal = document.getElementById('chartModal'); // Modaali-ikkuna, jossa kaaviot näkyvät
+const chartOpen = document.getElementById('openChartBtn'); // Nappi: Näytä HRV-kaaviot
+const chartspan = chartModal.querySelector('.close'); // Sulje-nappi (rasti oikeassa yläkulmassa)
+const btn7 = document.getElementById('btn7days'); // Nappi: Viimeiset 7 päivää
+const btn30 = document.getElementById('btn30days'); // Nappi: Viimeiset 30 päivää
+const pieCanvas = document.getElementById('hrvPieChart'); // Canvas-elementti polar-kaaviolle
+const chartGrid = document.querySelector('.chart-grid'); // Grid, johon viivakaaviot piirretään
+const title = document.querySelector('#chartHeaderTitle'); // Otsikko modalin yläosassa
+
+// Päiväkirja modaali
+const diaryModal = document.getElementById('diaryModal'); // Modaali-ikkuna, jossa kaaviot näkyvät
+const diaryOpen = document.getElementById('openDiaryBtn'); // Nappi: Lisää päiväkirjamerkintä
+const diaryspan = diaryModal.querySelector('.close'); // Sulje-nappi (rasti oikeassa yläkulmassa)
+
+// Avataan HRV-kaavio modal
+chartOpen.onclick = async () => {
+  chartModal.style.display = 'block'; // Näytetään HRV-kaavio modaali
+  title.textContent = 'HRV-arvot (uusin päivä)'; // Päivitetään otsikko
+  pieCanvas.style.display = 'block'; // Näytetään polar-kaavio
+  chartGrid.innerHTML = ''; // Tyhjennetään viivakaaviot
+};
+
+// Suljetaan HRV-kaavio modal
+chartspan.onclick = () => chartModal.style.display = 'none';
+window.onclick = (e) => {
+  if (e.target == chartModal) chartModal.style.display = 'none';
+};
+
+// Avataan päiväkirja modal
+diaryOpen.onclick = () => {
+  diaryModal.style.display = 'block'; // Näytetään päiväkirja modaali
+};
+
+// Suljetaan päiväkirja modal
+diaryspan.onclick = () => diaryModal.style.display = 'none';
+window.onclick = (e) => {
+  if (e.target == diaryModal) diaryModal.style.display = 'none';
+};
+
+
