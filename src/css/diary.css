@@ -363,7 +363,7 @@ background-color: #528777;
 display: grid;
 grid-template-columns: repeat(7, 1fr);
 gap: 5px;
-height:80%;
+height:100%;
 }
 
 /* Viikonpäivien otsikot */
@@ -378,7 +378,7 @@ font-size: 1rem;
 
 /* Kalenterin päivät */
 .calendar-day {
-height: 30px;
+height: 60px;
 text-align: center;
 padding: 5px;
 border-radius: 5px;
