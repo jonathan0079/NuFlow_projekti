@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <title>NuFlow</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/index.css">
+</head>
+<body>
+      <nav>
+      <div id="modal-overlay"></div>
+      <div class="otsikko">NuFlow</div>
+    
+      <ul>
+        <li><a href="/index.html">Etusivu</a></li>
+        <li><a href="/myinfo.html">Omat tiedot</a></li>
+        <li><a href="/diary.html">Päiväkirja</a></li>
+      </ul>
+    
+      <div class="auth-container">
+        <button id="login-button" class="login-button">Kirjaudu sisään</button>
+        <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+    
+        <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+          <span id="user-greeting">Hei, Käyttäjä!</span>
+        </div>
+
+    
+        <a href="settings.html" class="settings-link">
+          <img src="/src/img/settings.png" alt="Asetukset" width="20" height="20">
+        </a>
+      </div>
+    </nav> 
+    <main>
+        <div class="hero-text">
+            <div class="hero-container">
+                <h1>NuFlow – Seuraa ja ymmärrä hyvinvointiasi</h1>
+                <p>NuFlow auttaa sinua seuraamaan päivittäistä hyvinvointiasi helposti ja järjestelmällisesti. Syötä aamulla ja illalla tietosi valmiiseen lomakkeeseen ja saat kattavan kuvan terveydestäsi ajan mittaan.</p>
+                <p>Sovellus kokoaa vastauksistasi viikko- ja kuukausikoosteet, jotka auttavat tunnistamaan muutoksia hyvinvoinnissasi.</p>
+                <p>Jos tuloksissa ilmenee huolestuttavia merkkejä, voit helposti lähettää tietosi suoraan ammattilaisen arvioitavaksi.</p>
+                </div>
+    </main>
+    
+<!-- Kirjautumis- ja rekisteröintimodaali -->
+<div id="login-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close-modal">&times;</span>
+      <h2>Kirjaudu</h2>
+  
+      <!-- Kirjautumislomake -->
+      <form id="login-form" class="modal-form active">
+        <div class="form-group">
+          <label for="login-username">Käyttäjänimi:</label>
+          <input type="text" id="login-username" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Salasana:</label>
+          <input type="password" id="login-password" required>
+        </div>
+        <p id="login-error" class="login-error"></p>
+        <button type="submit" class="form-button">Kirjaudu sisään</button>
+      </form>
+      <div id="loginResponse"></div>
+    </div>
+  </div>
+  <footer>NuFlow © 2025</footer>
+  <script type="module" src="/src/js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <title>NuFlow</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/initial_info.css">
+</head>
+<body>
+    <nav>
+        <div id="modal-overlay"></div>
+        <div class="otsikko">NuFlow</div>
+      
+        <ul>
+          <li><a href="/index.html">Etusivu</a></li>
+          <li><a href="/myinfo.html">Omat tiedot</a></li>
+          <li><a href="/diary.html">Päiväkirja</a></li>
+        </ul>
+      
+        <div class="auth-container">
+          <button id="login-button" class="login-button">Kirjaudu sisään</button>
+          <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+      
+          <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+            <span id="user-greeting">Hei, Käyttäjä!</span>
+          </div>
+      
+          <a href="settings.html" class="settings-link">
+            <img src="/src/img/settings.png" alt="Asetukset" width="20" height="20">
+          </a>
+        </div>
+      </nav> 
+    <main>
+        <h1>Esitietolomake</h1>
+        <div class="form-container">
+        <form id="infoForm">
+
+            <label>Nikotiinituotteet, alkoholi ja muut päihteet:</label>
+            <textarea name="drug_use"></textarea>
+
+            <label>Sairaudet ja lääkitykset:</label>
+            <textarea name="diseases_medications"></textarea>
+
+            <label>Nukun mielestäni hyvin (kyllä/ei, miksi?):</label>
+            <textarea name="sleep"></textarea>
+
+            <label>Oma arvio voinnistani:</label>
+            <textarea name="self_assessment"></textarea>
+
+            <button type="submit" id="submit-button">Jatka</button>
+        </form>
+    </div>
+    </main>
+    <footer>NuFlow © 2025</footer>
+    <script type="module" src="/src/js/auth.js"></script>
+    <script type="module" src="/src/js/myinfo.js"></script>
+    
+</body>
+</html>

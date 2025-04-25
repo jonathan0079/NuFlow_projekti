@@ -1,0 +1,26 @@
+{"level":30,"time":"2025-04-07T07:21:26.990Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Listening on 63497"}
+(node:17134) DeprecationWarning: Calling start() is no longer necessary. It can be safely omitted.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+{"level":30,"time":"2025-04-07T07:21:28.099Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Start of node method newBrowser"}
+{"level":30,"time":"2025-04-07T07:21:29.090Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Adding browser to stack: chromium, version: 134.0.6998.35"}
+{"level":30,"time":"2025-04-07T07:21:29.091Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"End of node method newBrowser"}
+{"level":30,"time":"2025-04-07T07:21:29.091Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Adding 0 contexts to browser"}
+{"level":30,"time":"2025-04-07T07:21:29.095Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Start of node method newPage"}
+{"level":30,"time":"2025-04-07T07:21:29.096Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"currentBrowser: [object Object]"}
+{"level":30,"time":"2025-04-07T07:21:29.112Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Changed active context"}
+{"level":30,"time":"2025-04-07T07:21:29.434Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Video path: undefined"}
+{"level":30,"time":"2025-04-07T07:21:29.434Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Changed active page"}
+{"level":30,"time":"2025-04-07T07:21:29.739Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"End of node method newPage"}
+{"level":30,"time":"2025-04-07T07:21:29.752Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Start of node method click"}
+{"level":30,"time":"2025-04-07T07:21:29.752Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Strict mode is enabled, find Locator with id=login-button in page."}
+{"level":30,"time":"2025-04-07T07:21:30.438Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"End of node method click"}
+{"level":30,"time":"2025-04-07T07:21:30.441Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Start of node method fillText"}
+{"level":30,"time":"2025-04-07T07:21:30.441Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Strict mode is enabled, find Locator with id=login-username in page."}
+{"level":30,"time":"2025-04-07T07:21:30.457Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"End of node method fillText"}
+{"level":30,"time":"2025-04-07T07:21:30.459Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Start of node method fillText"}
+{"level":30,"time":"2025-04-07T07:21:30.459Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Strict mode is enabled, find Locator with id=login-password in page."}
+{"level":30,"time":"2025-04-07T07:21:30.471Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"End of node method fillText"}
+{"level":30,"time":"2025-04-07T07:21:30.473Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Start of node method click"}
+{"level":30,"time":"2025-04-07T07:21:30.473Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Strict mode is enabled, find Locator with css=form#login-form button[type=\"submit\"] in page."}
+{"level":30,"time":"2025-04-07T07:21:30.517Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"End of node method click"}
+{"level":30,"time":"2025-04-07T08:53:34.508Z","pid":17134,"hostname":"MacBooks-MacBook-Air.local","msg":"Removed page=13e4aa05-9cb4-458a-be34-355fdc188bdf from context=b49d446e-6868-443d-b72b-d8789b568322 page stack"}

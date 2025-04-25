@@ -1,0 +1,52 @@
+.hero-container {
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: hsla(23, 40%, 96%, 0.199);
+    border-radius: 20px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(12px); 
+    line-height: 1.6;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+}
+
+.features, .analysis, .alert {
+    margin-top: 20px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 20px;
+}
+
+ul li {
+    font-size: 18px;
+    padding: 5px 0;
+    position: relative;
+}
+
+h1 {
+    font-size: 30px;
+    color: #3f675b;
+    text-shadow: 1px 1px 4px rgba(255, 252, 248, 0.729); 
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 20px;
+    color: #3f675b; 
+    margin-bottom: 15px;
+    text-align: center;
+}
+p {
+    font-size: 18px;
+    color: #f5f5f5; 
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); 
+}
+
+#user-menu-trigger {
+    text-align: center;
+}

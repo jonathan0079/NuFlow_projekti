@@ -1,0 +1,53 @@
+
+.form-container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+#submit-button {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #477668;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+#submit-button:hover {
+    background-color: #528777;
+}
+.edit-link {
+    color: rgb(255, 255, 255);
+}
+
+#infoForm label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#infoForm span {
+    display: block;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}

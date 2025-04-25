@@ -1,0 +1,435 @@
+
+h2 {
+    font-size: 16px;
+    color: #010101; 
+    margin: auto;    
+    text-decoration: bold;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+#diaryModal {
+  width: 100%;
+  max-width: 700px;
+  padding: 20px;
+  z-index: 1000;
+  overflow: visible;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+  border-radius: 13px;
+  position: absolute;
+  background-color: #ffffff;
+}
+
+#chartModal {
+  width: 100%;
+  max-width: 700px;
+  padding: 20px;
+  z-index: 1000;
+  overflow: visible;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+  border-radius: 13px;
+  background-color: #ffffff;
+}
+
+
+.modal-header {
+  cursor: move;
+  padding: 8px;
+  background: #f1f1f1;
+  border-bottom: 1px solid #ccc;
+}
+
+
+.buttons {
+  display: flex;
+  flex-direction: column; 
+  gap: 10px; 
+  align-items: center; 
+  margin-bottom: 20px; /
+}
+
+.hrv-buttons {
+  display: flex;
+  gap: 10px; 
+  justify-content: center;
+}
+
+#openDiaryBtn,
+#openChartBtn {
+  display: block; 
+  width: 100%; 
+  max-width: 300px; 
+  padding: 10px 20px;
+  background-color: #477668;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  margin: 10px auto; 
+  transition: background-color 0.3s ease;
+}
+
+#openDiaryBtn:hover,
+#openChartBtn:hover {
+  background-color: #5a897a;
+}
+
+#btn7days,
+#btn30days {
+  padding: 5px 10px; 
+  font-size: 14px; 
+  border-radius: 4px;
+  background-color: #477668;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#btn7days:hover,
+#btn30days:hover {
+  background-color: #5a897a;
+}
+
+.time-selector {
+    font-size: 14px;
+    margin-bottom: 10px;
+    max-width: 30%;
+  }
+  
+  .time-selector span {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+  }
+  
+  .time-options {
+    display: flex;
+    flex-direction:row;
+  }
+  
+  .time-options label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }  
+
+  .hrv-container {
+    margin: 20px auto;
+    max-width: 700px;
+    text-align: center;
+  }
+  
+  .hrv-grid {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+  
+  .hrv-grid > div {
+    flex: 1 1 12%;
+    min-width: 100px;
+    max-width: 600px;
+    padding: 5px;
+  }
+  
+  .hrv-label {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+  
+  .hrv-value {
+    background-color: #bebebe;
+    border-color: black;
+    border-radius: 2%;
+    padding: 5px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+
+.slidecontainer {
+    width: 70%;
+    margin: auto;
+}
+  
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 30px; 
+    padding-top: 10px;
+    background: transparent; 
+    z-index: 1;
+    border: none;
+  }
+  
+.slider::-webkit-slider-runnable-track { /* Chrome, Safari, Edge */
+    height: 2px;
+    background: #aaa; 
+    border-radius: 1px;
+  }
+  
+  .slider::-moz-range-track {/* Mozilla */
+    height: 2px;
+    background: #aaa;
+    border-radius: 1px;
+  }
+
+  .slider::-webkit-slider-thumb { /* Chrome, Safari, Edge */
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: var(--thumb-color, #477668);
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    margin-top: -12px; 
+  }
+  
+  .slider::-moz-range-thumb { /* Mozilla */
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: var(--thumb-color, #477668);
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .slidecontainer {
+    position: relative;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  .slidecontainer .labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 2; 
+  }
+  
+  .slidecontainer .labels span {
+    text-align: center;
+    font-size: 14px;
+    z-index: 2; 
+    margin-bottom: 10px; /* lisää tilaa labelien ja sliderin väliin */
+
+  }
+
+form {
+    max-width: 650px;
+    margin: auto;
+    padding: 20px;
+    background-color: transparent;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+;   border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#submit-button {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #477668;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+#submit-button:hover {
+    background-color: #528777;
+}
+#saveMessageContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  padding: 12px;
+  text-align: center;
+  font-size: 1.1em;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Näkyvä tila */
+#saveMessageContainer.show {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.5s ease, visibility 0s;
+}
+
+#saveMessageContainer.success {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+#saveMessageContainer.error {
+  background-color: #f44336;
+  color: white;
+  font-weight: bold;
+}
+/* Main-elementin asettelu jotta lomake ja kalenteri ovat vierekkäin */
+main {
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+max-width: 1200px;
+margin: 0 auto;
+padding: 0 15px;
+}
+
+/* Otsikko vie koko leveyden */
+main > h1 {
+width: 100%;
+flex-basis: 100%;
+}
+
+/* Lomakkeen tyylit muutetaan vastaamaan flex-asettelua, mutta lomakkeen sisältö pysyy samana */
+main > form {
+flex: 0 1 650px; /* Sama maksimileveys kuin alkuperäisellä */
+margin: 0;       /* Ei enää auto-marginaalia, jotta se ei keskittyisi */
+}
+
+/* Kalenterin tyylit */
+.calendar-container {
+  width: 80%; 
+  max-width: 800px; 
+  height: 600px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 10px auto;
+  align-self: center; /* Keskittää kalenterin flex-säiliössä */
+}
+
+/* Kalenterin ylätunniste */
+.calendar-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 15px;
+}
+
+.calendar-header h2 {
+color: #477668;
+font-size: 18px;
+margin: 0;
+padding: 0;
+text-align: center;
+}
+
+.month-nav-button {
+background-color: #477668;
+color: white;
+border: none;
+border-radius: 5px;
+padding: 5px 12px;
+font-size: 16px;
+cursor: pointer;
+transition: background-color 0.2s;
+}
+
+.month-nav-button:hover {
+background-color: #528777;
+}
+
+/* Kalenterin ruudukko */
+.calendar-grid {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+gap: 5px;
+height:100%;
+}
+
+/* Viikonpäivien otsikot */
+.calendar-day-header {
+text-align: center;
+font-weight: bold;
+padding: 8px 0;
+color: #555;
+border-bottom: 1px solid #eee;
+font-size: 1rem;
+}
+
+/* Kalenterin päivät */
+.calendar-day {
+height: 60px;
+text-align: center;
+padding: 5px;
+border-radius: 5px;
+display: flex;
+flex-direction: column;
+align-items: center;
+cursor: pointer;
+transition: background-color 0.2s;
+font-size: 1rem;
+}
+
+.calendar-day:hover {
+background-color: #f0f0f0;
+}
+
+.calendar-day.today {
+background-color: #e8f5e9;
+font-weight: bold;
+}
+
+.calendar-day.selected {
+background-color: #b3e5fc;
+}
+
+/* Kalenterin selitteet */
+.calendar-legend {
+display: flex;
+justify-content: center;
+gap: 20px;
+padding-top: 10px;
+border-top: 1px solid #eee;
+font-size: 0.85rem;
+}
+
+.legend-item {
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.legend-indicator {
+display: inline-block;
+width: 12px;
+height: 12px;
+border-radius: 50%;
+}
+
+.morning-indicator {
+background-color: #F9A825; /* Keltainen väri aamulle */
+}
+
+.evening-indicator {
+background-color: #7E57C2; /* Violetti väri illalle */
+}
