@@ -6,131 +6,153 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/diary.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
 </head>
 <body>
-    <nav>
-        <div id="modal-overlay"></div>
-        <div class="otsikko">NuFlow</div>
-        <ul>
-            <li><a href="/index.html">Etusivu</a></li>
-            <!-- <li class="auth-link"><a href="src/pages/myinfo.html">Omat tietoni</a></li> -->
-            <li><a href="/myinfo.html">Omat tiedot</a></li>
-            <!--<li class="auth-link"><a href="src/pages/diary.html">Päiväkirja</a></li>-->
-            <li><a href="/diary.html">Päiväkirja</a></li>
-            <div class="auth-container">
-                <button id="login-button" class="login-button">Kirjaudu sisään</button>
-                <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
-
-                <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
-                    <span id="user-greeting">Hei, käyttäjä!</span>
-                </div>
-            </div>
-            <li class="settings-link">
-                <a href="settings.html">
-                  <img src="/src/img/settings.png" alt="Settings" width="20" height="20">
-              </a>  
-        </ul>   
-        </nav>
+  <nav>
+    <div id="modal-overlay"></div>
+    <div class="otsikko">NuFlow</div>
+  
+    <ul>
+      <li><a href="/index.html">Etusivu</a></li>
+      <li><a href="/myinfo.html">Omat tiedot</a></li>
+      <li><a href="/diary.html">Päiväkirja</a></li>
+    </ul>
+  
+    <div class="auth-container">
+      <button id="login-button" class="login-button">Kirjaudu sisään</button>
+      <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+  
+      <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+        <span id="user-greeting">Hei, Elsi!</span>
+      </div>
+  
+      <a href="settings.html" class="settings-link">
+        <img src="/src/img/settings.png" alt="Asetukset" width="20" height="20">
+      </a>
+    </div>
+  </nav> 
         <main>
             <h1>Päiväkirja</h1>
-            <form id="diaryForm">
-                <div class="time-selector">
-                    <span>Kirjauksen ajankohta:</span>
-                    <div class="time-options">
-                      <label><input type="radio" name="time" value="morning"> Aamu</label>
-                      <label><input type="radio" name="time" value="evening"> Ilta</label>
-                    </div>
-                  </div>                  
-                    <div class="hrv-container">
-                        <h2>HRV arvot</h2>
-                        <div class="hrv-grid">
-                          <div>
-                            <div class="hrv-label">Syke</div>
-                            <div class="hrv-value" id="hrv-syke">-</div>
-                          </div>
-                          <div>
-                            <div class="hrv-label">RMSSD</div>
-                            <div class="hrv-value" id="hrv-rmssd">-</div>
-                          </div>
-                          <div>
-                            <div class="hrv-label">Mean RR</div>
-                            <div class="hrv-value" id="hrv-meanrr">-</div>
-                          </div>
-                          <div>
-                            <div class="hrv-label">SDNN</div>
-                            <div class="hrv-value" id="hrv-sdnn">-</div>
-                          </div>
-                          <div>
-                            <div class="hrv-label">PNS indeksi</div>
-                            <div class="hrv-value" id="hrv-pns">-</div>
-                          </div>
-                          <div>
-                            <div class="hrv-label">SNS indeksi</div>
-                            <div class="hrv-value" id="hrv-sns">-</div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                <h2>Uni</h2>
-                <div class="slidecontainer">
-                    <div class="labels">
-                        <span>Huono</span>
-                        <span>Kohtalainen</span>
-                        <span>Ok</span>
-                        <span>Hyvä</span>
-                        <span>Erinomainen</span>
-                      </div>
-                    <input type="range" min="1" max="5" value="3" class="slider" id="sleepRange">
-                </div>
-                <textarea placeholder="Lisätietoa..."></textarea>
-                
-                <h2>Oloni juuri nyt</h2>
-                <div class="slidecontainer">
-                    <div class="labels">
-                        <span>Huono</span>
-                        <span>Kohtalainen</span>
-                        <span>Ok</span>
-                        <span>Hyvä</span>
-                        <span>Erinomainen</span>
-                      </div>
-                    <input type="range" min="1" max="5" value="3" class="slider" id="moodRange">
-                </div>
-                <textarea placeholder="Tähän voit kirjoittaa muita muistiinpanoja..."></textarea>
-                
-                <button id="submit-button" type="submit">Tallenna</button>
-           
-                            <!-- Nappula -->
+            <div class="buttons">
+              <button id="openDiaryBtn">Lisää päiväkirjamerkintä</button>
               <button id="openChartBtn">Näytä HRV-kaaviot</button>
-
-              <!-- Modaali -->
-              <div id="chartModal" class="modal">
-                <div class="modal-content">
-                  <span class="close">&times;</span>
-                  
-                  <!-- Napit -->
-                  <div class="buttons">
-                    <button id="btn7days">Viimeiset 7 päivää</button>
-                    <button id="btn30days">Viimeiset 30 päivää</button>
+            </div>
+          <!-- Päiväkirja-modal -->
+          <div id="diaryModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <form id="diaryForm">
+                <div class="time-selector">
+                  <span>Kirjauksen ajankohta:</span>
+                  <div class="time-options">
+                    <label><input type="radio" name="time" value="morning"> Aamu</label>
+                    <label><input type="radio" name="time" value="evening"> Ilta</label>
                   </div>
-
-                  <!-- Polar-kaavio -->
-                  <h2 id="chartHeaderTitle" style="text-align: center;">HRV-arvot (uusin päivä)</h2>
-
-
-                  <canvas id="hrvPieChart" width="400" height="400"></canvas>
-
-                  <!-- Viivakaaviot 7/30 päivää -->
-                  <div id="lineChartGrid" class="chart-grid"></div>
                 </div>
               </div>
+                <div class="hrv-container">
+                  <h2>HRV-arvot</h2>
+                  <div class="hrv-grid">
+                    <!-- Syke -->
+                    <div>
+                      <div class="hrv-label tooltip">Syke
+                        <span class="tooltiptext">Sydämen lyöntitiheys (bpm)</span>
+                      </div>
+                      <div class="hrv-value" id="hrv-syke">-</div>
+                    </div>
+                    <!-- RMSSD -->
+                    <div>
+                      <div class="hrv-label tooltip">RMSSD
+                        <span class="tooltiptext">Parasympaattista hermostoa mittaava arvo</span>
+                      </div>
+                      <div class="hrv-value" id="hrv-rmssd">-</div>
+                    </div>
+                    <!-- Mean RR -->
+                    <div>
+                      <div class="hrv-label tooltip">Mean RR
+                        <span class="tooltiptext">Keskimääräinen aika lyöntien välillä (ms)</span>
+                      </div>
+                      <div class="hrv-value" id="hrv-meanrr">-</div>
+                    </div>
+                    <!-- SDNN -->
+                    <div>
+                      <div class="hrv-label tooltip">SDNN
+                        <span class="tooltiptext">Sykevälivaihtelun keskihajonta</span>
+                      </div>
+                      <div class="hrv-value" id="hrv-sdnn">-</div>
+                    </div>
+                    <!-- PNS -->
+                    <div>
+                      <div class="hrv-label tooltip">PNS indeksi
+                        <span class="tooltiptext">Parasympaattisen hermoston aktiivisuusindeksi</span>
+                      </div>
+                      <div class="hrv-value" id="hrv-pns">-</div>
+                    </div>
+                    <!-- SNS -->
+                    <div>
+                      <div class="hrv-label tooltip">SNS indeksi
+                        <span class="tooltiptext">Sympaattisen hermoston aktiivisuusindeksi</span>
+                      </div>
+                      <div class="hrv-value" id="hrv-sns">-</div>
+                    </div>
+                  </div>
+                </div>
 
+                <h2>Uni</h2>
+                <div class="slidecontainer">
+                  <div class="labels">
+                    <span>Huono</span>
+                    <span>Kohtalainen</span>
+                    <span>Ok</span>
+                    <span>Hyvä</span>
+                    <span>Erinomainen</span>
+                  </div>
+                  <input type="range" min="1" max="5" value="3" class="slider" id="sleepRange">
+                </div>
+                <textarea placeholder="Lisätietoa..."></textarea>
 
-          
-        </body>
+                <h2>Oloni juuri nyt</h2>
+                <div class="slidecontainer">
+                  <div class="labels">
+                    <span>Huono</span>
+                    <span>Kohtalainen</span>
+                    <span>Ok</span>
+                    <span>Hyvä</span>
+                    <span>Erinomainen</span>
+                  </div>
+                  <input type="range" min="1" max="5" value="3" class="slider" id="moodRange">
+                </div>
+                <textarea placeholder="Tähän voit kirjoittaa muita muistiinpanoja..."></textarea>
+
+                <button id="submit-button" type="submit">Tallenna</button>
+                <div id="saveMessageContainer">
+                  <p id="saveResponse" class="save-message"></p>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- Modaali -->
+          <div id="chartModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+                            <div class="buttons">
+                <button id="btn7days">Viimeiset 7 päivää</button>
+                <button id="btn30days">Viimeiset 30 päivää</button>
+              </div>
+              <!-- Polar-kaavio -->
+              <h2 id="chartHeaderTitle" style="text-align: center;">HRV-arvot (uusin päivä)</h2>
+              <canvas id="hrvPieChart" width="400" height="400"></canvas>
+              <!-- Viivakaaviot 7/30 päivää -->
+              <div id="lineChartGrid" class="chart-grid"></div>
+            </div>
+          </div>
+          </div>
+        </div> 
+      </body>
       </main>
       <footer>NuFlow © 2025</footer>
       <script type="module" src="/src/js/diary.js"></script>
+      <script type="module" src="/src/js/auth.js"></script>
+      <script type="module" src="/src/js/diary-calendar.js"></script>
+
       </html>

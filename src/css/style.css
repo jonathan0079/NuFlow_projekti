@@ -22,6 +22,8 @@ main {
 h1 {
   color: white;
   text-align: center;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); 
+
 }
 
 #modal-overlay {
@@ -47,9 +49,10 @@ nav {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+
 .settings-link {
-  margin: auto;
-  height: auto;
+  display: flex;
+  align-items: center;
 }
 
 .auth-link {
@@ -68,6 +71,8 @@ ul {
   padding: 0;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  flex-grow: 1;
 }
 
 
@@ -79,6 +84,8 @@ li a {
   padding: 10px;
   margin: 13px;
   text-decoration: none;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); 
+
 }
 
 li a:hover {
@@ -127,7 +134,7 @@ login-button:hover {
   align-items: right;
 }
 
-logoutButton:hover {
+.logoutButton:hover {
   background-color: #dddddd;
 }
 .hidden {
@@ -135,11 +142,20 @@ logoutButton:hover {
 }
 
 .auth-container {
-  display: block;
-  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+}
+
+#user-greeting {
+  color: #fbfbfb;
+  text-align: right;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); 
+
 }
 .modal {
-  display: none; /* Aluksi piilotettu */
+  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -154,14 +170,13 @@ logoutButton:hover {
 }
 
 .modal-content {
-  margin: 0 auto; /* Keskittää sen modalin sisälle */
+  margin: 0 auto;
   position: relative;
   top: 0;
   left: 0;
   transform: none;
 }
 
-/* Sulkemispainike */
 .close-modal {
   position: absolute;
   top: 10px;
@@ -171,7 +186,7 @@ logoutButton:hover {
 }
 
 .modal-form {
-  display: none; /* Oletuksena piilossa */
+  display: none; 
   flex-direction: column;
   gap: 10px;
 }
@@ -180,7 +195,6 @@ logoutButton:hover {
   display: flex;
 }
 
-/* Lomakekentät */
 .form-group {
   margin-bottom: 1px;
 }
@@ -212,39 +226,6 @@ input {
   font-size: 25px;
 }
 
-/* Ilmoitus käyttäjälle kirjautumisesta/rekisteröinnistä */
-#loginResponse {
-  opacity: 0;
-  visibility: hidden;
-  margin-top: 20px;
-  padding: 12px;
-  text-align: center;
-  font-size: 1.1em;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 400px;
-  margin: 20px auto;
-  transition: opacity 0.5s ease-in-out, visibility 0.5s ease;
-}
-
-.success {
-  background-color: #4CAF50; 
-  color: white;
-  font-weight: bold;
-}
-
-.error {
-  background-color: #f44336;
-  color: white;
-  font-weight: bold;
-}
-
-#loginResponse.show {
-  visibility: visible; 
-  opacity: 1;
-  transition: opacity 0.5s ease, visibility 0s;
-}
-
 .main-container {
   display: flex;
   justify-content: space-between;
@@ -265,6 +246,31 @@ textarea {
   min-height: 80px;
 }
 
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted #3f675b;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #3f675b;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px; 
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
 /* FOOTER */
 footer {
   height: 70px;
@@ -274,7 +280,6 @@ footer {
   color: #ffffff;
   text-align: center;
 }
-
 
 /* RESPONSIIVISUUS */
 @media (max-width: 1024px) {
@@ -301,6 +306,19 @@ footer {
       width: 100%;
       text-align: center;
   }
+
+  #logoutButton {
+      width: 100%;
+      text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  footer {
+      font-size: 12px;
+  }
+}
+
   /*diary.js*/
   button.success {
     background-color: #4caf50;
@@ -312,7 +330,7 @@ footer {
       width: 100%;
       text-align: center;
   }
-}
+
 
 @media (max-width: 480px) {
   footer {

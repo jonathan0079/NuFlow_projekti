@@ -4,39 +4,97 @@
     <title>NuFlow</title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
-    <link rel="stylesheet" href="/src/css/snackbar.css">
     <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/settings.css">
+
 </head>
-<body>
     <nav>
-      <div id="modal-overlay"></div>
+        <div id="modal-overlay"></div>
         <div class="otsikko">NuFlow</div>
+      
         <ul>
-            <li><a href="/index.html">Etusivu</a></li>
-            <!-- <li class="auth-link"><a href="src/pages/myinfo.html">Omat tietoni</a></li> -->
-            <li><a href="/myinfo.html">Omat tiedot</a></li>
-            <!--<li class="auth-link"><a href="src/pages/diary.html">Päiväkirja</a></li>-->
-            <li><a href="/diary.html">Päiväkirja</a></li>
-            <div class="auth-container">
-                <button id="login-button" class="login-button">Kirjaudu sisään</button>
-                <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
-                
-                <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
-                    <span id="user-greeting">Hei, käyttäjä!</span>
-                    <span class="dropdown-icon">▼</span>
-                    <div id="user-menu-content" class="user-menu-content"></div>
-                </div>
-            </div>
-            <li class="settings-link">
-                <a href="settings.html">
-                  <img src="/src/img/settings.png" alt="Settings" width="20" height="20">
-              </a>  
-        </ul>   
-        </nav>
+          <li><a href="/index.html">Etusivu</a></li>
+          <li><a href="/myinfo.html">Omat tiedot</a></li>
+          <li><a href="/diary.html">Päiväkirja</a></li>
+        </ul>
+      
+        <div class="auth-container">
+          <button id="login-button" class="login-button">Kirjaudu sisään</button>
+          <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button> 
+      
+          <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+            <span id="user-greeting">Hei, Käyttäjä!</span>
+          </div>
+          <a href="settings.html" class="settings-link">
+            <img src="/src/img/settings.png" alt="Asetukset" width="20" height="20">
+          </a>
+        </div>
+      </nav> 
     <main>
+      <div id="status-message" class="status-message" style="display:none;"></div>
+      <body>
         <h1>Asetukset</h1>
+        <div class="settingsForm">
+              <label>Käyttäjänimi:
+                <input type="text">
+              </label>
+              <label>Sähköposti:
+                <input type="email">
+              </label>
+              <label>Uusi salasana:
+                <input type="password">
+              </label>
+              <label>Vahvista salasana:
+                <input type="password">
+              </label>
+              <label>Sovelluksen kieli:
+                <select>
+                  <option>suomi</option>
+                  <option>englanti</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="button-row">
+          <button id="delete-account" class="danger-button">Poista käyttäjätili</button>
+          <button type="submit" id="save-button">Tallenna</button>
+        </div>
+        <!-- Varmistus poistamisesta -->
+        <div id="confirmation-modal" class="delete-modal">
+          <div class="modal-content">
+            <p>Haluatko varmasti poistaa käyttäjäsi?</p>
+            <button id="confirm-delete" class="danger-button">Kyllä, poista</button>
+            <button id="cancel-delete" class="cancel-button">Peruuta</button>
+          </div>
+        </div>
   </body>
 </main>
 <footer>NuFlow © 2025</footer>
 <script type="module" src="/src/js/auth.js"></script>
+<script>
+  document.getElementById('delete-account').addEventListener('click', function() {
+  // Näytetään varmistusikkuna
+  document.getElementById('confirmation-modal').style.display = 'flex';
+});
+
+document.getElementById('confirm-delete').addEventListener('click', function() {
+  // Käyttäjä haluaa poistaa tilin
+  deleteUserAccount();
+  // Piilotetaan varmistusikkuna
+  document.getElementById('confirmation-modal').style.display = 'none';
+});
+
+document.getElementById('cancel-delete').addEventListener('click', function() {
+  // Käyttäjä perui toiminnon
+  document.getElementById('confirmation-modal').style.display = 'none';
+});
+
+function deleteUserAccount() {
+  // Tämä funktio suorittaa käyttäjän poistamisen tietokannasta
+  console.log('Käyttäjän tili poistettu');
+  // Tähän voit lisätä koodin, joka poistaa käyttäjän tilin palvelimelta
+}
+
+</script>
 </html>

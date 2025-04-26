@@ -9,28 +9,28 @@
 </head>
 <body>
     <nav>
-      <div id="modal-overlay"></div>
+        <div id="modal-overlay"></div>
         <div class="otsikko">NuFlow</div>
+      
         <ul>
-            <li><a href="/index.html">Etusivu</a></li>
-            <li><a href="/myinfo.html">Omat tiedot</a></li>
-            <li><a href="/diary.html">Päiväkirja</a></li>
-            <div class="auth-container">
-                <button id="login-button" class="login-button">Kirjaudu sisään</button>
-                <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
-
-                <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
-                    <span id="user-greeting">Hei, käyttäjä!</span>
-                    <span class="dropdown-icon">▼</span>
-                    <div id="user-menu-content" class="user-menu-content"></div>
-                </div>
-            </div>
-            <li class="settings-link">
-                <a href="settings.html">
-                  <img src="/src/img/settings.png" alt="Asetukset" width="20" height="20">
-              </a>  
-        </ul>   
-    </nav>
+          <li><a href="/index.html">Etusivu</a></li>
+          <li><a href="/myinfo.html">Omat tiedot</a></li>
+          <li><a href="/diary.html">Päiväkirja</a></li>
+        </ul>
+      
+        <div class="auth-container">
+          <button id="login-button" class="login-button">Kirjaudu sisään</button>
+          <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+      
+          <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+            <span id="user-greeting">Hei, Käyttäjä!</span>
+          </div>
+      
+          <a href="settings.html" class="settings-link">
+            <img src="/src/img/settings.png" alt="Asetukset" width="20" height="20">
+          </a>
+        </div>
+      </nav> 
     <main>
         <h1>Esitietolomake</h1>
         <div class="form-container">
@@ -54,5 +54,7 @@
     </main>
     <footer>NuFlow © 2025</footer>
     <script type="module" src="/src/js/auth.js"></script>
+    <script type="module" src="/src/js/myinfo.js"></script>
+    
 </body>
 </html>
