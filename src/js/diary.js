@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initDiary(token) {
   const diaryForm = document.getElementById('diaryForm'); // Lomake-elementti
   const submitButton = document.querySelector('#submit-button'); // Tallennusnappi
-  const API_URL = 'http://localhost:3000/api/entries/insert'; // Backend-osoite merkintöjen lisäykseen
+  const API_URL = 'http://localhost:5000/api/entries/insert'; // Backend-osoite merkintöjen lisäykseen
 
   fetchAndDisplayHrvData(token); // Ladataan HRV-arvot automaattisesti heti sivun alussa
 
@@ -184,7 +184,7 @@ async function fetchAndDisplayHrvData(token) {
     console.log("📡 Haetaan HRV päivälle:", staticDate);
   
     try {
-      const response = await fetch(`http://localhost:3000/api/kubios/hrv/by-date/${staticDate}`, {
+      const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${staticDate}`, {
         headers: {
           'Authorization': `Bearer ${token}` // Käyttäjän token mukaan
         }
@@ -226,7 +226,7 @@ async function fetchHrvDataForSelectedDate(token, date) {
   console.log("📡 Haetaan HRV päivälle:", date);
   
   try {
-    const response = await fetch(`http://localhost:3000/api/kubios/hrv/by-date/${date}`, {
+    const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${date}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -448,15 +448,15 @@ let pieChart = null; // Tänne tallennetaan piirrettävä polar-kaavio
    chartGrid.innerHTML = ''; // Tyhjennetään viivakaaviot
  
  try {
-  const res = await fetch('/mockdata.json'); // Haetaan tiedot mockdata.json-tiedostosta
-  const data = await res.json(); // Muutetaan JSONiksi
-  rawData = data.results;
-   // Käytetään backendin dataa, jos se on saatavilla
-  //const res = await fetch('http://localhost:3000/api/kubios/user-data', {
-  // headers: {
-  //   Authorization: `Bearer ${localStorage.getItem('token')}`
-    //}
-  //});
+    //const res = await fetch('/public/mockdata.json'); // Haetaan tiedot mockdata.json-tiedostosta
+    //const data = await res.json(); // Muutetaan JSONiksi
+    //rawData = data.results;
+  //Käytetään backendin dataa, jos se on saatavilla
+  const res = await fetch('http://localhost:5000/api/kubios/user-data', {
+  headers: {
+     Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  });
   //const data = await res.json();
   //rawData = data.results;
   const latest = rawData[rawData.length - 1]; // Otetaan uusin päivä
