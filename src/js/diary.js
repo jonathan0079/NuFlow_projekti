@@ -482,7 +482,7 @@ function initDiary(token) {
    
    try {
      const user = JSON.parse(localStorage.getItem('user'));
-     const res = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
+     const res = await fetch('http://localhost:5000/api/kubios/hrv/last-7-measurements', {
        headers: {
          'Authorization': `Bearer ${user.token}`
        }
@@ -513,7 +513,7 @@ function initDiary(token) {
    
    try {
      const user = JSON.parse(localStorage.getItem('user'));
-     const res = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
+     const res = await fetch('http://localhost:5000/api/kubios/hrv/last-month', {
        headers: {
          'Authorization': `Bearer ${user.token}`
        }
