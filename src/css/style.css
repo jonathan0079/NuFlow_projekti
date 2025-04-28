@@ -113,7 +113,7 @@ li a:hover {
     align-items: right;
   }
   
-  login-button:hover {
+  #login-button:hover {
     background-color: #dddddd;
   }
 .hidden {
@@ -134,7 +134,7 @@ li a:hover {
     align-items: right;
   }
 
-  .logoutButton:hover {
+  #logoutButton:hover {
     background-color: #dddddd;
   }
 .hidden {
