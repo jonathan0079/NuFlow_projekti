@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://localhost:5000/api';
 
 // Odottaa, että koko sivu on ladattu
 document.addEventListener('DOMContentLoaded', function() {
@@ -498,3 +498,4 @@ function parseJwt(token) {
     return null;
   }
 };
+

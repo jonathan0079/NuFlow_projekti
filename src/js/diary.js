@@ -1,4 +1,5 @@
 import './auth.js';
+import './diary-calendar.js';
 
 console.log("diary.js ladattu");
 
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initDiary(token) {
   const diaryForm = document.getElementById('diaryForm'); // Lomake-elementti
   const submitButton = document.querySelector('#submit-button'); // Tallennusnappi
-  const API_URL = 'http://localhost:3000/api/entries/insert'; // Backend-osoite merkintöjen lisäykseen
+  const API_URL = 'http://localhost:5000/api/entries/insert'; // Backend-osoite merkintöjen lisäykseen
 
   fetchAndDisplayHrvData(token); // Ladataan HRV-arvot automaattisesti heti sivun alussa
 
@@ -183,7 +184,7 @@ async function fetchAndDisplayHrvData(token) {
     console.log("📡 Haetaan HRV päivälle:", staticDate);
   
     try {
-      const response = await fetch(`http://localhost:3000/api/kubios/hrv/by-date/${staticDate}`, {
+      const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${staticDate}`, {
         headers: {
           'Authorization': `Bearer ${token}` // Käyttäjän token mukaan
         }
@@ -225,7 +226,7 @@ async function fetchHrvDataForSelectedDate(token, date) {
   console.log("📡 Haetaan HRV päivälle:", date);
   
   try {
-    const response = await fetch(`http://localhost:3000/api/kubios/hrv/by-date/${date}`, {
+    const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${date}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -416,46 +417,242 @@ function initDiary(token) {
   // Lisää tämä rivin loppuun
   autoLoadTodayData();
 }
+//  OLETUS: sinulla on mockdata.json polussa /public/
+//  Chart.js on asennettu ja ladattu
+
+
+
+ // HRV-kaavio modaali
+ const chartModal = document.getElementById('chartModal'); // Modaali-ikkuna, jossa kaaviot näkyvät
+ const chartOpen = document.getElementById('openChartBtn'); // Nappi: Näytä HRV-kaaviot
+ const chartspan = chartModal.querySelector('.close'); // Sulje-nappi (rasti oikeassa yläkulmassa)
+ const btn7 = document.getElementById('btn7days'); // Nappi: Viimeiset 7 päivää
+ const btn30 = document.getElementById('btn30days'); // Nappi: Viimeiset 30 päivää
+ const pieCanvas = document.getElementById('hrvPieChart'); // Canvas-elementti polar-kaaviolle
+ const chartGrid = document.querySelector('.chart-grid'); // Grid, johon viivakaaviot piirretään
+ const title = document.querySelector('#chartHeaderTitle'); // Otsikko modalin yläosassa
+ 
+ // Päiväkirja modaali
+ const diaryModal = document.getElementById('diaryModal'); // Modaali-ikkuna, jossa kaaviot näkyvät
+ const diaryOpen = document.getElementById('openDiaryBtn'); // Nappi: Lisää päiväkirjamerkintä
+ const diaryspan = diaryModal.querySelector('.close'); // Sulje-nappi (rasti oikeassa yläkulmassa)
+ 
+ let rawData = []; // Tänne tallennetaan mockdata.json tiedot
+ let pieChart = null; // Tänne tallennetaan piirrettävä polar-kaavio
+ let fullRawData = []; // Muuta tämä global-muuttujaksi koko tiedoston alussa
+
+ // Avataan HRV-kaavio modal
+ chartOpen.onclick = async () => {
+  chartModal.style.display = 'block';
+  title.textContent = 'HRV-arvot (uusin päivä)';
+  pieCanvas.style.display = 'block';
+  chartGrid.innerHTML = '';
+
+  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const res = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
+      headers: {
+        'Authorization': `Bearer ${user.token}`
+      }
+    });
+    
+    if (!res.ok) {
+      throw new Error('Failed to fetch HRV data');
+    }
+    
+    fullRawData = await res.json(); // Tallennetaan koko 30 päivän data
+    
+    if (fullRawData.length === 0) {
+      console.warn('No HRV data available');
+      return;
+    }
+    
+    const latest = fullRawData[fullRawData.length - 1];
+    drawPieChart(latest); // Piirretään polar-kaavio
+  } catch (err) {
+    console.error("Data loading error:", err);
+    // Näytä käyttäjälle viesti, ettei dataa ole saatavilla
+    alert('Ei HRV-dataa saatavilla');
+  }
 }
-// HRV-kaavio modaali
-const chartModal = document.getElementById('chartModal'); // Modaali-ikkuna, jossa kaaviot näkyvät
-const chartOpen = document.getElementById('openChartBtn'); // Nappi: Näytä HRV-kaaviot
-const chartspan = chartModal.querySelector('.close'); // Sulje-nappi (rasti oikeassa yläkulmassa)
-const btn7 = document.getElementById('btn7days'); // Nappi: Viimeiset 7 päivää
-const btn30 = document.getElementById('btn30days'); // Nappi: Viimeiset 30 päivää
-const pieCanvas = document.getElementById('hrvPieChart'); // Canvas-elementti polar-kaaviolle
-const chartGrid = document.querySelector('.chart-grid'); // Grid, johon viivakaaviot piirretään
-const title = document.querySelector('#chartHeaderTitle'); // Otsikko modalin yläosassa
+ btn7.onclick = async () => {
+   chartGrid.innerHTML = '';
+   pieCanvas.style.display = 'none';
+   title.textContent = 'HRV-arvot (viimeiset 7 päivää)';
+   
+   try {
+     const user = JSON.parse(localStorage.getItem('user'));
+     const res = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
+       headers: {
+         'Authorization': `Bearer ${user.token}`
+       }
+     });
+     
+     if (!res.ok) {
+       throw new Error('Failed to fetch HRV data');
+     }
+     
+     fullRawData = await res.json();
+     
+     if (fullRawData.length === 0) {
+       console.warn('No HRV data available');
+       return;
+     }
+     
+     drawLineCharts(7);
+   } catch (err) {
+     console.error("Data loading error:", err);
+     alert('Ei HRV-dataa saatavilla');
+   }
+ };
+ 
+ btn30.onclick = async () => {
+   chartGrid.innerHTML = '';
+   pieCanvas.style.display = 'none';
+   title.textContent = 'HRV-arvot (viimeiset 30 päivää)';
+   
+   try {
+     const user = JSON.parse(localStorage.getItem('user'));
+     const res = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
+       headers: {
+         'Authorization': `Bearer ${user.token}`
+       }
+     });
+     
+     if (!res.ok) {
+       throw new Error('Failed to fetch HRV data');
+     }
+     
+     fullRawData = await res.json();
+     
+     if (fullRawData.length === 0) {
+       console.warn('No HRV data available');
+       return;
+     }
+     
+     drawLineCharts(30);
+   } catch (err) {
+     console.error("Data loading error:", err);
+     alert('Ei HRV-dataa saatavilla');
+   }
+ };
 
-// Päiväkirja modaali
-const diaryModal = document.getElementById('diaryModal'); // Modaali-ikkuna, jossa kaaviot näkyvät
-const diaryOpen = document.getElementById('openDiaryBtn'); // Nappi: Lisää päiväkirjamerkintä
-const diaryspan = diaryModal.querySelector('.close'); // Sulje-nappi (rasti oikeassa yläkulmassa)
+ //Polar-kaavion piirtäminen yhdelle päivälle
+ function drawPieChart(day) {
+  if (!pieCanvas) return;
 
-// Avataan HRV-kaavio modal
-chartOpen.onclick = async () => {
-  chartModal.style.display = 'block'; // Näytetään HRV-kaavio modaali
-  title.textContent = 'HRV-arvot (uusin päivä)'; // Päivitetään otsikko
-  pieCanvas.style.display = 'block'; // Näytetään polar-kaavio
-  chartGrid.innerHTML = ''; // Tyhjennetään viivakaaviot
-};
+  const values = [
+    day.heart_rate,
+    day.rmssd,
+    day.mean_rr,
+    day.sdnn,
+    day.pns_index,
+    day.sns_index
+  ];
 
-// Suljetaan HRV-kaavio modal
-chartspan.onclick = () => chartModal.style.display = 'none';
-window.onclick = (e) => {
-  if (e.target == chartModal) chartModal.style.display = 'none';
-};
+  const maxValue = Math.max(...values);// Normalisointia varten
+  const normalized = values.map(v => (v / maxValue) * 100);// Skalaus
+  const labels = ['Syke', 'RMSSD', 'Mean RR', 'SDNN', 'PNS Index', 'SNS Index'];
+  const colors = ['red', 'green', 'blue', 'purple', 'orange', 'brown'];
 
-// Avataan päiväkirja modal
-diaryOpen.onclick = () => {
-  diaryModal.style.display = 'block'; // Näytetään päiväkirja modaali
-};
+  if (pieChart) pieChart.destroy();
 
-// Suljetaan päiväkirja modal
-diaryspan.onclick = () => diaryModal.style.display = 'none';
-window.onclick = (e) => {
-  if (e.target == diaryModal) diaryModal.style.display = 'none';
-};
+  pieChart = new Chart(pieCanvas.getContext('2d'), {
+    type: 'polarArea',
+    data: {
+      labels,
+      datasets: [{
+        data: normalized,
+        backgroundColor: colors,
+        borderColor: '#fff',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: 'HRV-arvot (uusin päivä)'
+        }
+      }
+    }
+  });
+}
 
+//Viivakaavioiden piirtäminen useammalle päivälle
+function drawLineCharts(days) {
+  if (!chartGrid) return;
 
+  const sliced = fullRawData.slice(-days);
+  const labels = sliced.map(r => new Date(r.daily_result).toLocaleDateString('fi-FI'));
 
+  const fields = [
+    { key: 'heart_rate', label: 'Syke', color: 'red' },
+    { key: 'rmssd', label: 'RMSSD', color: 'green' },
+    { key: 'mean_rr', label: 'Mean RR', color: 'blue' },
+    { key: 'sdnn', label: 'SDNN', color: 'purple' },
+    { key: 'pns_index', label: 'PNS-indeksi', color: 'orange' },
+    { key: 'sns_index', label: 'SNS-indeksi', color: 'brown' }
+  ];
+
+  fields.forEach(field => {
+    const container = document.createElement('div');
+    container.classList.add('chart-card');
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 400;
+    canvas.height = 200;
+    container.appendChild(canvas);
+
+    chartGrid.appendChild(container);
+    
+    new Chart(canvas.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: field.label,
+          data: sliced.map(d => d[field.key]),
+          borderColor: field.color,
+          backgroundColor: 'transparent', // Läpinäkyvä täyttö
+          tension: 0.4,
+          fill: false, // Ei täyttöä viivan alla
+          pointRadius: 3,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: `${field.label} – Viimeiset ${days} päivää`
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: false
+          }
+        }
+      }
+    });
+  });
+}
+ 
+ // Suljetaan HRV-kaavio modal
+ chartspan.onclick = () => chartModal.style.display = 'none';
+ window.onclick = (e) => {
+   if (e.target == chartModal) chartModal.style.display = 'none';
+ };
+ 
+ // Avataan päiväkirja modal
+ diaryOpen.onclick = () => {
+   diaryModal.style.display = 'block'; // Näytetään päiväkirja modaali
+ };
+ 
+ // Suljetaan päiväkirja modal
+ diaryspan.onclick = () => diaryModal.style.display = 'none';
+ window.onclick = (e) => {
+   if (e.target == diaryModal) diaryModal.style.display = 'none';
+ };}

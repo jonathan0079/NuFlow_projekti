@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/diary.css">
+    <link rel="stylesheet" href="/src/css/diary_chart.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
   <nav>
@@ -134,9 +137,10 @@
           </div>
           <!-- Modaali -->
           <div id="chartModal" class="modal">
-            <div class="modal-content">
+            <div class="Chartmodal-content">
               <span class="close">&times;</span>
-                            <div class="buttons">
+              <!-- Nappiryhmä (7/30 päivää) -->
+              <div class="daybuttons">
                 <button id="btn7days">Viimeiset 7 päivää</button>
                 <button id="btn30days">Viimeiset 30 päivää</button>
               </div>
@@ -145,7 +149,8 @@
               <canvas id="hrvPieChart" width="400" height="400"></canvas>
               <!-- Viivakaaviot 7/30 päivää -->
               <div id="lineChartGrid" class="chart-grid"></div>
-            </div>
+            </div> <!-- Sulkee .modal-content -->
+          </div> <!-- Sulkee .modal -->
           </div>
           </div>
         </div> 
