@@ -106,6 +106,7 @@ function updateCalendar(year, month) {
         day.classList.remove('current-month', 'today', 'selected');
         day.removeAttribute('data-date'); // Poista vanha päivämäärä
         day.removeAttribute('data-entries'); // Poista vanhat merkinnät
+        day.style.visibility = 'hidden'; // Piilota kaikki päivät aluksi
         
         // Poista kaikki aiemmat lapsielementit
         while (day.firstChild) {
@@ -123,6 +124,9 @@ function updateCalendar(year, month) {
     for (let i = 0; i < totalDays; i++) {
         const dayElement = dayElements[firstDayIndex + i];
         const dayNumber = i + 1;
+
+        // Tee päivä näkyväksi
+        dayElement.style.visibility = 'visible';
 
         // Lisää päivän numero
         const dayNumberSpan = document.createElement('span');
