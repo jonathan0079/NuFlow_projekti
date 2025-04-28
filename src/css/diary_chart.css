@@ -1,6 +1,11 @@
 /* chart.js style*/
 /* Modaali skrollattava */
-
+.Chartmodal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 20px;
+    border-radius: 12px;
+  }
   
   /* Kaaviot gridissä */
   .chart-grid {

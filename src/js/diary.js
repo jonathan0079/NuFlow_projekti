@@ -1,6 +1,5 @@
 import './auth.js';
-import Chart from 'chart.js/auto'; // Ladataan Chart.js
-
+import './diary-calendar.js';
 
 console.log("diary.js ladattu");
 
@@ -418,54 +417,55 @@ function initDiary(token) {
   // Lisää tämä rivin loppuun
   autoLoadTodayData();
 }
-//chart.js
 //  OLETUS: sinulla on mockdata.json polussa /public/
 //  Chart.js on asennettu ja ladattu
 
-const chartModal = document.getElementById('chartModal'); // Modaali-ikkuna, jossa kaaviot näkyvät
-const chartOpen = document.getElementById('openChartBtn'); // Nappi: Näytä HRV-kaaviot
-const chartSpan = modal.querySelector('.close'); // Sulje-nappi (rasti oikeassa yläkulmassa)
-const btn7 = document.getElementById('btn7days'); // Nappi: Viimeiset 7 päivää
-const btn30 = document.getElementById('btn30days'); // Nappi: Viimeiset 30 päivää
-const pieCanvas = document.getElementById('hrvPieChart'); // Canvas-elementti polar-kaaviolle
-const chartGrid = document.querySelector('.chart-grid'); // Grid, johon viivakaaviot piirretään
-const title = document.querySelector('#chartHeaderTitle'); // Otsikko modalin yläosassa
 
-let rawData = []; // Tänne tallennetaan mockdata.json tiedot
+
+ // HRV-kaavio modaali
+ const chartModal = document.getElementById('chartModal'); // Modaali-ikkuna, jossa kaaviot näkyvät
+ const chartOpen = document.getElementById('openChartBtn'); // Nappi: Näytä HRV-kaaviot
+ const chartspan = chartModal.querySelector('.close'); // Sulje-nappi (rasti oikeassa yläkulmassa)
+ const btn7 = document.getElementById('btn7days'); // Nappi: Viimeiset 7 päivää
+ const btn30 = document.getElementById('btn30days'); // Nappi: Viimeiset 30 päivää
+ const pieCanvas = document.getElementById('hrvPieChart'); // Canvas-elementti polar-kaaviolle
+ const chartGrid = document.querySelector('.chart-grid'); // Grid, johon viivakaaviot piirretään
+ const title = document.querySelector('#chartHeaderTitle'); // Otsikko modalin yläosassa
+ 
+ // Päiväkirja modaali
+ const diaryModal = document.getElementById('diaryModal'); // Modaali-ikkuna, jossa kaaviot näkyvät
+ const diaryOpen = document.getElementById('openDiaryBtn'); // Nappi: Lisää päiväkirjamerkintä
+ const diaryspan = diaryModal.querySelector('.close'); // Sulje-nappi (rasti oikeassa yläkulmassa)
+ 
+ let rawData = []; // Tänne tallennetaan mockdata.json tiedot
 let pieChart = null; // Tänne tallennetaan piirrettävä polar-kaavio
 
-chartOpen.onclick = async () => {
-  chartModal.style.display = 'block'; // Näytetään modaali
-  title.textContent = 'HRV-arvot (uusin päivä)'; // Päivitetään otsikko
-  pieCanvas.style.display = 'block'; // Näytetään polar-kaavio
-  chartGrid.innerHTML = ''; // Tyhjennetään viivakaaviot
-
-  try {
-    const res = await fetch('/mockdata.json'); // Haetaan tiedot mockdata.json-tiedostosta
-    const data = await res.json(); // Muutetaan JSONiksi
-    rawData = data.results;
-     // Käytetään backendin dataa, jos se on saatavilla
-    //const res = await fetch('http://localhost:3000/api/kubios/user-data', {
-    // headers: {
-    //   Authorization: `Bearer ${localStorage.getItem('token')}`
-      //}
-    //});
-    //const data = await res.json();
-    //rawData = data.results;
-    const latest = rawData[rawData.length - 1]; // Otetaan uusin päivä
-    drawPieChart(latest); // Piirretään polar-kaavio
-  } catch (err) {
-    console.error("Data loading error:", err); // Näytetään virhe konsoliin
-  }
+ // Avataan HRV-kaavio modal
+ chartOpen.onclick = async () => {
+   chartModal.style.display = 'block'; // Näytetään HRV-kaavio modaali
+   title.textContent = 'HRV-arvot (uusin päivä)'; // Päivitetään otsikko
+   pieCanvas.style.display = 'block'; // Näytetään polar-kaavio
+   chartGrid.innerHTML = ''; // Tyhjennetään viivakaaviot
+ 
+ try {
+  const res = await fetch('/mockdata.json'); // Haetaan tiedot mockdata.json-tiedostosta
+  const data = await res.json(); // Muutetaan JSONiksi
+  rawData = data.results;
+   // Käytetään backendin dataa, jos se on saatavilla
+  //const res = await fetch('http://localhost:3000/api/kubios/user-data', {
+  // headers: {
+  //   Authorization: `Bearer ${localStorage.getItem('token')}`
+    //}
+  //});
+  //const data = await res.json();
+  //rawData = data.results;
+  const latest = rawData[rawData.length - 1]; // Otetaan uusin päivä
+  drawPieChart(latest); // Piirretään polar-kaavio
+} catch (err) {
+  console.error("Data loading error:", err); // Näytetään virhe konsoliin
 }
-
-//Modaali sulkeutuu kun klikataan rasti tai modaali-alueen ulkopuolelle
-chartSpan.onclick = () => chartModal.style.display = 'none';
-window.onclick = (e) => {
-  if (e.target == modal) chartModal.style.display = 'none';
-};
-
-btn7.onclick = () => {
+ }
+ btn7.onclick = () => {
   chartGrid.innerHTML = ''; // Tyhjennetään kaaviot
   pieCanvas.style.display = 'none'; // Piilotetaan polar-kaavio
   title.textContent = 'HRV-arvot (viimeiset 7 päivää)'; // Otsikko
@@ -479,7 +479,7 @@ btn30.onclick = () => {
   drawLineCharts(30);
 };
 
-//Polar-kaavion piirtäminen yhdelle päivälle
+ //Polar-kaavion piirtäminen yhdelle päivälle
 function drawPieChart(day) {
   if (!pieCanvas) return;
 
@@ -599,20 +599,20 @@ function drawLineCharts(days) {
     setInterval(() => chart.update(), 2000);
   });
 }
-
-// Päiväkirja modaali
-const diaryModal = document.getElementById('diaryModal'); // Modaali-ikkuna, jossa kaaviot näkyvät
-const diaryOpen = document.getElementById('openDiaryBtn'); // Nappi: Lisää päiväkirjamerkintä
-const diarySpan = diaryModal.querySelector('.close'); // Sulje-nappi (rasti oikeassa yläkulmassa)
-
-// Avataan päiväkirja modal
-diaryOpen.onclick = () => {
-  diaryModal.style.display = 'block'; // Näytetään päiväkirja modaali
-};
-
-// Suljetaan päiväkirja modal
-diarySpan.onclick = () => diaryModal.style.display = 'none';
-window.onclick = (e) => {
-  if (e.target == diaryModal) diaryModal.style.display = 'none';
-};
-}
+ 
+ // Suljetaan HRV-kaavio modal
+ chartspan.onclick = () => chartModal.style.display = 'none';
+ window.onclick = (e) => {
+   if (e.target == chartModal) chartModal.style.display = 'none';
+ };
+ 
+ // Avataan päiväkirja modal
+ diaryOpen.onclick = () => {
+   diaryModal.style.display = 'block'; // Näytetään päiväkirja modaali
+ };
+ 
+ // Suljetaan päiväkirja modal
+ diaryspan.onclick = () => diaryModal.style.display = 'none';
+ window.onclick = (e) => {
+   if (e.target == diaryModal) diaryModal.style.display = 'none';
+ };}
