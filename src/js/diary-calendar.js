@@ -148,7 +148,19 @@ function updateCalendar(year, month) {
 
         // Lisää merkintäindikaattorit, jos kyseisellä päivällä on merkintöjä
         if (window.userEntries) {
-            const dayEntries = window.userEntries.filter(entry => entry.entry_date === dateStr);
+            const dayEntries = window.userEntries.filter(entry => {
+                // Muunna entry_date kokonaiseksi päivämääräksi
+                const entryDate = new Date(entry.entry_date);
+                // Muunna vertailtava dateStr päivämääräksi
+                const compareDate = new Date(dateStr);
+                
+                // Vertaa pelkkiä päivämääriä ilman kellonaikaa
+                return (
+                    entryDate.getFullYear() === compareDate.getFullYear() &&
+                    entryDate.getMonth() === compareDate.getMonth() &&
+                    entryDate.getDate() === compareDate.getDate()
+                );
+            });
             
             if (dayEntries.length > 0) {
                 // Tallenna merkinnät data-attribuuttiin
@@ -158,31 +170,33 @@ function updateCalendar(year, month) {
                 const indicatorsContainer = document.createElement('div');
                 indicatorsContainer.style.display = 'flex';
                 indicatorsContainer.style.justifyContent = 'center';
+                indicatorsContainer.style.alignItems = 'center';
                 indicatorsContainer.style.gap = '2px';
-                indicatorsContainer.style.marginTop = '2px';
+                indicatorsContainer.style.marginTop = '5px'; // Lisää tilaa päivän numeron alapuolelle
                 
-               // Tarkista onko aamumerkintä
-               if (dayEntries.some(entry => entry.time_of_day === 'morning')) {
-                const morningIcon = document.createElement('img');
-                morningIcon.src = '/src/img/sun.png';
-                morningIcon.alt = 'Aamu-merkintä';
-                morningIcon.classList.add('morning-indicator');
-                morningIcon.style.width = '16px';
-                morningIcon.style.height = '16px';
-                indicatorsContainer.appendChild(morningIcon);
-            }
-            
-            // Tarkista onko iltamerkintä
-            if (dayEntries.some(entry => entry.time_of_day === 'evening')) {
-                const eveningIcon = document.createElement('img');
-                eveningIcon.src = '/src/img/moon.png';
-                eveningIcon.alt = 'Ilta-merkintä';
-                eveningIcon.classList.add('evening-indicator');
-                eveningIcon.style.width = '16px';
-                eveningIcon.style.height = '16px';
-                indicatorsContainer.appendChild(eveningIcon);
-            }
+                // Tarkista onko aamumerkintä
+                if (dayEntries.some(entry => entry.time_of_day === 'morning')) {
+                    const morningIcon = document.createElement('img');
+                    morningIcon.src = '/src/img/sun.png';
+                    morningIcon.alt = 'Aamu-merkintä';
+                    morningIcon.style.width = '16px';
+                    morningIcon.style.height = '16px';
+                    morningIcon.style.zIndex = '10';
+                    indicatorsContainer.appendChild(morningIcon);
+                }
                 
+                // Tarkista onko iltamerkintä
+                if (dayEntries.some(entry => entry.time_of_day === 'evening')) {
+                    const eveningIcon = document.createElement('img');
+                    eveningIcon.src = '/src/img/moon.png';
+                    eveningIcon.alt = 'Ilta-merkintä';
+                    eveningIcon.style.width = '16px';
+                    eveningIcon.style.height = '16px';
+                    eveningIcon.style.zIndex = '10';
+                    indicatorsContainer.appendChild(eveningIcon);
+                }
+                
+                // Lisää ikonit päivän numeron jälkeen
                 dayElement.appendChild(indicatorsContainer);
             }
         }
@@ -205,56 +219,6 @@ function updateCalendar(year, month) {
 }
 
 /**
- * Hakee käyttäjän merkinnät palvelimelta
- */
-async function fetchUserEntries() {
-    try {
-        // Haetaan kirjautuneen käyttäjän tiedot
-        const userData = localStorage.getItem('user');
-        if (!userData) {
-            console.error('Käyttäjätietoja ei löydy');
-            return;
-        }
-        
-        const user = JSON.parse(userData);
-        const token = user.token;
-        
-        if (!token) {
-            console.error('Token puuttuu käyttäjätiedoista');
-            return;
-        }
-        
-        // Haetaan käyttäjän merkinnät
-        const response = await fetch('http://localhost:5000/api/entries/user/' + user.userId, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        
-        if (!response.ok) {
-            throw new Error('Merkintöjen haku epäonnistui: ' + response.status);
-        }
-        
-        const entries = await response.json();
-        console.log('Käyttäjän merkinnät haettu:', entries);
-        
-        // Tallennetaan merkinnät globaaliin muuttujaan, jotta ne ovat saatavilla kalenterille
-        window.userEntries = entries;
-        
-        // Haetaan myös HRV-arvot kuukaudelle
-        await fetchMonthHrvData(token);
-        
-        // Päivitä kalenteri näyttämään merkinnät
-        const [year, month] = getCurrentYearMonth();
-        updateCalendar(year, month);
-        
-    } catch (error) {
-        console.error('Virhe merkintöjen haussa:', error);
-        document.getElementById('calendar-notification').textContent = 'Merkintöjen haku epäonnistui';
-    }
-}
-
-/**
  * Hakee kuukauden HRV-arvot ja tallentaa ne globaaliin muuttujaan
  * @param {string} token - Käyttäjän JWT-token
  */
@@ -267,35 +231,11 @@ async function fetchMonthHrvData(token) {
         });
         
         if (!response.ok) {
-            throw new Error('HRV-arvojen haku epäonnistui: ' + response.status);
+            throw new Error(`HRV-arvojen haku epäonnistui: ${response.status} ${response.statusText}`);
         }
         
         const data = await response.json();
         console.log('HRV-arvot haettu:', data);
-        
-        // Käyttäjän ikä (esimerkkinä käytetään 30-vuotiasta, ikäryhmä 26-35)
-        const userData = JSON.parse(localStorage.getItem('user'));
-        let age = 30; // Oletusarvo, jos ikää ei voida laskea
-        
-        // Jos käyttäjän syntymäpäivä on tiedossa, lasketaan ikä
-        if (userData && userData.user && userData.user.birthdate) {
-            const birthdate = new Date(userData.user.birthdate);
-            const today = new Date();
-            age = today.getFullYear() - birthdate.getFullYear();
-            
-            // Vähennetään yksi vuosi, jos syntymäpäivä on vielä edessä kuluvan vuoden aikana
-            const m = today.getMonth() - birthdate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthdate.getDate())) {
-                age--;
-            }
-        }
-        
-        // Määritellään poikkeavien arvojen rajat iän mukaan
-        // Oletetaan 26-35-vuotias (kuten ohjeissa mainittiin)
-        const abnormalThresholds = {
-            rmssd: { min: 20, max: 90 },
-            sdnn: { min: 40, max: 130 }
-        };
         
         // Tallennetaan HRV-arvot päiväkohtaisesti
         window.hrvData = {};
@@ -307,19 +247,103 @@ async function fetchMonthHrvData(token) {
             const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD
             
             // Tarkista, onko RMSSD tai SDNN poikkeava
-            const isRmssdAbnormal = item.rmssd < abnormalThresholds.rmssd.min || item.rmssd > abnormalThresholds.rmssd.max;
-            const isSdnnAbnormal = item.sdnn < abnormalThresholds.sdnn.min || item.sdnn > abnormalThresholds.sdnn.max;
+            const isRmssdAbnormal = item.rmssd < 20 || item.rmssd > 90;
+            const isSdnnAbnormal = item.sdnn < 40 || item.sdnn > 130;
             
             window.hrvData[dateString] = {
                 rmssd: item.rmssd,
                 sdnn: item.sdnn,
-                isAbnormal: isRmssdAbnormal || isSdnnAbnormal
+                heart_rate: item.heart_rate,
+                mean_rr: item.mean_rr,
+                pns_index: item.pns_index,
+                sns_index: item.sns_index,
+                isAbnormal: isRmssdAbnormal || isSdnnAbnormal,
+                rmssdAbnormal: isRmssdAbnormal,
+                sdnnAbnormal: isSdnnAbnormal
             };
         });
         
         console.log('HRV-data käsitelty:', window.hrvData);
     } catch (error) {
         console.error('Virhe HRV-datan haussa:', error);
+        window.hrvData = {}; // Varmista, että hrvData on aina olemassa
+    }
+}
+
+/**
+ * Hakee käyttäjän merkinnät palvelimelta
+ */
+async function fetchUserEntries() {
+    try {
+        // Haetaan kirjautuneen käyttäjän tiedot
+        const userData = localStorage.getItem('user');
+        if (!userData) {
+            console.error('Käyttäjätietoja ei löydy');
+            window.userEntries = []; // Alusta tyhjä taulukko
+            updateCalendar(new Date().getFullYear(), new Date().getMonth());
+            return;
+        }
+        
+        const user = JSON.parse(userData);
+        const token = user.token;
+        
+        if (!token) {
+            console.error('Token puuttuu käyttäjätiedoista');
+            window.userEntries = []; // Alusta tyhjä taulukko
+            updateCalendar(new Date().getFullYear(), new Date().getMonth());
+            return;
+        }
+        
+        // Haetaan käyttäjän merkinnät
+        const response = await fetch(`http://localhost:5000/api/entries/user`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Merkintöjen haku epäonnistui: ${response.status} ${response.statusText}`);
+        }
+        
+        const entries = await response.json();
+        console.log('Käyttäjän merkinnät haettu:', entries);
+        
+        // Tallennetaan merkinnät globaaliin muuttujaan, jotta ne ovat saatavilla kalenterille
+        window.userEntries = entries || [];
+        
+        // Haetaan myös HRV-arvot kuukaudelle
+        await fetchMonthHrvData(token);
+        
+        // Päivitä kalenteri näyttämään merkinnät
+        const [year, month] = getCurrentYearMonth();
+        updateCalendar(year, month);
+        
+    } catch (error) {
+        console.error('Virhe merkintöjen haussa:', error);
+        
+        // Varmista, että calendar-notification elementti on olemassa
+        let notificationElement = document.getElementById('calendar-notification');
+        if (!notificationElement) {
+            notificationElement = document.createElement('div');
+            notificationElement.id = 'calendar-notification';
+            notificationElement.classList.add('calendar-notification');
+            
+            // Lisää notification elementti kalenterin yläpuolelle
+            const calendarContainer = document.getElementById('calendar-container');
+            if (calendarContainer) {
+                calendarContainer.parentNode.insertBefore(notificationElement, calendarContainer);
+            }
+        }
+        
+        // Päivitä virheilmoitus
+        notificationElement.textContent = 'Merkintöjen haku epäonnistui: ' + error.message;
+        
+        // Alusta tyhjät taulukot varmuuden vuoksi
+        window.userEntries = [];
+        window.hrvData = {};
+        
+        // Päivitä kalenteri
+        updateCalendar(new Date().getFullYear(), new Date().getMonth());
     }
 }
 
@@ -356,7 +380,6 @@ function selectDate(dayElement) {
         }
     });
     window.dispatchEvent(dateChangedEvent);
-    
 }
 
 /**
@@ -365,8 +388,13 @@ function selectDate(dayElement) {
  */
 function getCurrentYearMonth() {
     const calendarContainer = document.getElementById('calendar-container');
-    return [
-        parseInt(calendarContainer.dataset.year),
-        parseInt(calendarContainer.dataset.month)
-    ];
+    const currentYear = calendarContainer ? 
+        parseInt(calendarContainer.dataset.year) : 
+        new Date().getFullYear();
+    
+    const currentMonth = calendarContainer ? 
+        parseInt(calendarContainer.dataset.month) : 
+        new Date().getMonth();
+    
+    return [currentYear, currentMonth];
 }
