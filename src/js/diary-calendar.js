@@ -214,7 +214,7 @@ async function fetchUserEntries() {
         }
         
         // Haetaan käyttäjän merkinnät
-        const response = await fetch('http://localhost:3000/api/entries/user/' + user.userId, {
+        const response = await fetch('http://localhost:5000/api/entries/user/' + user.userId, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
