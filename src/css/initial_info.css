@@ -19,6 +19,7 @@ input, textarea {
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 20px;
 }
 
 
@@ -42,12 +43,17 @@ input, textarea {
     display: block;
     font-weight: bold;
     margin-top: 10px;
+    font-size: 20px;
 }
 
 #infoForm span {
     display: block;
     background: white;
-    padding: 20px;
+    padding-top: 2px;
+    padding-bottom: 20px;
     border-radius: 10px;
-    border: 1px solid #ccc;
+}
+
+p {
+    margin-top: 0%;
 }

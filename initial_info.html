@@ -37,16 +37,16 @@
         <form id="infoForm">
 
             <label>Nikotiinituotteet, alkoholi ja muut päihteet:</label>
-            <textarea name="drug_use"></textarea>
+            <textarea name="drug_use" maxlength="100"></textarea>
 
             <label>Sairaudet ja lääkitykset:</label>
-            <textarea name="diseases_medications"></textarea>
+            <textarea name="diseases_medications" maxlength="100"></textarea>
 
             <label>Nukun mielestäni hyvin (kyllä/ei, miksi?):</label>
-            <textarea name="sleep"></textarea>
+            <textarea name="sleep" maxlength="100"></textarea>
 
             <label>Oma arvio voinnistani:</label>
-            <textarea name="self_assessment"></textarea>
+            <textarea name="self_assessment" maxlength="200"></textarea>
 
             <button type="submit" id="submit-button">Jatka</button>
         </form>
@@ -55,6 +55,29 @@
     <footer>NuFlow © 2025</footer>
     <script type="module" src="/src/js/auth.js"></script>
     <script type="module" src="/src/js/myinfo.js"></script>
+    <script>
+      document.querySelectorAll('textarea').forEach(textarea => {
+const maxLength = textarea.getAttribute('maxlength');
+
+// Luo näyttö jäljellä olevista merkeistä
+const counter = document.createElement('p');
+const span = document.createElement('span');
+span.textContent = `${maxLength}`;
+counter.innerHTML = `Merkkejä jäljellä: `;
+counter.appendChild(span);
+
+// Lisää laskuri tekstialueen jälkeen
+textarea.parentNode.insertBefore(counter, textarea.nextSibling);
+
+// Päivitä jäljellä olevat merkit kirjoitettaessa
+textarea.addEventListener('input', () => {
+  const remaining = maxLength - textarea.value.length;
+  span.textContent = remaining;
+});
+});
+
+    </script>
+
     
 </body>
 </html>

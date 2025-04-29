@@ -1,0 +1,4 @@
+# Node.js riippuvuudet
+node_modules/
+# MacOS piilotiedostot
+.DS_Store

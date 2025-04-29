@@ -44,7 +44,7 @@
           <!-- Päiväkirja-modal -->
           <div id="diaryModal" class="modal">
             <div class="modal-content">
-              <span class="close">&times;</span>
+              <span class="close-modal">&times;</span>
               <form id="diaryForm">
                 <div class="time-selector">
                   <span>Kirjauksen ajankohta:</span>
@@ -113,7 +113,7 @@
                   </div>
                   <input type="range" min="1" max="5" value="3" class="slider" id="sleepRange">
                 </div>
-                <textarea placeholder="Lisätietoa..."></textarea>
+                <textarea placeholder="Lisätietoa..." maxlength="250"></textarea>
 
                 <h2>Oloni juuri nyt</h2>
                 <div class="slidecontainer">
@@ -126,7 +126,7 @@
                   </div>
                   <input type="range" min="1" max="5" value="3" class="slider" id="moodRange">
                 </div>
-                <textarea placeholder="Tähän voit kirjoittaa muita muistiinpanoja..."></textarea>
+                <textarea placeholder="Tähän voit kirjoittaa muita muistiinpanoja: " maxlength="250"></textarea>
 
                 <button id="submit-button" type="submit">Tallenna</button>
                 <div id="saveMessageContainer">
@@ -138,7 +138,7 @@
           <!-- Modaali -->
           <div id="chartModal" class="modal">
             <div class="Chartmodal-content">
-              <span class="close">&times;</span>
+              <span class="close-modal">&times;</span>
               <!-- Nappiryhmä (7/30 päivää) -->
               <div class="daybuttons">
                 <button id="btn7days">Viimeiset 7 päivää</button>
@@ -160,5 +160,27 @@
       <script type="module" src="/src/js/diary.js"></script>
       <script type="module" src="/src/js/auth.js"></script>
       <script type="module" src="/src/js/diary-calendar.js"></script>
+      <script>
+        document.querySelectorAll('textarea').forEach(textarea => {
+  const maxLength = textarea.getAttribute('maxlength');
+
+  // Luo näyttö jäljellä olevista merkeistä
+  const counter = document.createElement('p');
+  const span = document.createElement('span');
+  span.textContent = `${maxLength}`;
+  counter.innerHTML = `Merkkejä jäljellä: `;
+  counter.appendChild(span);
+
+  // Lisää laskuri tekstialueen jälkeen
+  textarea.parentNode.insertBefore(counter, textarea.nextSibling);
+
+  // Päivitä jäljellä olevat merkit kirjoitettaessa
+  textarea.addEventListener('input', () => {
+    const remaining = maxLength - textarea.value.length;
+    span.textContent = remaining;
+  });
+});
+
+      </script>
 
       </html>
