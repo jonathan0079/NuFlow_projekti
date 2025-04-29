@@ -103,9 +103,10 @@ function updateCalendar(year, month) {
     dayElements.forEach(day => {
         day.textContent = '';
         day.style.backgroundColor = '';
-        day.classList.remove('current-month', 'today', 'selected');
+        day.classList.remove('current-month', 'today', 'selected', 'abnormal-hrv');
         day.removeAttribute('data-date'); // Poista vanha päivämäärä
         day.removeAttribute('data-entries'); // Poista vanhat merkinnät
+        day.removeAttribute('data-hrv'); // Poista vanhat HRV-arvot
         day.style.visibility = 'hidden'; // Piilota kaikki päivät aluksi
         
         // Poista kaikki aiemmat lapsielementit
@@ -160,29 +161,39 @@ function updateCalendar(year, month) {
                 indicatorsContainer.style.gap = '2px';
                 indicatorsContainer.style.marginTop = '2px';
                 
-                // Tarkista onko aamumerkintä
-                if (dayEntries.some(entry => entry.time_of_day === 'morning')) {
-                    const morningDot = document.createElement('span');
-                    morningDot.classList.add('morning-indicator');
-                    morningDot.style.width = '5px';
-                    morningDot.style.height = '5px';
-                    morningDot.style.borderRadius = '50%';
-                    morningDot.style.display = 'inline-block';
-                    indicatorsContainer.appendChild(morningDot);
-                }
-                
-                // Tarkista onko iltamerkintä
-                if (dayEntries.some(entry => entry.time_of_day === 'evening')) {
-                    const eveningDot = document.createElement('span');
-                    eveningDot.classList.add('evening-indicator');
-                    eveningDot.style.width = '5px';
-                    eveningDot.style.height = '5px';
-                    eveningDot.style.borderRadius = '50%';
-                    eveningDot.style.display = 'inline-block';
-                    indicatorsContainer.appendChild(eveningDot);
-                }
+               // Tarkista onko aamumerkintä
+               if (dayEntries.some(entry => entry.time_of_day === 'morning')) {
+                const morningIcon = document.createElement('img');
+                morningIcon.src = '/src/img/sun.png';
+                morningIcon.alt = 'Aamu-merkintä';
+                morningIcon.classList.add('morning-indicator');
+                morningIcon.style.width = '16px';
+                morningIcon.style.height = '16px';
+                indicatorsContainer.appendChild(morningIcon);
+            }
+            
+            // Tarkista onko iltamerkintä
+            if (dayEntries.some(entry => entry.time_of_day === 'evening')) {
+                const eveningIcon = document.createElement('img');
+                eveningIcon.src = '/src/img/moon.png';
+                eveningIcon.alt = 'Ilta-merkintä';
+                eveningIcon.classList.add('evening-indicator');
+                eveningIcon.style.width = '16px';
+                eveningIcon.style.height = '16px';
+                indicatorsContainer.appendChild(eveningIcon);
+            }
                 
                 dayElement.appendChild(indicatorsContainer);
+            }
+        }
+
+        // Tarkista onko poikkeava HRV-arvo kyseiselle päivälle
+        if (window.hrvData && window.hrvData[dateStr]) {
+            const hrvValues = window.hrvData[dateStr];
+            // Tarkista onko poikkeava arvo
+            if (hrvValues.isAbnormal) {
+                dayElement.classList.add('abnormal-hrv');
+                dayElement.dataset.hrv = JSON.stringify(hrvValues);
             }
         }
 
@@ -230,6 +241,9 @@ async function fetchUserEntries() {
         // Tallennetaan merkinnät globaaliin muuttujaan, jotta ne ovat saatavilla kalenterille
         window.userEntries = entries;
         
+        // Haetaan myös HRV-arvot kuukaudelle
+        await fetchMonthHrvData(token);
+        
         // Päivitä kalenteri näyttämään merkinnät
         const [year, month] = getCurrentYearMonth();
         updateCalendar(year, month);
@@ -237,6 +251,75 @@ async function fetchUserEntries() {
     } catch (error) {
         console.error('Virhe merkintöjen haussa:', error);
         document.getElementById('calendar-notification').textContent = 'Merkintöjen haku epäonnistui';
+    }
+}
+
+/**
+ * Hakee kuukauden HRV-arvot ja tallentaa ne globaaliin muuttujaan
+ * @param {string} token - Käyttäjän JWT-token
+ */
+async function fetchMonthHrvData(token) {
+    try {
+        const response = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('HRV-arvojen haku epäonnistui: ' + response.status);
+        }
+        
+        const data = await response.json();
+        console.log('HRV-arvot haettu:', data);
+        
+        // Käyttäjän ikä (esimerkkinä käytetään 30-vuotiasta, ikäryhmä 26-35)
+        const userData = JSON.parse(localStorage.getItem('user'));
+        let age = 30; // Oletusarvo, jos ikää ei voida laskea
+        
+        // Jos käyttäjän syntymäpäivä on tiedossa, lasketaan ikä
+        if (userData && userData.user && userData.user.birthdate) {
+            const birthdate = new Date(userData.user.birthdate);
+            const today = new Date();
+            age = today.getFullYear() - birthdate.getFullYear();
+            
+            // Vähennetään yksi vuosi, jos syntymäpäivä on vielä edessä kuluvan vuoden aikana
+            const m = today.getMonth() - birthdate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthdate.getDate())) {
+                age--;
+            }
+        }
+        
+        // Määritellään poikkeavien arvojen rajat iän mukaan
+        // Oletetaan 26-35-vuotias (kuten ohjeissa mainittiin)
+        const abnormalThresholds = {
+            rmssd: { min: 20, max: 90 },
+            sdnn: { min: 40, max: 130 }
+        };
+        
+        // Tallennetaan HRV-arvot päiväkohtaisesti
+        window.hrvData = {};
+        
+        data.forEach(item => {
+            if (!item.daily_result) return;
+            
+            const date = new Date(item.daily_result);
+            const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD
+            
+            // Tarkista, onko RMSSD tai SDNN poikkeava
+            const isRmssdAbnormal = item.rmssd < abnormalThresholds.rmssd.min || item.rmssd > abnormalThresholds.rmssd.max;
+            const isSdnnAbnormal = item.sdnn < abnormalThresholds.sdnn.min || item.sdnn > abnormalThresholds.sdnn.max;
+            
+            window.hrvData[dateString] = {
+                rmssd: item.rmssd,
+                sdnn: item.sdnn,
+                isAbnormal: isRmssdAbnormal || isSdnnAbnormal
+            };
+        });
+        
+        console.log('HRV-data käsitelty:', window.hrvData);
+    } catch (error) {
+        console.error('Virhe HRV-datan haussa:', error);
     }
 }
 
@@ -261,11 +344,15 @@ function selectDate(dayElement) {
     const entriesData = dayElement.dataset.entries;
     const entries = entriesData ? JSON.parse(entriesData) : [];
     
+    // Hae HRV-data valitulle päivälle
+    const hrvData = dayElement.dataset.hrv ? JSON.parse(dayElement.dataset.hrv) : null;
+    
     // Lähetä päivämäärän valinnan tapahtuma
     const dateChangedEvent = new CustomEvent('selectedDateChanged', {
         detail: {
             date: selectedDate,
-            entries: entries
+            entries: entries,
+            hrvData: hrvData
         }
     });
     window.dispatchEvent(dateChangedEvent);

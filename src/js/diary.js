@@ -13,6 +13,14 @@ function getAuthToken() {
 let pieChart = null;
 let fullRawData = [];
 
+// HRV-raja-arvot ikäryhmittäin
+const HRV_THRESHOLDS = {
+  '18-25': { rmssd: { min: 25, max: 100 }, sdnn: { min: 50, max: 150 } },
+  '26-35': { rmssd: { min: 20, max: 90 }, sdnn: { min: 40, max: 130 } },
+  '36-45': { rmssd: { min: 15, max: 80 }, sdnn: { min: 30, max: 110 } },
+  '46-56': { rmssd: { min: 10, max: 60 }, sdnn: { min: 20, max: 80 } }
+};
+
 //  Kun sivun HTML on ladattu selaimessa
 document.addEventListener('DOMContentLoaded', () => {
   const token = getAuthToken(); // Haetaan käyttäjän token (auth.js tiedostosta)
@@ -29,7 +37,62 @@ document.addEventListener('DOMContentLoaded', () => {
   // Käynnistetään päiväkirjan päätoiminnallisuus
   initDiary(token);
   setupModalFunctionality();
+  
+  // Lisää HRV-selite kalenteriin
+  addHrvLegend();
 });
+
+// Lisää selitteen kalenteriin poikkeavista HRV-arvoista
+function addHrvLegend() {
+  const calendarContainer = document.getElementById('calendar-container');
+  if (!calendarContainer) return;
+  
+  // Tarkista onko selite jo olemassa
+  if (document.querySelector('.calendar-legend')) return;
+  
+// Lisää selite (legend)
+const legend = document.createElement('div');
+legend.classList.add('calendar-legend');
+  
+// Lisää selitteet
+const legendItems = [
+  { icon: '/src/img/sun.png', text: 'Aamu-merkintä', alt: 'Aurinko' },
+  { icon: '/src/img/moon.png', text: 'Ilta-merkintä', alt: 'Kuu' },
+  { class: 'abnormal-hrv', text: 'Poikkeava HRV', type: 'box' }
+];
+  
+legendItems.forEach(item => {
+  const legendItem = document.createElement('div');
+  legendItem.classList.add('legend-item');
+  
+  if (item.type === 'box') {
+    // Laatikkotyylinen selite (poikkeava HRV)
+    const indicator = document.createElement('span');
+    indicator.style.width = '15px';
+    indicator.style.height = '15px';
+    indicator.style.backgroundColor = '#ffcdd2';
+    indicator.style.border = '1px solid #e57373';
+    legendItem.appendChild(indicator);
+  } else {
+    // Ikoni-selite (aamu/ilta)
+    const icon = document.createElement('img');
+    icon.src = item.icon;
+    icon.alt = item.alt;
+    icon.style.width = '16px';
+    icon.style.height = '16px';
+    legendItem.appendChild(icon);
+  }
+  
+  const text = document.createElement('span');
+  text.textContent = item.text;
+  
+  legendItem.appendChild(text);
+  legend.appendChild(legendItem);
+});
+  
+  // Lisää selite kalenterin loppuun
+  calendarContainer.appendChild(legend);
+}
 
 // Asettaa modaalien toiminnallisuuden
 function setupModalFunctionality() {
@@ -86,6 +149,9 @@ function setupModalFunctionality() {
         
         const latest = fullRawData[fullRawData.length - 1];
         drawPieChart(latest); // Piirretään polar-kaavio
+        
+        // Käsitellään data kalenteria varten poikkeavien arvojen tarkistamiseksi
+        processHrvDataForCalendar(fullRawData);
       } catch (err) {
         console.error("Data loading error:", err);
         // Näytä käyttäjälle viesti, ettei dataa ole saatavilla
@@ -194,6 +260,9 @@ function setupModalFunctionality() {
         }
         
         drawLineCharts(7);
+        
+        // Käsitellään data kalenteria varten
+        processHrvDataForCalendar(fullRawData);
       } catch (err) {
         console.error("Data loading error:", err);
         alert('Ei HRV-dataa saatavilla');
@@ -238,12 +307,101 @@ function setupModalFunctionality() {
         }
         
         drawLineCharts(30);
+        
+        // Käsitellään data kalenteria varten
+        processHrvDataForCalendar(fullRawData);
       } catch (err) {
         console.error("Data loading error:", err);
         alert('Ei HRV-dataa saatavilla');
       }
     });
   }
+}
+
+/**
+ * Käsittelee HRV-datan kalenteria varten ja merkitsee poikkeavat arvot
+ * @param {Array} hrvData - HRV-mittausten tiedot
+ */
+function processHrvDataForCalendar(hrvData) {
+  if (!hrvData || !hrvData.length) return;
+  
+  // Haetaan käyttäjän ikä
+  let ageGroup = '26-35'; // Oletusikäryhmä
+  
+  try {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    if (userData && userData.user && userData.user.birthdate) {
+      const birthDate = new Date(userData.user.birthdate);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      
+      // Tarkistetaan onko syntymäpäivä jo ollut tänä vuonna
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      
+      // Määritetään ikäryhmä
+      if (age >= 18 && age <= 25) {
+        ageGroup = '18-25';
+      } else if (age >= 26 && age <= 35) {
+        ageGroup = '26-35';
+      } else if (age >= 36 && age <= 45) {
+        ageGroup = '36-45';
+      } else if (age >= 46 && age <= 56) {
+        ageGroup = '46-56';
+      }
+    }
+  } catch (e) {
+    console.error('Virhe käyttäjän iän laskemisessa:', e);
+  }
+  
+  console.log('Käytetään ikäryhmää:', ageGroup);
+  
+  // Käytetään oikeita raja-arvoja ikäryhmän mukaan
+  const thresholds = HRV_THRESHOLDS[ageGroup];
+  
+  // Tallennetaan käsitelty data globaaliin muuttujaan
+  window.hrvData = {};
+  
+  // Käydään läpi kaikki mittaukset
+  hrvData.forEach(item => {
+    if (!item.daily_result) return;
+    
+    // Muunnetaan date-string muotoon YYYY-MM-DD
+    const dateStr = new Date(item.daily_result).toISOString().split('T')[0];
+    
+    // Tarkistetaan raja-arvot
+    const isRmssdAbnormal = item.rmssd < thresholds.rmssd.min || item.rmssd > thresholds.rmssd.max;
+    const isSdnnAbnormal = item.sdnn < thresholds.sdnn.min || item.sdnn > thresholds.sdnn.max;
+    const isAbnormal = isRmssdAbnormal || isSdnnAbnormal;
+    
+    // Tallennetaan mittauksen tiedot
+    window.hrvData[dateStr] = {
+      rmssd: item.rmssd,
+      sdnn: item.sdnn,
+      heart_rate: item.heart_rate,
+      mean_rr: item.mean_rr,
+      pns_index: item.pns_index,
+      sns_index: item.sns_index,
+      isAbnormal: isAbnormal,
+      rmssdAbnormal: isRmssdAbnormal,
+      sdnnAbnormal: isSdnnAbnormal
+    };
+    
+    // Jos päivä on kalenterissa näkyvissä, lisätään sille luokka
+    const dayElement = document.querySelector(`.calendar-day[data-date="${dateStr}"]`);
+    if (dayElement && isAbnormal) {
+      dayElement.classList.add('abnormal-hrv');
+      
+      // Lisätään data-attribuutti arvoja varten
+      dayElement.dataset.hrv = JSON.stringify(window.hrvData[dateStr]);
+      
+      console.log(`Merkitty päivä ${dateStr} poikkeavaksi HRV-arvoksi. RMSSD: ${item.rmssd}, SDNN: ${item.sdnn}`);
+    }
+  });
+  
+  console.log('HRV-data käsitelty kalenteria varten:', window.hrvData);
 }
 
 // Luo modalille overlay-elementin
@@ -351,7 +509,7 @@ function initDiary(token) {
 
   // Kuuntelee kalenterista tulevaa päivämäärätapahtumaa
   window.addEventListener('selectedDateChanged', async (event) => {
-    const { date, entries } = event.detail;
+    const { date, entries, hrvData } = event.detail;
     
     const user = JSON.parse(localStorage.getItem('user'));
     const userId = user.user_id || user.id || user.userId;
@@ -361,26 +519,63 @@ function initDiary(token) {
       // Täytä päiväkirjalomake valitun päivän tiedoilla
       populateDiaryForm(entries[entries.length - 1]);
       
-      // Hae HRV-data valitulle päivämäärälle
-      try {
-        await fetchHrvDataForSelectedDate(token, date);
-      } catch (error) {
-        console.error('HRV-datan haku epäonnistui:', error);
+      // Jos HRV-data tuli kalenterista
+      if (hrvData) {
+        displayHrvData(hrvData);
+      } else {
+        // Hae HRV-data valitulle päivämäärälle
+        try {
+          await fetchHrvDataForSelectedDate(token, date);
+        } catch (error) {
+          console.error('HRV-datan haku epäonnistui:', error);
+        }
       }
     } else {
       // Tyhjennä lomake ja HRV-arvot jos ei kirjauksia
       resetDiaryForm();
       
-      // Yritä hakea HRV-data silti, koska käyttäjällä voi olla kirjaus päivältä
-      try {
-        await fetchHrvDataForSelectedDate(token, date);
-      } catch (error) {
-        console.error('HRV-datan haku epäonnistui tyhjälle päivälle:', error);
+      // Jos HRV-data tuli kalenterista
+      if (hrvData) {
+        displayHrvData(hrvData);
+      } else {
+        // Yritä hakea HRV-data silti, koska käyttäjällä voi olla kirjaus päivältä
+        try {
+          await fetchHrvDataForSelectedDate(token, date);
+        } catch (error) {
+          console.error('HRV-datan haku epäonnistui tyhjälle päivälle:', error);
+        }
       }
     }
   });
 
   autoLoadTodayData();
+}
+
+/**
+ * Näyttää HRV-datan käyttöliittymässä
+ * @param {Object} hrvData - HRV-arvot objektina 
+ */
+function displayHrvData(hrvData) {
+  if (!hrvData) return;
+  
+  setText('hrv-syke', hrvData.heart_rate?.toFixed(2) || '-');
+  setText('hrv-rmssd', hrvData.rmssd?.toFixed(2) || '-');
+  setText('hrv-meanrr', hrvData.mean_rr?.toFixed(2) || '-');
+  setText('hrv-sdnn', hrvData.sdnn?.toFixed(2) || '-');
+  setText('hrv-pns', hrvData.pns_index?.toFixed(2) || '-');
+  setText('hrv-sns', hrvData.sns_index?.toFixed(2) || '-');
+  
+  // Korosta poikkeavat arvot
+  const rmssdElement = document.getElementById('hrv-rmssd');
+  const sdnnElement = document.getElementById('hrv-sdnn');
+  
+  if (rmssdElement) {
+    rmssdElement.style.backgroundColor = hrvData.rmssdAbnormal ? '#ffcdd2' : '#bebebe';
+  }
+  
+  if (sdnnElement) {
+    sdnnElement.style.backgroundColor = hrvData.sdnnAbnormal ? '#ffcdd2' : '#bebebe';
+  }
 }
 
 // Näyttää vihreän onnistumisefektin napissa
@@ -465,289 +660,466 @@ async function fetchAndDisplayHrvData(token) {
     setText('hrv-sdnn', hrv.sdnn.toFixed(2));
     setText('hrv-pns', hrv.pns_index.toFixed(2));
     setText('hrv-sns', hrv.sns_index.toFixed(2));
+    
+    // Haetaan kuukauden HRV-data kalenteria varten
+    await fetchMonthHrvData(token);
 
   } catch (err) {
     console.error('[HRV VIRHE]', err.message); // Virhe yhteydessä
   }
 }
 
-// Hakee HRV-datan valitulle päivämäärälle
-async function fetchHrvDataForSelectedDate(token, date) {
-  console.log("📡 Haetaan HRV päivälle:", date);
-  
+/**
+ * Hakee kuukauden HRV-tiedot ja käsittelee ne kalenteria varten
+ * @param {string} token - Käyttäjän token
+ */
+async function fetchMonthHrvData(token) {
   try {
-    const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${date}`, {
+    const response = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
-
-    // Jos käyttäjä ei ole enää kirjautunut
-    if (response.status === 401) {
-      alert("Istunto vanhentunut. Kirjaudu uudelleen.");
-      window.location.href = "/index.html";
-      return;
-    }
-
-    if (!response.ok) {
-      console.warn('[HRV HAKU] status:', response.status);
-      resetHrvDisplay();
-      return;
-    }
-
-    const data = await response.json();
-    console.log(data);
-
-    if (!data.results || !data.results[0]) {
-      console.warn('No HRV data found for the selected date');
-      resetHrvDisplay();
-      return;
-    }
-
-    // Haetaan 'results' taulukosta ensimmäinen objekti
-    const hrv = data.results[0];
-
-    // Asetetaan arvot HTML:ään
-    setText('hrv-syke', hrv.heart_rate.toFixed(2));
-    setText('hrv-rmssd', hrv.rmssd.toFixed(2));
-    setText('hrv-meanrr', hrv.mean_rr.toFixed(2));
-    setText('hrv-sdnn', hrv.sdnn.toFixed(2));
-    setText('hrv-pns', hrv.pns_index.toFixed(2));
-    setText('hrv-sns', hrv.sns_index.toFixed(2));
-
-  } catch (err) {
-    console.error('[HRV VIRHE]', err.message);
-    resetHrvDisplay();
-  }
-}
-
-// Tyhjentää päiväkirjalomakkeen
-function resetDiaryForm() {
-  // Nollaa radiot
-  const timeRadios = document.querySelectorAll('input[name="time"]');
-  timeRadios.forEach(radio => radio.checked = false);
-
-  // Nollaa sliderit
-  const sleepSlider = document.getElementById('sleepRange');
-  const moodSlider = document.getElementById('moodRange');
-  
-  if (sleepSlider) {
-    sleepSlider.value = 3;
-    updateThumbColor(sleepSlider);
-  }
-  
-  if (moodSlider) {
-    moodSlider.value = 3;
-    updateThumbColor(moodSlider);
-  }
-
-  // Tyhjennä tekstialueet
-  const textareas = document.querySelectorAll('textarea');
-  textareas.forEach(textarea => textarea.value = '');
-
-  // Nollaa HRV-arvot
-  resetHrvDisplay();
-}
-  
-//  Asettaa tekstin tiettyyn elementtiin id:n perusteella
-function setText(id, value) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = value ?? '-';
-}
-
-//  Hakee tekstin näkyvästä spanista (esim. HRV-syke)
-function getText(id) {
-  return document.getElementById(id)?.textContent.trim() || "-";
-}
-
-// Palauttaa valitun radion arvon (esim. uni/mieliala)
-function getRadioValue(name) {
-  return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
-}
-
-// Hakee tekstialueen (textarea) sisällön järjestyksessä
-function getTextareaValue(index) {
-  return document.querySelectorAll('textarea')[index]?.value || "";
-}
-
-// Nollaa HRV-näytön arvot takaisin "-"
-function resetHrvDisplay() {
-  ['hrv-syke', 'hrv-rmssd', 'hrv-meanrr', 'hrv-sdnn', 'hrv-pns', 'hrv-sns'].forEach(id => setText(id, '-'));
-}
-
-// Muuttaa tallennusnapin tilaa (lataus päällä tai ei)
-function toggleSubmitButton(button, loading) {
-  if (!button) return;
-  
-  button.disabled = loading;
-  button.textContent = loading ? 'Tallennetaan...' : 'Tallenna';
-}
-
-// Päivittää sliderin värin
-function updateThumbColor(slider) {
-  if (!slider) return;
-  
-  const value = parseInt(slider.value, 10);
-  let color = "#477668";
-
-  // Päivitä väri sliderin mukaan
-  if (slider.id === "sleepRange" || slider.id === "moodRange") {
-    if (value === 1) {
-      color = "red";
-    } else if (value === 2) {
-      color = "coral";
-    } else if (value === 3) {
-      color = "orange";
-    } else if (value === 4) {
-      color = "lightgreen";
-    } else if (value === 5) {
-      color = "green";
-    }
-  }
-
-  // Asetetaan väri dynaamisesti sliderin juureen
-  slider.style.setProperty('--thumb-color', color);
-}
-
-// Polar-kaavion piirtäminen yhdelle päivälle
-function drawPieChart(day) {
-  const pieCanvas = document.getElementById('hrvPieChart');
-  if (!pieCanvas) return;
-
-  const values = [
-    day.heart_rate,
-    day.rmssd,
-    day.mean_rr,
-    day.sdnn,
-    day.pns_index,
-    day.sns_index
-  ];
-
-  const maxValue = Math.max(...values);// Normalisointia varten
-  const normalized = values.map(v => (v / maxValue) * 100);// Skalaus
-  const labels = ['Syke', 'RMSSD', 'Mean RR', 'SDNN', 'PNS Index', 'SNS Index'];
-  const colors = ['red', 'green', 'blue', 'purple', 'orange', 'brown'];
-
-  if (pieChart) pieChart.destroy();
-
-  pieChart = new Chart(pieCanvas.getContext('2d'), {
-    type: 'polarArea',
-    data: {
-      labels,
-      datasets: [{
-        data: normalized,
-        backgroundColor: colors,
-        borderColor: '#fff',
-        borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: {
-          display: true,
-          text: 'HRV-arvot (uusin päivä)'
-        }
-      }
-    }
-  });
-}
-
-//Viivakaavioiden piirtäminen useammalle päivälle
-function drawLineCharts(days) {
-  const chartGrid = document.getElementById('lineChartGrid');
-  if (!chartGrid || !fullRawData) return;
-
-  console.log(`Drawing line charts for ${days} days with data:`, fullRawData);
-  
-  // Tyhjennä aiemmat kaaviot
-  chartGrid.innerHTML = '';
-
-  const sliced = fullRawData.slice(-days);
-  const labels = sliced.map(r => {
-    if (r.daily_result) {
-      const date = new Date(r.daily_result);
-      return date.toLocaleDateString('fi-FI');
-    }
-    return 'Tuntematon päivä';
-  });
-
-  const fields = [
-    { key: 'heart_rate', label: 'Syke', color: 'red' },
-    { key: 'rmssd', label: 'RMSSD', color: 'green' },
-    { key: 'mean_rr', label: 'Mean RR', color: 'blue' },
-    { key: 'sdnn', label: 'SDNN', color: 'purple' },
-    { key: 'pns_index', label: 'PNS-indeksi', color: 'orange' },
-    { key: 'sns_index', label: 'SNS-indeksi', color: 'brown' }
-  ];
-
-  fields.forEach(field => {
-    const container = document.createElement('div');
-    container.classList.add('chart-card');
-
-    const canvas = document.createElement('canvas');
-    canvas.width = 400;
-    canvas.height = 200;
-    container.appendChild(canvas);
-
-    chartGrid.appendChild(container);
     
-    new Chart(canvas.getContext('2d'), {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [{
-          label: field.label,
-          data: sliced.map(d => d[field.key]),
-          borderColor: field.color,
-          backgroundColor: 'transparent', 
-          tension: 0.4,
-          fill: false,
-          pointRadius: 3,
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          title: {
-            display: true,
-            text: `${field.label} – Viimeiset ${days} päivää`
+    if (!response.ok) {
+      console.warn('[HRV kuukausihaku]', response.status);
+      return;
+    }
+    
+    const data = await response.json();
+    
+    // Käsitellään data kalenteria varten
+    processHrvDataForCalendar(data);
+    
+  } catch (err) {
+    console.error('[HRV kuukausihaku virhe]', err.message);
+  }
+}
+
+
+    async function fetchHrvDataForSelectedDate(token, date) {
+      console.log("📡 Haetaan HRV päivälle:", date);
+      
+      try {
+        const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${date}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
           }
-        },
-        scales: {
-          y: {
-            beginAtZero: false
+        });
+    
+        // Jos käyttäjä ei ole enää kirjautunut
+        if (response.status === 401) {
+          alert("Istunto vanhentunut. Kirjaudu uudelleen.");
+          window.location.href = "/index.html";
+          return;
+        }
+    
+        if (!response.ok) {
+          console.warn('[HRV HAKU] status:', response.status);
+          resetHrvDisplay();
+          return;
+        }
+    
+        const data = await response.json();
+        console.log(data);
+    
+        if (!data.results || !data.results[0]) {
+          console.warn('No HRV data found for the selected date');
+          resetHrvDisplay();
+          return;
+        }
+    
+        // Haetaan 'results' taulukosta ensimmäinen objekti
+        const hrv = data.results[0];
+        
+        // Tarkistetaan raja-arvot
+        const userData = JSON.parse(localStorage.getItem('user'));
+        let ageGroup = '26-35'; // Oletusarvo
+        
+        if (userData && userData.user && userData.user.birthdate) {
+          const birthDate = new Date(userData.user.birthdate);
+          const today = new Date();
+          let age = today.getFullYear() - birthDate.getFullYear();
+          
+          // Tarkistetaan onko syntymäpäivä jo ollut tänä vuonna
+          const m = today.getMonth() - birthDate.getMonth();
+          if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+          }
+          
+          // Määritetään ikäryhmä
+          if (age >= 18 && age <= 25) {
+            ageGroup = '18-25';
+          } else if (age >= 26 && age <= 35) {
+            ageGroup = '26-35';
+          } else if (age >= 36 && age <= 45) {
+            ageGroup = '36-45';
+          } else if (age >= 46 && age <= 56) {
+            ageGroup = '46-56';
           }
         }
+        
+        // Käytetään oikeita raja-arvoja ikäryhmän mukaan
+        const thresholds = HRV_THRESHOLDS[ageGroup];
+        
+        // Tarkistetaan raja-arvot
+        const isRmssdAbnormal = hrv.rmssd < thresholds.rmssd.min || hrv.rmssd > thresholds.rmssd.max;
+        const isSdnnAbnormal = hrv.sdnn < thresholds.sdnn.min || hrv.sdnn > thresholds.sdnn.max;
+        
+        // Luodaan HR-data objekti
+        const hrvData = {
+          heart_rate: hrv.heart_rate,
+          rmssd: hrv.rmssd,
+          mean_rr: hrv.mean_rr,
+          sdnn: hrv.sdnn,
+          pns_index: hrv.pns_index,
+          sns_index: hrv.sns_index,
+          isAbnormal: isRmssdAbnormal || isSdnnAbnormal,
+          rmssdAbnormal: isRmssdAbnormal,
+          sdnnAbnormal: isSdnnAbnormal
+        };
+        
+        // Näytetään data
+        displayHrvData(hrvData);
+        
+        // Tallennetaan päivän data arvot myös globaaliin muuttujaan
+        if (!window.hrvData) window.hrvData = {};
+        window.hrvData[date] = hrvData;
+        
+        // Päivitetään kalenterin päivän ulkoasu
+        const dayElement = document.querySelector(`.calendar-day[data-date="${date}"]`);
+        if (dayElement) {
+          if (hrvData.isAbnormal) {
+            dayElement.classList.add('abnormal-hrv');
+          } else {
+            dayElement.classList.remove('abnormal-hrv');
+          }
+          dayElement.dataset.hrv = JSON.stringify(hrvData);
+        }
+    
+      } catch (err) {
+        console.error('[HRV VIRHE]', err.message);
+        resetHrvDisplay();
       }
+    }
+    
+    // Tyhjentää päiväkirjalomakkeen
+    function resetDiaryForm() {
+      // Nollaa radiot
+      const timeRadios = document.querySelectorAll('input[name="time"]');
+      timeRadios.forEach(radio => radio.checked = false);
+    
+      // Nollaa sliderit
+      const sleepSlider = document.getElementById('sleepRange');
+      const moodSlider = document.getElementById('moodRange');
+      
+      if (sleepSlider) {
+        sleepSlider.value = 3;
+        updateThumbColor(sleepSlider);
+      }
+      
+      if (moodSlider) {
+        moodSlider.value = 3;
+        updateThumbColor(moodSlider);
+      }
+    
+      // Tyhjennä tekstialueet
+      const textareas = document.querySelectorAll('textarea');
+      textareas.forEach(textarea => textarea.value = '');
+    
+      // Nollaa HRV-arvot
+      resetHrvDisplay();
+    }
+      
+    //  Asettaa tekstin tiettyyn elementtiin id:n perusteella
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value ?? '-';
+    }
+    
+    //  Hakee tekstin näkyvästä spanista (esim. HRV-syke)
+    function getText(id) {
+      return document.getElementById(id)?.textContent.trim() || "-";
+    }
+    
+    // Palauttaa valitun radion arvon (esim. uni/mieliala)
+    function getRadioValue(name) {
+      return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
+    }
+    
+    // Hakee tekstialueen (textarea) sisällön järjestyksessä
+    function getTextareaValue(index) {
+      return document.querySelectorAll('textarea')[index]?.value || "";
+    }
+    
+    // Nollaa HRV-näytön arvot takaisin "-"
+    function resetHrvDisplay() {
+      // Ensin palautetaan alkuperäiset taustavärit
+      const rmssdElement = document.getElementById('hrv-rmssd');
+      const sdnnElement = document.getElementById('hrv-sdnn');
+      
+      if (rmssdElement) rmssdElement.style.backgroundColor = '#bebebe';
+      if (sdnnElement) sdnnElement.style.backgroundColor = '#bebebe';
+    
+      // Asetetaan arvot tyhjiksi
+      ['hrv-syke', 'hrv-rmssd', 'hrv-meanrr', 'hrv-sdnn', 'hrv-pns', 'hrv-sns'].forEach(id => setText(id, '-'));
+    }
+    
+    // Muuttaa tallennusnapin tilaa (lataus päällä tai ei)
+    function toggleSubmitButton(button, loading) {
+      if (!button) return;
+      
+      button.disabled = loading;
+      button.textContent = loading ? 'Tallennetaan...' : 'Tallenna';
+    }
+    
+    // Päivittää sliderin värin
+    function updateThumbColor(slider) {
+      if (!slider) return;
+      
+      const value = parseInt(slider.value, 10);
+      let color = "#477668";
+    
+      // Päivitä väri sliderin mukaan
+      if (slider.id === "sleepRange" || slider.id === "moodRange") {
+        if (value === 1) {
+          color = "red";
+        } else if (value === 2) {
+          color = "coral";
+        } else if (value === 3) {
+          color = "orange";
+        } else if (value === 4) {
+          color = "lightgreen";
+        } else if (value === 5) {
+          color = "green";
+        }
+      }
+    
+      // Asetetaan väri dynaamisesti sliderin juureen
+      slider.style.setProperty('--thumb-color', color);
+    }
+    
+    // Polar-kaavion piirtäminen yhdelle päivälle
+    function drawPieChart(day) {
+      const pieCanvas = document.getElementById('hrvPieChart');
+      if (!pieCanvas) return;
+    
+      const values = [
+        day.heart_rate,
+        day.rmssd,
+        day.mean_rr,
+        day.sdnn,
+        day.pns_index,
+        day.sns_index
+      ];
+    
+      const maxValue = Math.max(...values);// Normalisointia varten
+      const normalized = values.map(v => (v / maxValue) * 100);// Skalaus
+      const labels = ['Syke', 'RMSSD', 'Mean RR', 'SDNN', 'PNS Index', 'SNS Index'];
+      const colors = ['red', 'green', 'blue', 'purple', 'orange', 'brown'];
+    
+      if (pieChart) pieChart.destroy();
+    
+      pieChart = new Chart(pieCanvas.getContext('2d'), {
+        type: 'polarArea',
+        data: {
+          labels,
+          datasets: [{
+            data: normalized,
+            backgroundColor: colors,
+            borderColor: '#fff',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'HRV-arvot (uusin päivä)'
+            }
+          }
+        }
+      });
+    }
+    
+    //Viivakaavioiden piirtäminen useammalle päivälle
+    function drawLineCharts(days) {
+      const chartGrid = document.getElementById('lineChartGrid');
+      if (!chartGrid || !fullRawData) return;
+    
+      console.log(`Drawing line charts for ${days} days with data:`, fullRawData);
+      
+      // Tyhjennä aiemmat kaaviot
+      chartGrid.innerHTML = '';
+    
+      const sliced = fullRawData.slice(-days);
+      const labels = sliced.map(r => {
+        if (r.daily_result) {
+          const date = new Date(r.daily_result);
+          return date.toLocaleDateString('fi-FI');
+        }
+        return 'Tuntematon päivä';
+      });
+    
+      const fields = [
+        { key: 'heart_rate', label: 'Syke', color: 'red' },
+        { key: 'rmssd', label: 'RMSSD', color: 'green' },
+        { key: 'mean_rr', label: 'Mean RR', color: 'blue' },
+        { key: 'sdnn', label: 'SDNN', color: 'purple' },
+        { key: 'pns_index', label: 'PNS-indeksi', color: 'orange' },
+        { key: 'sns_index', label: 'SNS-indeksi', color: 'brown' }
+      ];
+    
+      fields.forEach(field => {
+        const container = document.createElement('div');
+        container.classList.add('chart-card');
+    
+        const canvas = document.createElement('canvas');
+        canvas.width = 400;
+        canvas.height = 200;
+        container.appendChild(canvas);
+    
+        chartGrid.appendChild(container);
+        
+        // Hae käyttäjän ikäryhmä
+        let ageGroup = '26-35'; // Oletusarvo
+        const userData = JSON.parse(localStorage.getItem('user'));
+        
+        if (userData && userData.user && userData.user.birthdate) {
+          const birthDate = new Date(userData.user.birthdate);
+          const today = new Date();
+          let age = today.getFullYear() - birthDate.getFullYear();
+          
+          // Tarkistetaan onko syntymäpäivä jo ollut tänä vuonna
+          const m = today.getMonth() - birthDate.getMonth();
+          if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+          }
+          
+          // Määritetään ikäryhmä
+          if (age >= 18 && age <= 25) {
+            ageGroup = '18-25';
+          } else if (age >= 26 && age <= 35) {
+            ageGroup = '26-35';
+          } else if (age >= 36 && age <= 45) {
+            ageGroup = '36-45';
+          } else if (age >= 46 && age <= 56) {
+            ageGroup = '46-56';
+          }
+        }
+        
+        // Hae raja-arvot
+        const thresholds = HRV_THRESHOLDS[ageGroup];
+        
+        // Lisää raja-arvot viiva-kaavioihin (RMSSD ja SDNN)
+        let limitLines = [];
+        if (field.key === 'rmssd') {
+          limitLines = [
+            { value: thresholds.rmssd.min, label: 'Min', color: 'red' },
+            { value: thresholds.rmssd.max, label: 'Max', color: 'red' }
+          ];
+        } else if (field.key === 'sdnn') {
+          limitLines = [
+            { value: thresholds.sdnn.min, label: 'Min', color: 'red' },
+            { value: thresholds.sdnn.max, label: 'Max', color: 'red' }
+          ];
+        }
+        
+        new Chart(canvas.getContext('2d'), {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [{
+              label: field.label,
+              data: sliced.map(d => d[field.key]),
+              borderColor: field.color,
+              backgroundColor: 'transparent', 
+              tension: 0.4,
+              fill: false,
+              pointRadius: 3,
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              title: {
+                display: true,
+                text: `${field.label} – Viimeiset ${days} päivää`
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: false,
+                // Lisää raja-arvot skaalaan
+                afterDataLimits: (scale) => {
+                  if (limitLines.length > 0) {
+                    const min = Math.min(scale.min, thresholds[field.key]?.min || scale.min);
+                    const max = Math.max(scale.max, thresholds[field.key]?.max || scale.max);
+                    scale.min = min - (max - min) * 0.1; // Lisää hieman marginaalia
+                    scale.max = max + (max - min) * 0.1;
+                  }
+                }
+              }
+            },
+            // Lisää raja-arvoviivat kaavioon
+            plugins: [{
+              afterDraw: (chart) => {
+                if (limitLines.length > 0) {
+                  const ctx = chart.ctx;
+                  const yAxis = chart.scales.y;
+                  
+                  limitLines.forEach(line => {
+                    const yPos = yAxis.getPixelForValue(line.value);
+                    
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(chart.chartArea.left, yPos);
+                    ctx.lineTo(chart.chartArea.right, yPos);
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = line.color;
+                    ctx.setLineDash([5, 5]); // Katkoviiva
+                    ctx.stroke();
+                    
+                    // Tekstin lisäys viivalle
+                    ctx.fillStyle = line.color;
+                    ctx.font = '12px Arial';
+                    ctx.fillText(line.label, chart.chartArea.left + 5, yPos - 5);
+                    ctx.restore();
+                  });
+                }
+              }
+            }]
+          }
+        });
+      });
+    }
+    
+    // Hae kaikki sliderit ja lisää tapahtumankuuntelijat
+    document.addEventListener('DOMContentLoaded', () => {
+      const sliders = document.querySelectorAll(".slider");
+      
+      sliders.forEach(slider => {
+        slider.addEventListener("input", () => updateThumbColor(slider));
+        updateThumbColor(slider); // Aseta väri heti myös alussa
+      });
     });
-  });
-}
-
-// Hae kaikki sliderit ja lisää tapahtumankuuntelijat
-document.addEventListener('DOMContentLoaded', () => {
-  const sliders = document.querySelectorAll(".slider");
-  
-  sliders.forEach(slider => {
-    slider.addEventListener("input", () => updateThumbColor(slider));
-    updateThumbColor(slider); // Aseta väri heti myös alussa
-  });
-});
-
-function autoLoadTodayData() {
-  const today = new Date().toISOString().split('T')[0];
-  
-  // Käyttäjän kirjaukset on jo haettu fetchUserEntries-funktiossa
-  const userEntries = window.userEntries || [];
-  const todayEntries = userEntries.filter(entry => entry.entry_date === today);
-  
-  // Lähetetään tapahtuma
-  const todayDateEvent = new CustomEvent('selectedDateChanged', {
-      detail: {
-          date: today,
-          entries: todayEntries
-      }
-  });
-  window.dispatchEvent(todayDateEvent);
-}
+    
+    function autoLoadTodayData() {
+      const today = new Date().toISOString().split('T')[0];
+      
+      // Käyttäjän kirjaukset on jo haettu fetchUserEntries-funktiossa
+      const userEntries = window.userEntries || [];
+      const todayEntries = userEntries.filter(entry => entry.entry_date === today);
+      
+      // Lähetetään tapahtuma
+      const todayDateEvent = new CustomEvent('selectedDateChanged', {
+          detail: {
+              date: today,
+              entries: todayEntries,
+              hrvData: window.hrvData ? window.hrvData[today] : null
+          }
+      });
+      window.dispatchEvent(todayDateEvent);
+    }
