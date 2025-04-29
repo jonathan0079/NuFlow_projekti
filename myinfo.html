@@ -62,16 +62,16 @@
         <!--Tietokanta-->
     
         <label for="drug_use">Nikotiinituotteet, alkoholi ja muut päihteet:</label>
-        <input type="text" id="drug_use" name="drug_use"/>
-    
+        <textarea id="drug_use" name="drug_use" maxlength="100"></textarea>
+        
         <label for="diseases_medications">Sairaudet ja lääkitykset:</label>
-        <input type="text" id="diseases_medications" name="diseases_medications"/>
-    
+        <textarea id="diseases_medications" name="diseases_medications" maxlength="100"></textarea>
+        
         <label for="sleep">Arvio unesta (hyvä/huono) miksi?:</label>
-        <input type="text" id="sleep" name="sleep"/>
-    
+        <textarea id="sleep" name="sleep" maxlength="100"></textarea>
+        
         <label for="self_assessment">Tämän hetkinen vointi:</label>
-        <input type="text" id="self_assessment" name="self_assessment"/>
+        <textarea id="self_assessment" name="self_assessment" maxlength="200"></textarea>
     
     
         <button type="submit" id="submit-button">Tallenna</button>
@@ -80,5 +80,26 @@
 <footer>NuFlow © 2025</footer>
 <script type="module" src="/src/js/auth.js"></script>
 <script type="module" src="/src/js/myinfo.js"></script>
+<script>
+  document.querySelectorAll('textarea, input[type="text"]').forEach(field => {
+    const maxLength = field.getAttribute('maxlength');
+    if (!maxLength) return;
 
+    // Luo näyttö jäljellä olevista merkeistä
+    const counter = document.createElement('p');
+    const span = document.createElement('span');
+    span.textContent = `${maxLength}`;
+    counter.innerHTML = `Merkkejä jäljellä: `;
+    counter.appendChild(span);
+
+    // Lisää laskuri kentän jälkeen
+    field.parentNode.insertBefore(counter, field.nextSibling);
+
+    // Päivitä jäljellä olevat merkit kirjoitettaessa
+    field.addEventListener('input', () => {
+      const remaining = maxLength - field.value.length;
+      span.textContent = remaining;
+    });
+  });
+</script>
 </html>

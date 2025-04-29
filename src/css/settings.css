@@ -114,4 +114,26 @@ flex-wrap: wrap;
   .danger-button:hover, .cancel-button:hover {
     opacity: 0.8;
   }
+
+  #avatar-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .avatar-option {
+    width: 80px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    transition: 0.2s;
+  }
+
+  .avatar-option:hover {
+    border-color: #007bff;
+    transform: scale(1.05);
+  }
+
+
   
