@@ -184,7 +184,7 @@ try {
   // Add the HRV data table
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(16);
-  doc.text('Kyseisen päivän HRV-arvot', 20, 70);
+  doc.text('HRV-arvot päivämäärältä', 20, 70);
   
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(12);
@@ -322,8 +322,13 @@ try {
     doc.setFont('helvetica', 'bold');
     doc.text('Unen laatu (1-5):', 20, startY);
     doc.setFont('helvetica', 'normal');
-    doc.text(`${sleepValue || 'Ei tietoa'}/5`, 120, startY);
-    
+    // Ensure sleepValue is displayed as an integer
+    let displaySleepValue = 'Ei tietoa';
+    if (sleepValue !== null && sleepValue !== undefined) {
+      // Force to integer by using parseInt or Math.round and ensure it's a string
+      displaySleepValue = String(Math.round(sleepValue));
+    }
+    doc.text(`${displaySleepValue}/5`, 120, startY);
     // Sleep notes
     if (latestEntry.sleep_notes && latestEntry.sleep_notes.trim() !== '') {
       startY += 10;
@@ -350,8 +355,13 @@ try {
     doc.setFont('helvetica', 'bold');
     doc.text('Mieliala (1-5):', 20, startY);
     doc.setFont('helvetica', 'normal');
-    doc.text(`${moodValue || 'Ei tietoa'}/5`, 120, startY);
-    
+    // Ensure moodValue is displayed as an integer
+    let displayMoodValue = 'Ei tietoa';
+    if (moodValue !== null && moodValue !== undefined) {
+      // Force to integer by using parseInt or Math.round and ensure it's a string
+      displayMoodValue = String(Math.round(moodValue));
+    }
+    doc.text(`${displayMoodValue}/5`, 120, startY);
     // Additional mood notes
     if (latestEntry.activity && latestEntry.activity.trim() !== '') {
       startY += 10;

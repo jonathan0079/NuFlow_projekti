@@ -495,6 +495,10 @@ function initDiary(token) {
           setTimeout(() => {
             saveContainer.className = ''; // Piilotetaan laatikko
             saveResponse.textContent = '';
+            // Avaa HRV-kaaviomodaali onnistuneen tallennuksen jälkeen
+            setTimeout(() => {
+              openHrvChartWithWarning();
+            }, 500);
           }, 3000);
         }
 
@@ -504,6 +508,7 @@ function initDiary(token) {
       }
 
       toggleSubmitButton(submitButton, false); // Palautetaan nappi normaaliksi
+      
     });
   }
 
@@ -1094,6 +1099,139 @@ async function fetchMonthHrvData(token) {
           }
         });
       });
+    }
+    function openHrvChartWithWarning() {
+      console.log("Avataan HRV-kaaviomodaali");
+      
+      // Sulje ensin päiväkirjamodaali, jos se on auki
+      const diaryModal = document.getElementById('diaryModal');
+      if (diaryModal) {
+        diaryModal.style.display = 'none';
+        
+        // Sulje myös overlay
+        const diaryOverlay = document.getElementById('diary-modal-overlay');
+        if (diaryOverlay) {
+          diaryOverlay.style.display = 'none';
+        }
+        console.log("Päiväkirjamodaali suljettu");
+      }
+      
+      // Pieni viive ennen uuden modaalin avaamista
+      setTimeout(() => {
+        // Avaa kaaviomodaali
+        const chartModal = document.getElementById('chartModal');
+        if (!chartModal) {
+          console.error("chartModal elementtiä ei löydy");
+          return;
+        }
+        
+        chartModal.style.display = 'block';
+        
+        const chartOverlay = document.getElementById('chart-modal-overlay');
+        if (chartOverlay) {
+          chartOverlay.style.display = 'block';
+        } else {
+          console.error("chart-modal-overlay elementtiä ei löydy");
+        }
+        
+        // Tarkista onko tämän päivän HRV-arvoissa poikkeamia
+        const today = new Date().toISOString().split('T')[0];
+        const dayHrvData = window.hrvData ? window.hrvData[today] : null;
+        
+        // Asetetaan HRV visualisoinnin lähtökohdat
+        const title = document.querySelector('#chartHeaderTitle');
+        if (title) {
+          title.textContent = 'HRV-arvot (uusin päivä)';
+        }
+        
+        const pieCanvas = document.getElementById('hrvPieChart');
+        if (pieCanvas) {
+          pieCanvas.style.display = 'block';
+        }
+        
+        const chartGrid = document.getElementById('lineChartGrid');
+        if (chartGrid) {
+          chartGrid.innerHTML = ''; // Tyhjennä aiemmat kaaviot
+        }
+        
+        // Poista aiempi varoitus, jos sellainen on
+        const existingWarning = document.getElementById('hrv-warning');
+        if (existingWarning) {
+          existingWarning.remove();
+        }
+        
+        // Jos tämän päivän HRV-data on saatavilla ja siinä on poikkeavia arvoja
+        if (dayHrvData && (dayHrvData.isAbnormal || dayHrvData.rmssdAbnormal || dayHrvData.sdnnAbnormal)) {
+          console.log("Poikkeavia HRV-arvoja havaittu, näytetään varoitus");
+          
+          // Luo varoituselementti
+          const warningElement = document.createElement('div');
+          warningElement.id = 'hrv-warning';
+          warningElement.style.backgroundColor = '#FFA500'; // Oranssi tausta
+          warningElement.style.color = '#000'; // Musta teksti
+          warningElement.style.padding = '10px';
+          warningElement.style.marginBottom = '15px';
+          warningElement.style.borderRadius = '5px';
+          warningElement.style.textAlign = 'center';
+          warningElement.style.fontWeight = 'bold';
+          
+          // Lisää varoitusteksti
+          warningElement.textContent = 'Poikkeavia arvoja mittauksessa. Suosittelemme tekemään raportin tästä.';
+          
+          // Luo nappi raportin tekemiseen
+          const createReportButton = document.createElement('button');
+          createReportButton.textContent = 'Luo HRV-raportti ammattilaiselle';
+          createReportButton.style.marginTop = '10px';
+          createReportButton.style.padding = '8px 15px';
+          createReportButton.style.backgroundColor = '#f44336';
+          createReportButton.style.color = 'white';
+          createReportButton.style.border = 'none';
+          createReportButton.style.borderRadius = '4px';
+          createReportButton.style.cursor = 'pointer';
+          
+          // Lisää tapahtumankäsittelijä napille
+          if (typeof generateHrvPdfReport === 'function') {
+            createReportButton.addEventListener('click', generateHrvPdfReport);
+          } else {
+            console.error("generateHrvPdfReport-funktiota ei löydy");
+          }
+          
+          // Lisää nappi varoituselementtiin
+          warningElement.appendChild(document.createElement('br'));
+          warningElement.appendChild(createReportButton);
+          
+          // Lisää varoitus modalin alkuun
+          const modalContent = document.querySelector('.Chartmodal-content');
+          if (modalContent) {
+            modalContent.insertBefore(warningElement, modalContent.firstChild);
+          } else {
+            console.error("Modal content -elementtiä ei löydy");
+          }
+          
+          // Aseta tieto, että nykyisellä päivällä on poikkeavia arvoja
+          if (typeof window.currentDayHasAbnormalHrv !== 'undefined') {
+            window.currentDayHasAbnormalHrv = true;
+            window.currentSelectedDate = today;
+          }
+        }
+        
+        // Piirrä kaavio, jos kaavio-funktiot ovat käytettävissä
+        if (dayHrvData && typeof drawPieChart === 'function') {
+          // Muunna HRV-data oikeaan muotoon kaaviota varten
+          const latestData = {
+            heart_rate: dayHrvData.heart_rate,
+            rmssd: dayHrvData.rmssd,
+            mean_rr: dayHrvData.mean_rr,
+            sdnn: dayHrvData.sdnn,
+            pns_index: dayHrvData.pns_index,
+            sns_index: dayHrvData.sns_index
+          };
+          
+          drawPieChart(latestData);
+        }
+        
+        console.log("HRV-kaaviomodaali avattu");
+      }, 300); // Pieni viive modalien välillä
     }
     
     // Hae kaikki sliderit ja lisää tapahtumankuuntelijat
