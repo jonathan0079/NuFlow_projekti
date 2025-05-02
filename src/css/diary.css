@@ -472,3 +472,27 @@ background-color: #F9A825; /* Keltainen väri aamulle */
 .evening-indicator {
 background-color: #7E57C2; /* Violetti väri illalle */
 }
+
+.alert-button {
+  display: block; 
+  width: 100%; 
+  max-width: 300px; 
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  margin: 10px auto; 
+  transition: background-color 0.3s ease;
+}
+
+.alert-button:hover {
+  background-color: #d32f2f;
+}
+
+.hidden {
+  display: none !important;
+}
