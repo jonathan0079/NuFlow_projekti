@@ -1,303 +1,302 @@
-
 h2 {
-    font-size: 16px;
-    color: #010101; 
-    margin: auto;    
-    text-decoration: bold;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    text-align: center;
+  font-size: 16px;
+  color: #010101; 
+  margin: auto;    
+  text-decoration: bold;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
 }
 
 #diaryModal {
-  width: 100%;
-  max-width: 700px;
-  padding: 20px;
-  z-index: 1000;
-  overflow: visible;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
-  border-radius: 13px;
-  position: absolute;
-  background-color: #ffffff;
+width: 100%;
+max-width: 700px;
+padding: 20px;
+z-index: 1000;
+overflow: visible;
+box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+border-radius: 13px;
+position: absolute;
+background-color: #ffffff;
 }
 
 #chartModal {
-  width: 100%;
-  max-width: 700px;
-  padding: 20px;
-  z-index: 1000;
-  overflow: visible;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
-  border-radius: 13px;
-  background-color: #ffffff;
+width: 100%;
+max-width: 700px;
+padding: 20px;
+z-index: 1000;
+overflow: visible;
+box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+border-radius: 13px;
+background-color: #ffffff;
 }
 
 
 .modal-header {
-  cursor: move;
-  padding: 8px;
-  background: #f1f1f1;
-  border-bottom: 1px solid #ccc;
+cursor: move;
+padding: 8px;
+background: #f1f1f1;
+border-bottom: 1px solid #ccc;
 }
 
 .close-modal{
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  cursor: pointer;
+position: absolute;
+top: 10px;
+right: 15px;
+font-size: 24px;
+cursor: pointer;
 }
 
 .buttons {
-  display: flex;
-  flex-direction: column; 
-  gap: 10px; 
-  align-items: center; 
-  margin-bottom: 20px; /
+display: flex;
+flex-direction: column; 
+gap: 10px; 
+align-items: center; 
+margin-bottom: 20px; /
 }
 
 .hrv-buttons {
-  display: flex;
-  gap: 10px; 
-  justify-content: center;
+display: flex;
+gap: 10px; 
+justify-content: center;
 }
 
 #openDiaryBtn,
 #openChartBtn {
-  display: block; 
-  width: 100%; 
-  max-width: 300px; 
-  padding: 10px 20px;
-  background-color: #477668;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  text-align: center;
-  margin: 10px auto; 
-  transition: background-color 0.3s ease;
+display: block; 
+width: 100%; 
+max-width: 300px; 
+padding: 10px 20px;
+background-color: #477668;
+color: white;
+border: none;
+border-radius: 8px;
+font-size: 1rem;
+cursor: pointer;
+text-align: center;
+margin: 10px auto; 
+transition: background-color 0.3s ease;
 }
 
 #openDiaryBtn:hover,
 #openChartBtn:hover {
-  background-color: #5a897a;
+background-color: #5a897a;
 }
 
 #btn7days,
 #btn30days {
-  padding: 5px 10px; 
-  font-size: 14px; 
-  border-radius: 4px;
-  background-color: #477668;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+padding: 5px 10px; 
+font-size: 14px; 
+border-radius: 4px;
+background-color: #477668;
+color: white;
+border: none;
+cursor: pointer;
+transition: background-color 0.3s ease;
 }
 
 #btn7days:hover,
 #btn30days:hover {
-  background-color: #5a897a;
+background-color: #5a897a;
 }
 
 .time-selector {
-    font-size: 14px;
-    margin-bottom: 10px;
-    max-width: 30%;
-  }
-  
-  .time-selector span {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 4px;
-  }
-  
-  .time-options {
-    display: flex;
-    flex-direction:row;
-  }
-  
-  .time-options label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }  
+  font-size: 14px;
+  margin-bottom: 10px;
+  max-width: 30%;
+}
 
-  .hrv-container {
-    margin: 10px auto;
-    max-width: 700px;
-    text-align: center;
-  }
-  
-  .hrv-grid {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-  }
-  
-  .hrv-grid > div {
-    flex: 1 1 12%;
-    min-width: 100px;
-    max-width: 600px;
-    padding: 5px;
-  }
-  
-  .hrv-label {
-    font-weight: bold;
-    font-size: 13px;
-    margin-bottom: 5px;
-  }
-  
-  .hrv-value {
-    background-color: #bebebe;
-    border-color: black;
-    border-radius: 2%;
-    padding: 5px;
-    font-size: 16px;
-    color: #333;
-  }
-  
+.time-selector span {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.time-options {
+  display: flex;
+  flex-direction:row;
+}
+
+.time-options label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}  
+
+.hrv-container {
+  margin: 10px auto;
+  max-width: 700px;
+  text-align: center;
+}
+
+.hrv-grid {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.hrv-grid > div {
+  flex: 1 1 12%;
+  min-width: 100px;
+  max-width: 600px;
+  padding: 5px;
+}
+
+.hrv-label {
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.hrv-value {
+  background-color: #bebebe;
+  border-color: black;
+  border-radius: 2%;
+  padding: 5px;
+  font-size: 16px;
+  color: #333;
+}
+
 
 .slidecontainer {
-    width: 70%;
-    margin: auto;
+  width: 70%;
+  margin: auto;
 }
-  
+
 .slider {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 30px; 
-    padding-top: 10px;
-    background: transparent; 
-    z-index: 1;
-    border: none;
-  }
-  
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 30px; 
+  padding-top: 10px;
+  background: transparent; 
+  z-index: 1;
+  border: none;
+}
+
 .slider::-webkit-slider-runnable-track { /* Chrome, Safari, Edge */
-    height: 2px;
-    background: #aaa; 
-    border-radius: 1px;
-  }
-  
-  .slider::-moz-range-track {/* Mozilla */
-    height: 2px;
-    background: #aaa;
-    border-radius: 1px;
-  }
+  height: 2px;
+  background: #aaa; 
+  border-radius: 1px;
+}
 
-  .slider::-webkit-slider-thumb { /* Chrome, Safari, Edge */
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background-color: var(--thumb-color, #477668);
-    cursor: pointer;
-    position: relative;
-    z-index: 1;
-    margin-top: -12px; 
-  }
-  
-  .slider::-moz-range-thumb { /* Mozilla */
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background-color: var(--thumb-color, #477668);
-    cursor: pointer;
-    position: relative;
-    z-index: 2;
-  }
-  
-  .slidecontainer {
-    position: relative;
-    margin-bottom: 15px;
-    margin-top: 15px;
-  }
-  
-  .slidecontainer .labels {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    z-index: 2; 
-  }
-  
-  .slidecontainer .labels span {
-    text-align: center;
-    font-size: 14px;
-    z-index: 2; 
-    margin-bottom: 10px; /* lisää tilaa labelien ja sliderin väliin */
+.slider::-moz-range-track {/* Mozilla */
+  height: 2px;
+  background: #aaa;
+  border-radius: 1px;
+}
 
-  }
+.slider::-webkit-slider-thumb { /* Chrome, Safari, Edge */
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: var(--thumb-color, #477668);
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  margin-top: -12px; 
+}
+
+.slider::-moz-range-thumb { /* Mozilla */
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: var(--thumb-color, #477668);
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+.slidecontainer {
+  position: relative;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.slidecontainer .labels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  z-index: 2; 
+}
+
+.slidecontainer .labels span {
+  text-align: center;
+  font-size: 14px;
+  z-index: 2; 
+  margin-bottom: 10px; /* lisää tilaa labelien ja sliderin väliin */
+
+}
 
 form {
-    max-width: 650px;
-    margin: auto;
-    padding: 10px;
-    background-color: transparent;
+  max-width: 650px;
+  margin: auto;
+  padding: 10px;
+  background-color: transparent;
 }
 
 label {
-    display: block;
-    margin-top: 10px;
+  display: block;
+  margin-top: 10px;
 }
 
 input, textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
 ;   border: 1px solid #ccc;
-    border-radius: 5px;
+  border-radius: 5px;
 }
 
 #submit-button {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: #477668;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #477668;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
 }
 #submit-button:hover {
-    background-color: #528777;
+  background-color: #528777;
 }
 #saveMessageContainer {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  padding: 12px;
-  text-align: center;
-  font-size: 1.1em;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 400px;
-  transition: opacity 0.5s ease-in-out, visibility 0.5s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+z-index: 9999;
+opacity: 0;
+visibility: hidden;
+padding: 12px;
+text-align: center;
+font-size: 1.1em;
+border-radius: 8px;
+width: 100%;
+max-width: 400px;
+transition: opacity 0.5s ease-in-out, visibility 0.5s ease;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Näkyvä tila */
 #saveMessageContainer.show {
-  visibility: visible;
-  opacity: 1;
-  transition: opacity 0.5s ease, visibility 0s;
+visibility: visible;
+opacity: 1;
+transition: opacity 0.5s ease, visibility 0s;
 }
 
 #saveMessageContainer.success {
-  background-color: #4CAF50;
-  color: white;
-  font-weight: bold;
+background-color: #4CAF50;
+color: white;
+font-weight: bold;
 }
 
 #saveMessageContainer.error {
-  background-color: #f44336;
-  color: white;
-  font-weight: bold;
+background-color: #f44336;
+color: white;
+font-weight: bold;
 }
 /* Main-elementin asettelu jotta lomake ja kalenteri ovat vierekkäin */
 main {
@@ -315,6 +314,23 @@ width: 100%;
 flex-basis: 100%;
 }
 
+/* Kalenteritiedotus */
+.calendar-notification {
+width: 100%;
+background-color: #e3f2fd;
+border-left: 4px solid #2196f3;
+padding: 10px 15px;
+margin-bottom: 20px;
+border-radius: 4px;
+box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.calendar-notification p {
+margin: 5px 0;
+color: #0d47a1;
+font-size: 14px;
+}
+
 /* Lomakkeen tyylit muutetaan vastaamaan flex-asettelua, mutta lomakkeen sisältö pysyy samana */
 main > form {
 flex: 0 1 650px; /* Sama maksimileveys kuin alkuperäisellä */
@@ -323,15 +339,15 @@ margin: 0;       /* Ei enää auto-marginaalia, jotta se ei keskittyisi */
 
 /* Kalenterin tyylit */
 .calendar-container {
-  width: 80%; 
-  max-width: 800px; 
-  height: 600px;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 10px auto;
-  align-self: center; /* Keskittää kalenterin flex-säiliössä */
+width: 80%; 
+max-width: 800px; 
+height: 600px;
+background: white;
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+margin: 10px auto;
+align-self: center; /* Keskittää kalenterin flex-säiliössä */
 }
 
 /* Kalenterin ylätunniste */
@@ -408,6 +424,22 @@ font-weight: bold;
 
 .calendar-day.selected {
 background-color: #b3e5fc;
+}
+
+/* Poikkeavien HRV-arvojen tyyli */
+.calendar-day.abnormal-hrv {
+background-color: #ffcdd2; /* Vaaleanpunainen tausta */
+border: 1px solid #e57373; /* Punertava reunus */
+}
+
+.calendar-day.abnormal-hrv:hover {
+background-color: #ef9a9a; /* Tummempi punainen hover-tilassa */
+}
+
+/* Jos päivä on valittu ja sillä on poikkeavia arvoja, näytä molemmat tyylit */
+.calendar-day.selected.abnormal-hrv {
+background-color: #e1bee7; /* Violetti väri molempien yhdistelmälle */
+border: 2px solid #ba68c8;
 }
 
 /* Kalenterin selitteet */
