@@ -1,3 +1,4 @@
+window.generateHrvPdfReport = generateHrvPdfReport;
 // Function to show messages to the user
 function showMessage(message, type = 'info') {
   // Create message element if it doesn't exist
@@ -133,10 +134,14 @@ function hideReportButton() {
 
 // Main function to generate the PDF report
 async function generateHrvPdfReport() {
-if (!currentDayHasAbnormalHrv || !currentSelectedDate) {
-  console.error('No abnormal HRV data available for PDF generation');
-  return;
-}
+  // Use either local or global variables, whichever has valid data
+  const hasAbnormalHrv = currentDayHasAbnormalHrv || window.currentDayHasAbnormalHrv;
+  const selectedDate = currentSelectedDate || window.currentSelectedDate;
+  
+  if (!hasAbnormalHrv || !selectedDate) {
+    console.error('No abnormal HRV data available for PDF generation');
+    return;
+  }
 
 try {
   // Format the selected date consistently
@@ -184,7 +189,7 @@ try {
   // Add the HRV data table
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(16);
-  doc.text('HRV-arvot päivämäärältä', 20, 70);
+  doc.text('HRV-arvot päivältä', 20, 70);
   
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(12);
@@ -233,33 +238,74 @@ try {
   console.log(`Looking for entries on date: ${formattedSelectedDate}`);
   console.log(`Total entries available: ${window.userEntries ? window.userEntries.length : 'None'}`);
   
-  // IMPROVED VERSION: Find matching entries for the selected date
-  const todayEntries = [];
-  
-  // Ensure userEntries exists
-  if (!window.userEntries || !Array.isArray(window.userEntries)) {
-    console.error("userEntries is missing or not an array!");
-    window.userEntries = []; // Initialize to empty array to prevent errors
+  const dayElement = document.querySelector(`.calendar-day[data-date="${formattedSelectedDate}"]`);
+if (dayElement && dayElement.dataset.entries) {
+  try {
+    const entriesFromCalendar = JSON.parse(dayElement.dataset.entries);
+    if (entriesFromCalendar && entriesFromCalendar.length > 0) {
+      console.log("Found entries from calendar element:", entriesFromCalendar);
+      todayEntries.push(...entriesFromCalendar);
+    }
+  } catch (e) {
+    console.error("Error parsing entries from calendar:", e);
   }
+}
+
+  // IMPROVED VERSION: Find matching entries for the selected date
+  // COMPLETELY NEW APPROACH for finding entries
+const todayEntries = [];
+
+// Try multiple different date formats and comparison methods
+if (window.userEntries && Array.isArray(window.userEntries)) {
+  const dateFormats = [
+    formattedSelectedDate, 
+    formattedSelectedDate.replace(/-/g, '/'),
+    new Date(formattedSelectedDate).toISOString().split('T')[0]
+  ];
   
-  // First try to check if there are any entries using the standardized date format
-  window.userEntries.forEach((entry, index) => {
-    if (!entry || !entry.entry_date) {
-      console.log(`Entry ${index} has no entry_date property`);
-      return; // Skip this entry
+  window.userEntries.forEach(entry => {
+    if (!entry || !entry.entry_date) return;
+    
+    // Format entry date in multiple ways
+    const entryDateFormats = [
+      entry.entry_date,
+      formatDateToYYYYMMDD(entry.entry_date),
+      new Date(entry.entry_date).toISOString().split('T')[0],
+      entry.entry_date.replace(/-/g, '/')
+    ];
+    
+    // Try all combinations of date formats
+    for (const selectedFormat of dateFormats) {
+      for (const entryFormat of entryDateFormats) {
+        if (selectedFormat === entryFormat) {
+          console.log(`MATCH FOUND using formats: ${selectedFormat} = ${entryFormat}`);
+          if (!todayEntries.includes(entry)) {
+            todayEntries.push(entry);
+          }
+        }
+      }
     }
     
-    // Format the entry date consistently using our helper function
-    const entryDateFormatted = formatDateToYYYYMMDD(entry.entry_date);
-    
-    console.log(`Entry ${index} date: ${entry.entry_date} → formatted: ${entryDateFormatted}`);
-    
-    // Compare formatted dates as strings
-    if (entryDateFormatted === formattedSelectedDate) {
-      console.log(`MATCH FOUND: Entry ${index}`);
-      todayEntries.push(entry);
+    // Also try comparing year/month/day directly
+    try {
+      const selectedDateObj = new Date(formattedSelectedDate);
+      const entryDateObj = new Date(entry.entry_date);
+      
+      if (selectedDateObj.getFullYear() === entryDateObj.getFullYear() &&
+          selectedDateObj.getMonth() === entryDateObj.getMonth() &&
+          selectedDateObj.getDate() === entryDateObj.getDate()) {
+        console.log(`MATCH FOUND using direct date comparison`);
+        if (!todayEntries.includes(entry)) {
+          todayEntries.push(entry);
+        }
+      }
+    } catch (e) {
+      console.error("Error in direct date comparison:", e);
     }
   });
+}
+
+console.log(`Found ${todayEntries.length} entries for date ${formattedSelectedDate}:`, todayEntries);
   
   console.log(`Found ${todayEntries.length} entries for ${formattedSelectedDate}`);
   
@@ -312,23 +358,27 @@ try {
     startY += 10;
     
     // Format sleep_duration as integer
-    let sleepValue = latestEntry.sleep_duration;
-    // Make sure to display as integer rather than decimal
-    if (typeof sleepValue === 'number') {
-      sleepValue = Math.round(sleepValue);
-    }
-    
+    // Format sleep_duration to keep one decimal place if needed
+let sleepValue = latestEntry.sleep_duration;
+// Convert to number if it's not already
+if (typeof sleepValue !== 'number') {
+  sleepValue = parseFloat(sleepValue) || 0;
+}
+
     // Sleep quality
     doc.setFont('helvetica', 'bold');
     doc.text('Unen laatu (1-5):', 20, startY);
     doc.setFont('helvetica', 'normal');
-    // Ensure sleepValue is displayed as an integer
+    // Format with one decimal place if necessary
     let displaySleepValue = 'Ei tietoa';
     if (sleepValue !== null && sleepValue !== undefined) {
-      // Force to integer by using parseInt or Math.round and ensure it's a string
-      displaySleepValue = String(Math.round(sleepValue));
+      // Format as a string with one decimal if needed
+      displaySleepValue = Number.isInteger(sleepValue) ? 
+        String(sleepValue) : 
+        sleepValue.toFixed(1);
     }
     doc.text(`${displaySleepValue}/5`, 120, startY);
+
     // Sleep notes
     if (latestEntry.sleep_notes && latestEntry.sleep_notes.trim() !== '') {
       startY += 10;
@@ -344,22 +394,24 @@ try {
       startY += 10;
     }
     
-    // Format current_mood as integer
+    // Format current_mood to keep one decimal place if needed
     let moodValue = latestEntry.current_mood;
-    // Make sure to display as integer rather than decimal
-    if (typeof moodValue === 'number') {
-      moodValue = Math.round(moodValue);
+    // Convert to number if it's not already
+    if (typeof moodValue !== 'number') {
+      moodValue = parseFloat(moodValue) || 0;
     }
-    
+
     // Mood
     doc.setFont('helvetica', 'bold');
     doc.text('Mieliala (1-5):', 20, startY);
     doc.setFont('helvetica', 'normal');
-    // Ensure moodValue is displayed as an integer
+    // Format with one decimal place if necessary
     let displayMoodValue = 'Ei tietoa';
     if (moodValue !== null && moodValue !== undefined) {
-      // Force to integer by using parseInt or Math.round and ensure it's a string
-      displayMoodValue = String(Math.round(moodValue));
+      // Format as a string with one decimal if needed
+      displayMoodValue = Number.isInteger(moodValue) ? 
+        String(moodValue) : 
+        moodValue.toFixed(1);
     }
     doc.text(`${displayMoodValue}/5`, 120, startY);
     // Additional mood notes

@@ -481,7 +481,7 @@ function initDiary(token) {
           setTimeout(() => {
             saveContainer.className = ''; // Piilotetaan laatikko
             saveResponse.textContent = '';
-          }, 3000);
+          }, 2000);
         
         } else {
           saveResponse.textContent = 'Päiväkirjamerkintä tallennettu!';
@@ -499,7 +499,7 @@ function initDiary(token) {
             setTimeout(() => {
               openHrvChartWithWarning();
             }, 500);
-          }, 3000);
+          }, 1500);
         }
 
       } catch (error) {
