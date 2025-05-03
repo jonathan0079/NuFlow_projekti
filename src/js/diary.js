@@ -454,6 +454,7 @@ function initDiary(token) {
         activity: getTextareaValue(1), // Toinen tekstialue (muistiinpanot)
       };
 
+      localStorage.setItem('lastEntryData', JSON.stringify(entryData)); // Tallennetaan viimeisin merkintä local storageen
       console.log("Lähetetään lomake:", entryData); // Tarkistus konsoliin
 
       //  Lähetetään tiedot backendille
@@ -651,6 +652,7 @@ async function fetchAndDisplayHrvData(token) {
     console.log(data); // Tarkista konsolista, että data on oikein
 
     // Haetaan 'results' taulukosta ensimmäinen objekti
+    data.results.sort((a, b) => new Date(b.create_timestamp) - new Date(a.create_timestamp));
     const hrv = data.results[0];  // Oletetaan, että aina tulee vain yksi tulos kyseiseltä päivältä
 
     if (!hrv) {

@@ -83,7 +83,7 @@ function formatDateToYYYYMMDD(dateInput) {
 
 // Helper function to get form data values (when the report is generated right after entry)
 function getFormData() {
-  // Collect all data directly from the form
+  // Alkuperäinen toteutus, mutta muutettu vain konsolilokitukset
   const diaryForm = document.getElementById('diaryForm');
   if (!diaryForm) return null;
 
@@ -92,7 +92,7 @@ function getFormData() {
     return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
   };
 
-  // Get textarea values
+  // Get textarea values - TÄYSIN SAMA KUIN ALKUPERÄINEN
   const textareas = document.querySelectorAll('textarea');
   const sleepNotes = textareas[0]?.value || '';
   const activityNotes = textareas[1]?.value || '';
@@ -101,8 +101,8 @@ function getFormData() {
   const sleepSlider = document.getElementById('sleepRange');
   const moodSlider = document.getElementById('moodRange');
   
-  // Create entry object
-  return {
+  // Luodaan objekti - täysin sama kuin alkuperäinen
+  const data = {
     entry_date: new Date().toISOString().split('T')[0], // Today's date
     time_of_day: getRadioValue('time'),
     sleep_duration: sleepSlider ? parseFloat(sleepSlider.value) : 3,
@@ -110,6 +110,10 @@ function getFormData() {
     sleep_notes: sleepNotes,
     activity: activityNotes
   };
+  
+  // Ainoa muutos: konsolitulostus
+  console.log("GetFormData palauttaa:", data);
+  return data;
 }
 
 // Global variables for HRV report generation
@@ -276,9 +280,18 @@ async function generateHrvPdfReport() {
 
     // IMPORTANT CHANGE: If generating right after saving a new entry, get data directly from form
     if (isAfterSave) {
-      // Get form data directly (this is the key improvement)
-      latestEntry = getFormData();
-      console.log("Using form data for PDF:", latestEntry);
+      // Hae tallennetut lomakkeen tiedot LocalStorage:sta
+      const savedEntryData = localStorage.getItem('lastEntryData');
+      if (savedEntryData) {
+        latestEntry = JSON.parse(savedEntryData);
+        console.log("Using saved form data from localStorage:", latestEntry);
+        // Puhdistetaan väliaikainen tieto
+        localStorage.removeItem('lastEntryData');
+      } else {
+        // Fallback vanhaan tapaan
+        latestEntry = getFormData();
+        console.log("Using form data directly:", latestEntry);
+      }
     } 
     // Otherwise, try to find from stored entries
     else {
@@ -345,6 +358,20 @@ async function generateHrvPdfReport() {
       if (typeof sleepValue !== 'number') {
         sleepValue = parseFloat(sleepValue) || 0;
       }
+
+    // Riville 353 (juuri ennen päiväkirjamerkinnän käsittelyä)
+    if (latestEntry) {
+      console.log("PDF luonnissa käytettävä entry-objekti:", latestEntry);
+      // Varmistetaan että tärkeimmät kentät ovat saatavilla
+      console.log("Tärkeät kentät:", {
+        time_of_day: latestEntry.time_of_day,
+        sleep_duration: latestEntry.sleep_duration,
+        current_mood: latestEntry.current_mood,
+        // Lisätiedot, jotka eivät toimi:
+        sleep_notes: latestEntry.sleep_notes,
+        activity: latestEntry.activity
+      });
+    }
 
       // Sleep quality
       doc.setFont('helvetica', 'bold');
