@@ -1,5 +1,11 @@
 // Updated hrv-report.js - PDF Report Generation
 window.generateHrvPdfReport = generateHrvPdfReport;
+window.HRV_THRESHOLDS = {
+  '18-25': { rmssd: { min: 25, max: 100 }, sdnn: { min: 50, max: 150 } },
+  '26-35': { rmssd: { min: 20, max: 90 }, sdnn: { min: 40, max: 130 } },
+  '36-45': { rmssd: { min: 15, max: 80 }, sdnn: { min: 30, max: 110 } },
+  '46-56': { rmssd: { min: 10, max: 60 }, sdnn: { min: 20, max: 80 } }
+};
 
 // Function to show messages to the user
 function showMessage(message, type = 'info') {
@@ -359,20 +365,6 @@ async function generateHrvPdfReport() {
         sleepValue = parseFloat(sleepValue) || 0;
       }
 
-    // Riville 353 (juuri ennen päiväkirjamerkinnän käsittelyä)
-    if (latestEntry) {
-      console.log("PDF luonnissa käytettävä entry-objekti:", latestEntry);
-      // Varmistetaan että tärkeimmät kentät ovat saatavilla
-      console.log("Tärkeät kentät:", {
-        time_of_day: latestEntry.time_of_day,
-        sleep_duration: latestEntry.sleep_duration,
-        current_mood: latestEntry.current_mood,
-        // Lisätiedot, jotka eivät toimi:
-        sleep_notes: latestEntry.sleep_notes,
-        activity: latestEntry.activity
-      });
-    }
-
       // Sleep quality
       doc.setFont('helvetica', 'bold');
       doc.text('Unen laatu (1-5):', 20, startY);
@@ -453,6 +445,10 @@ async function generateHrvPdfReport() {
     let lastWeekChartUrl = await getLastWeekChartImageUrl();
     
     if (lastWeekChartUrl) {
+      if (startY > 180) {
+        doc.addPage();
+        startY = 20;
+      }
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(16);
       doc.text('Viimeiset 7 päivää', 20, startY);
@@ -463,10 +459,41 @@ async function generateHrvPdfReport() {
     // Last 30 days chart
     let lastMonthChartUrl = await getLastMonthChartImageUrl();
     if (lastMonthChartUrl) {
+      if (startY > 180) {
+        doc.addPage();
+        startY = 20;
+      }
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(16);
       doc.text('Viimeiset 30 päivää', 20, startY);
       doc.addImage(lastMonthChartUrl, 'PNG', 20, startY + 5, 170, 80);
+      startY += 90;
+    }
+    
+    doc.addPage();
+    startY = 20;
+
+    // Add new detailed multi-chart for last 7 measurements for RMSSD and SDNN
+    const multiChartLast7Url = await getDetailedMultiChartUrl(7);
+    if (multiChartLast7Url) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.text('Viimeisten 7 mittauksen yksityiskohtaiset HRV-arvot', 20, startY);
+      doc.addImage(multiChartLast7Url, 'PNG', 10, startY + 5, 190, 120);
+      startY += 130;
+    }
+
+    doc.addPage();
+    startY = 20;
+    
+    // Add new detailed multi-chart for last 30 measurements for RMSSD and SDNN
+    const multiChartLast30Url = await getDetailedMultiChartUrl(30);
+    if (multiChartLast30Url) {
+      // Add a new page if there's not enough space
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.text('Viimeisten 30 mittauksen yksityiskohtaiset HRV-arvot', 20, startY);
+      doc.addImage(multiChartLast30Url, 'PNG', 10, startY + 5, 190, 120);
     }
     
     // Add a footer with the date and page number
@@ -868,4 +895,296 @@ async function getLastMonthChartImageUrl() {
     console.error('Error generating last month chart:', error);
     return null;
   }
+}
+
+// NEW FUNCTION: Generate detailed multi-chart with all HRV values for last N measurements
+// Muutettu getDetailedMultiChartUrl-funktio, jossa päivämäärät järjestetään vanhimmasta uusimpaan
+async function getDetailedMultiChartUrl(days) {
+  try {
+    // Tavallinen alustus kuten aiemmin...
+    const chartContainer = document.createElement('div');
+    chartContainer.style.width = '800px';
+    chartContainer.style.height = '500px';
+    chartContainer.style.position = 'fixed';
+    chartContainer.style.top = '-9999px';
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 500;
+    chartContainer.appendChild(canvas);
+    
+    document.body.appendChild(chartContainer);
+    
+    // Hae data
+    let rawData = [];
+    if (typeof fullRawData !== 'undefined') {
+      rawData = fullRawData;
+    } else if (typeof window.fullRawData !== 'undefined') {
+      rawData = window.fullRawData;
+    } else {
+      // Yritetään hakea API:sta
+      try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.token) {
+          const res = await fetch(`http://localhost:5000/api/kubios/hrv/last-${days > 7 ? '30' : '7'}-measurements`, {
+            headers: {
+              'Authorization': `Bearer ${user.token}`
+            }
+          });
+          
+          if (res.ok) {
+            rawData = await res.json();
+          }
+        }
+      } catch (e) {
+        console.error("Error fetching HRV data:", e);
+      }
+    }
+    
+    // Jos dataa ei ole, yritetään mock-dataa
+    if (!rawData || rawData.length === 0) {
+      try {
+        const mockRes = await fetch('/public/mockdata.json');
+        if (mockRes.ok) {
+          const mockData = await mockRes.json();
+          rawData = mockData.results || [];
+        }
+      } catch (e) {
+        console.error("Error fetching mock data:", e);
+      }
+    }
+    
+    // Jos vieläkään ei ole dataa, palautetaan null
+    if (!rawData || rawData.length === 0) {
+      document.body.removeChild(chartContainer);
+      return null;
+    }
+    
+    // Otetaan viimeiset N päivää datasta
+    const lastData = rawData.slice(-days);
+    
+    // TÄRKEÄ MUUTOS: Järjestä data päivämäärän mukaan vanhimmasta uusimpaan
+    lastData.sort((a, b) => {
+      const dateA = a.daily_result ? new Date(a.daily_result) : new Date();
+      const dateB = b.daily_result ? new Date(b.daily_result) : new Date();
+      return dateA - dateB; // Vanhimmasta uusimpaan
+    });
+    
+    // Luo otsikot järjestetyn datan perusteella
+    const labels = lastData.map(r => {
+      if (r.daily_result) {
+        const date = new Date(r.daily_result);
+        return date.toLocaleDateString('fi-FI');
+      }
+      return 'Tuntematon päivä';
+    });
+    
+    // Metriikat
+    const metrics = [
+      { key: 'rmssd', label: 'RMSSD', color: 'rgba(54, 162, 235, 0.8)' },
+      { key: 'sdnn', label: 'SDNN', color: 'rgba(75, 192, 192, 0.8)' },
+      { key: 'heart_rate', label: 'Syke', color: 'rgba(255, 99, 132, 0.8)' },
+      { key: 'mean_rr', label: 'Mean RR', color: 'rgba(153, 102, 255, 0.8)' },
+      { key: 'pns_index', label: 'PNS Index', color: 'rgba(255, 159, 64, 0.8)' },
+      { key: 'sns_index', label: 'SNS Index', color: 'rgba(255, 205, 86, 0.8)' }
+    ];
+    
+    // Haetaan ikäryhmä
+    let ageGroup = '26-35';
+    const userData = JSON.parse(localStorage.getItem('user'));
+    if (userData && userData.user && userData.user.birthdate) {
+      const birthDate = new Date(userData.user.birthdate);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      
+      if (age >= 18 && age <= 25) {
+        ageGroup = '18-25';
+      } else if (age >= 26 && age <= 35) {
+        ageGroup = '26-35';
+      } else if (age >= 36 && age <= 45) {
+        ageGroup = '36-45';
+      } else if (age >= 46 && age <= 56) {
+        ageGroup = '46-56';
+      }
+    }
+    
+    // Raja-arvot
+    let thresholds = {
+      'rmssd': { min: 20, max: 90 },
+      'sdnn': { min: 40, max: 130 }
+    };
+    
+    if (typeof HRV_THRESHOLDS !== 'undefined') {
+      thresholds = HRV_THRESHOLDS[ageGroup];
+    } else if (typeof window.HRV_THRESHOLDS !== 'undefined') {
+      thresholds = window.HRV_THRESHOLDS[ageGroup];
+    }
+    
+    // Luo datasetit järjestetyn datan pohjalta
+    const datasets = metrics.map(metric => {
+      return {
+        label: metric.label,
+        data: lastData.map(d => d[metric.key]),
+        borderColor: metric.color,
+        backgroundColor: metric.color.replace('0.8', '0.2'),
+        borderWidth: 2,
+        fill: false,
+        tension: 0.4,
+        yAxisID: metric.key === 'mean_rr' ? 'y1' : 'y',
+      };
+    });
+    
+    // Lisää raja-arvot viivoina
+    if (thresholds.rmssd) {
+      datasets.push({
+        label: 'RMSSD Min',
+        data: Array(labels.length).fill(thresholds.rmssd.min),
+        borderColor: 'rgba(255, 0, 0, 0.5)',
+        borderDash: [5, 5],
+        fill: false,
+        pointRadius: 0,
+        borderWidth: 1,
+        yAxisID: 'y'
+      });
+      
+      datasets.push({
+        label: 'RMSSD Max',
+        data: Array(labels.length).fill(thresholds.rmssd.max),
+        borderColor: 'rgba(255, 0, 0, 0.5)',
+        borderDash: [5, 5],
+        fill: false,
+        pointRadius: 0,
+        borderWidth: 1,
+        yAxisID: 'y'
+      });
+    }
+    
+    if (thresholds.sdnn) {
+      datasets.push({
+        label: 'SDNN Min',
+        data: Array(labels.length).fill(thresholds.sdnn.min),
+        borderColor: 'rgba(255, 165, 0, 0.5)',
+        borderDash: [5, 5],
+        fill: false,
+        pointRadius: 0,
+        borderWidth: 1,
+        yAxisID: 'y'
+      });
+      
+      datasets.push({
+        label: 'SDNN Max',
+        data: Array(labels.length).fill(thresholds.sdnn.max),
+        borderColor: 'rgba(255, 165, 0, 0.5)',
+        borderDash: [5, 5],
+        fill: false,
+        pointRadius: 0,
+        borderWidth: 1,
+        yAxisID: 'y'
+      });
+    }
+    
+    // Luo kaavio
+    const ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: datasets
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: `HRV-mittaushistoria (viimeiset ${days} mittausta)`,
+            font: {
+              size: 16,
+              weight: 'bold'
+            }
+          },
+          legend: {
+            position: 'bottom',
+            labels: {
+              boxWidth: 12,
+              padding: 15
+            }
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Päivämäärä'
+            },
+            ticks: {
+              maxRotation: 45,
+              minRotation: 45,
+              callback: function(val, index) {
+                return index % (days > 15 ? 3 : 1) === 0 ? this.getLabelForValue(val) : '';
+              }
+            }
+          },
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+            title: {
+              display: true,
+              text: 'Arvo (ms / bpm)'
+            },
+            suggestedMin: 0
+          },
+          y1: {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            title: {
+              display: true,
+              text: 'Mean RR (ms)'
+            },
+            grid: {
+              drawOnChartArea: false
+            },
+            ticks: {
+              color: 'rgba(153, 102, 255, 1)'
+            }
+          }
+        }
+      }
+    });
+    
+    // Odota kaavion renderöintia
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
+    // Muunna kuva URL:ksi
+    const imageUrl = canvas.toDataURL('image/png');
+    
+    // Poista container DOM:sta
+    document.body.removeChild(chartContainer);
+    
+    return imageUrl;
+  } catch (error) {
+    console.error(`Error generating ${days}-day detailed chart:`, error);
+    return null;
+  }
+}
+
+// Sama periaate myös muihin graafeja luoviin funktioihin
+function updateLastWeekAndMonthCharts() {
+  // Päivitä getLastWeekChartImageUrl ja getLastMonthChartImageUrl 
+  // samalla tavalla järjestämällä data päivämäärän mukaan
+  
+  // Tämä on vain muistutus - nämä täytyy päivittää samalla tavalla:
+  // 1. Järjestä data: lastData.sort((a, b) => {...})
+  // 2. Käytä järjestettyä dataa datasettien luomiseen
 }
