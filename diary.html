@@ -51,10 +51,21 @@
                 <div class="time-selector">
                   <span>Kirjauksen ajankohta:</span>
                   <div class="time-options">
-                    <label><input type="radio" name="time" value="morning"> Aamu</label>
-                    <label><input type="radio" name="time" value="evening"> Ilta</label>
+                      <label class="time-option">
+                          <input type="radio" name="time" value="morning">
+                          <span class="time-option-label">
+                              <img src="/src/img/sun.png" alt="" class="time-icon">
+                              Aamu
+                          </span>
+                      </label>
+                      <label class="time-option">
+                          <input type="radio" name="time" value="evening">
+                          <span class="time-option-label">
+                              <img src="/src/img/moon.png" alt="" class="time-icon">
+                              Ilta
+                          </span>
+                      </label>
                   </div>
-                </div>
               </div>
                 <div class="hrv-container">
                   <h2>HRV-arvot</h2>

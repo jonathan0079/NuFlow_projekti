@@ -1305,28 +1305,28 @@ async function fetchMonthHrvData(token) {
         const timeText = document.querySelector('.detail-time');
         
         if (entry.time_of_day === 'morning') {
-          timeIcon.style.backgroundImage = 'url(/src/img/sun.png)';
+          timeIcon.style.backgroundImage = 'url("../img/sun.png")';
           timeText.textContent = 'Aamu';
         } else {
-          timeIcon.style.backgroundImage = 'url(/src/img/moon.png)';
+          timeIcon.style.backgroundImage = 'url("../img/moon.png")';
           timeText.textContent = 'Ilta';
         }
         
         // Uni ja mieliala
-      const sleepValue = entry.sleep_duration || 0;
-      const moodValue = entry.current_mood || 0;
-      
-      document.getElementById('detail-sleep').textContent = `${Math.round(sleepValue)}/5`;
-      document.getElementById('detail-mood').textContent = `${Math.round(moodValue)}/5`;
-      
-      // Unen muistiinpanot
-      const sleepNotes = document.getElementById('sleep-notes-detail');
-      sleepNotes.textContent = entry.sleep_notes || '';
-      
-      // Mielialan muistiinpanot
-      const activityNotes = document.getElementById('activity-notes-detail');
-      activityNotes.textContent = entry.activity || '';
+        const sleepValue = entry.sleep_duration || 0;
+        const moodValue = entry.current_mood || 0;
         
+        document.getElementById('detail-sleep').textContent = `${Math.round(sleepValue)}/5`;
+        document.getElementById('detail-mood').textContent = `${Math.round(moodValue)}/5`;
+        
+        // Unen muistiinpanot
+        const sleepNotes = document.getElementById('sleep-notes-detail');
+        sleepNotes.textContent = entry.sleep_notes || '';
+        
+        // Mielialan muistiinpanot
+        const activityNotes = document.getElementById('activity-notes-detail');
+        activityNotes.textContent = entry.activity || '';
+          
         diaryDetails.classList.remove('hidden');
       }
     }
