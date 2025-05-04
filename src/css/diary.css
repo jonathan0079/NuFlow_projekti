@@ -563,7 +563,7 @@ background-color: #7E57C2; /* Violetti väri illalle */
 /* Päivän yksityiskohtapaneeli */
 .day-details-panel {
   position: absolute;
-  left: 310px;
+  left: 215px;
   bottom: 100px;
   width: 300px;
   height: 390px;
