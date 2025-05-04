@@ -1263,3 +1263,115 @@ async function fetchMonthHrvData(token) {
       });
       window.dispatchEvent(todayDateEvent);
     }
+    function updateDayDetailsPanel(date, data) {
+      const panel = document.getElementById('day-details-panel');
+      const noEntryText = document.getElementById('no-entry-text');
+      const hrvDetails = document.getElementById('hrv-details');
+      const diaryDetails = document.getElementById('diary-entry-details');
+      
+      // Piilota kaikki osiot aluksi
+      noEntryText.classList.add('hidden');
+      hrvDetails.classList.add('hidden');
+      diaryDetails.classList.add('hidden');
+      
+      // Yksityiskohtapaneelin otsikko
+      const formattedDate = new Date(date).toLocaleDateString('fi-FI');
+      document.querySelector('.day-details-panel h3').textContent = 
+        `Päiväkirja - ${formattedDate}`;
+      
+      if (!data || (!data.entries && !data.hrvData)) {
+        noEntryText.textContent = 'Ei merkintöjä tälle päivälle';
+        noEntryText.classList.remove('hidden');
+        return;
+      }
+      
+      // HRV-tietojen näyttö
+      if (data.hrvData) {
+        document.getElementById('detail-heart-rate').textContent = 
+          data.hrvData.heart_rate ? data.hrvData.heart_rate.toFixed(1) : '-';
+        document.getElementById('detail-rmssd').textContent = 
+          data.hrvData.rmssd ? data.hrvData.rmssd.toFixed(1) : '-';
+        document.getElementById('detail-sdnn').textContent = 
+          data.hrvData.sdnn ? data.hrvData.sdnn.toFixed(1) : '-';
+        hrvDetails.classList.remove('hidden');
+      }
+      
+      // Päiväkirjamerkinnän tiedot
+      if (data.entries && data.entries.length > 0) {
+        const entry = data.entries[0];
+        
+        // Ajankohta (aamu/ilta)
+        const timeIcon = document.querySelector('.time-icon');
+        const timeText = document.querySelector('.detail-time');
+        
+        if (entry.time_of_day === 'morning') {
+          timeIcon.style.backgroundImage = 'url(/src/img/sun.png)';
+          timeText.textContent = 'Aamu';
+        } else {
+          timeIcon.style.backgroundImage = 'url(/src/img/moon.png)';
+          timeText.textContent = 'Ilta';
+        }
+        
+        // Uni ja mieliala
+      const sleepValue = entry.sleep_duration || 0;
+      const moodValue = entry.current_mood || 0;
+      
+      document.getElementById('detail-sleep').textContent = `${Math.round(sleepValue)}/5`;
+      document.getElementById('detail-mood').textContent = `${Math.round(moodValue)}/5`;
+      
+      // Unen muistiinpanot
+      const sleepNotes = document.getElementById('sleep-notes-detail');
+      sleepNotes.textContent = entry.sleep_notes || '';
+      
+      // Mielialan muistiinpanot
+      const activityNotes = document.getElementById('activity-notes-detail');
+      activityNotes.textContent = entry.activity || '';
+        
+        diaryDetails.classList.remove('hidden');
+      }
+    }
+    
+    // Päivitä selectedDateChanged tapahtumakäsittelijä diary.js tiedostossa
+    window.addEventListener('selectedDateChanged', function(event) {
+      const { date, entries, hrvData } = event.detail;
+      
+      // Päivitä uusi yksityiskohtapaneeli
+      updateDayDetailsPanel(date, { entries, hrvData });
+      
+      // Muut olemassa olevat toiminnot pysyvät samana...
+      const user = JSON.parse(localStorage.getItem('user'));
+      const userId = user.user_id || user.id || user.userId;
+      const token = user.token;
+      
+      if (entries && entries.length > 0) {
+        // Täytä päiväkirjalomake valitun päivän tiedoilla
+        populateDiaryForm(entries[entries.length - 1]);
+        
+        // Jos HRV-data tuli kalenterista
+        if (hrvData) {
+          displayHrvData(hrvData);
+        } else {
+          // Hae HRV-data valitulle päivämäärälle
+          try {
+            fetchHrvDataForSelectedDate(token, date);
+          } catch (error) {
+            console.error('HRV-datan haku epäonnistui:', error);
+          }
+        }
+      } else {
+        // Tyhjennä lomake ja HRV-arvot jos ei kirjauksia
+        resetDiaryForm();
+        
+        // Jos HRV-data tuli kalenterista
+        if (hrvData) {
+          displayHrvData(hrvData);
+        } else {
+          // Yritä hakea HRV-data silti, koska käyttäjällä voi olla kirjaus päivältä
+          try {
+            fetchHrvDataForSelectedDate(token, date);
+          } catch (error) {
+            console.error('HRV-datan haku epäonnistui tyhjälle päivälle:', error);
+          }
+        }
+      }
+    });
