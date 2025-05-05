@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/initial_info.css">
+    <link rel="stylesheet" href="/src/css/myinfo.css">
 </head>
 <body>
   <nav>
@@ -32,7 +33,11 @@
     </div>
   </nav> 
     <main>
+      <!-- Opastusnappi -->
+      <div class="title-with-button">
       <h1>Omat tietoni</h1>
+      <button id="infoButton" title="Näytä opastus">i</button>
+    </div>
       <!--Kubios-->
       <div id="infoForm" class="form-container">
         <h2 class="section-header">Henkilötiedot</h2>
@@ -62,16 +67,16 @@
         <!--Tietokanta-->
     
         <label for="drug_use">Nikotiinituotteet, alkoholi ja muut päihteet:</label>
-        <input type="text" id="drug_use" name="drug_use"/>
-    
+        <textarea id="drug_use" name="drug_use" maxlength="100"></textarea>
+        
         <label for="diseases_medications">Sairaudet ja lääkitykset:</label>
-        <input type="text" id="diseases_medications" name="diseases_medications"/>
-    
+        <textarea id="diseases_medications" name="diseases_medications" maxlength="100"></textarea>
+        
         <label for="sleep">Arvio unesta (hyvä/huono) miksi?:</label>
-        <input type="text" id="sleep" name="sleep"/>
-    
+        <textarea id="sleep" name="sleep" maxlength="100"></textarea>
+        
         <label for="self_assessment">Tämän hetkinen vointi:</label>
-        <input type="text" id="self_assessment" name="self_assessment"/>
+        <textarea id="self_assessment" name="self_assessment" maxlength="200"></textarea>
     
     
         <button type="submit" id="submit-button">Tallenna</button>
@@ -80,5 +85,42 @@
 <footer>NuFlow © 2025</footer>
 <script type="module" src="/src/js/auth.js"></script>
 <script type="module" src="/src/js/myinfo.js"></script>
+<script type="module" src="/src/js/opastus.js"></script>
+<script>
+  document.querySelectorAll('textarea, input[type="text"]').forEach(field => {
+    const maxLength = field.getAttribute('maxlength');
+    if (!maxLength) return;
 
+    // Luo näyttö jäljellä olevista merkeistä
+    const counter = document.createElement('p');
+    const span = document.createElement('span');
+    span.textContent = `${maxLength}`;
+    counter.innerHTML = `Merkkejä jäljellä: `;
+    counter.appendChild(span);
+
+    // Lisää laskuri kentän jälkeen
+    field.parentNode.insertBefore(counter, field.nextSibling);
+
+    // Päivitä jäljellä olevat merkit kirjoitettaessa
+    field.addEventListener('input', () => {
+      const remaining = maxLength - field.value.length;
+      span.textContent = remaining;
+    });
+  });
+</script>
+<!-- Opastusmodaali -->
+<!-- MODAALI -->
+<div id="infoModal">
+  <div class="modal-content">
+    <span class="close-button" title="Sulje">&times;</span>
+    <h2>Opastus</h2>
+    <p>Kun kirjaudut sisään, sähköposti, etunimi,sukunimi ja syntymäaika täytetään automaattisesti.</p>
+    <p>Täytä puuttuvat kentät omilla tiedoillasi (esim. pituus, paino, sukupuoli sekä terveystiedot).</p>
+    <p>Kun kaikki on kunnossa, paina <strong>"Tallenna"</strong>.</p>
+    <p>Tämän jälkeen siirry ylhäällä valikosta <strong>"Päiväkirja"</strong>-sivulle.</p>
+    <p>Siellä klikkaa <strong>"Lisää päiväkirjamerkintä"</strong> ja täytä päivän tiedot.</p>
+    <p>Näin tietosi tallentuvat ja voit seurata hyvinvointiasi helposti!</p>
+  </div>
+</div>
+</body>
 </html>

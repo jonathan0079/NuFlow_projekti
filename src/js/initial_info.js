@@ -166,4 +166,4 @@ document.addEventListener('DOMContentLoaded', function() {
       messageElement.style.display = 'none';
     }, 3000);
   }
-});
+})

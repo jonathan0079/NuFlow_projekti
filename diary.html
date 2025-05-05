@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/diary.css">
+    <link rel="stylesheet" href="/src/css/diary_chart.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
 </head>
 <body>
   <nav>
@@ -32,23 +37,40 @@
     </div>
   </nav> 
         <main>
+          <!-- Opastusnappi oikeaan yläkulmaan -->
+          <div class="title-with-button">
             <h1>Päiväkirja</h1>
+            <!-- Opastusnappi oikeaan yläkulmaan -->
+            <button id="diaryInfoButton" title="Näytä opastus">i</button>
+         </div>
             <div class="buttons">
               <button id="openDiaryBtn">Lisää päiväkirjamerkintä</button>
               <button id="openChartBtn">Näytä HRV-kaaviot</button>
+              <button id="generateHrvReportBtn" class="hidden">Luo HRV-raportti</button>
             </div>
           <!-- Päiväkirja-modal -->
           <div id="diaryModal" class="modal">
             <div class="modal-content">
-              <span class="close">&times;</span>
+              <span class="close-modal">&times;</span>
               <form id="diaryForm">
                 <div class="time-selector">
                   <span>Kirjauksen ajankohta:</span>
                   <div class="time-options">
-                    <label><input type="radio" name="time" value="morning"> Aamu</label>
-                    <label><input type="radio" name="time" value="evening"> Ilta</label>
+                      <label class="time-option">
+                          <input type="radio" name="time" value="morning">
+                          <span class="time-option-label">
+                              <img src="/src/img/sun.png" alt="" class="time-icon">
+                              Aamu
+                          </span>
+                      </label>
+                      <label class="time-option">
+                          <input type="radio" name="time" value="evening">
+                          <span class="time-option-label">
+                              <img src="/src/img/moon.png" alt="" class="time-icon">
+                              Ilta
+                          </span>
+                      </label>
                   </div>
-                </div>
               </div>
                 <div class="hrv-container">
                   <h2>HRV-arvot</h2>
@@ -109,7 +131,7 @@
                   </div>
                   <input type="range" min="1" max="5" value="3" class="slider" id="sleepRange">
                 </div>
-                <textarea placeholder="Lisätietoa..."></textarea>
+                <textarea placeholder="Lisätietoa..." maxlength="250"></textarea>
 
                 <h2>Oloni juuri nyt</h2>
                 <div class="slidecontainer">
@@ -122,7 +144,7 @@
                   </div>
                   <input type="range" min="1" max="5" value="3" class="slider" id="moodRange">
                 </div>
-                <textarea placeholder="Tähän voit kirjoittaa muita muistiinpanoja..."></textarea>
+                <textarea placeholder="Tähän voit kirjoittaa muita muistiinpanoja: " maxlength="250"></textarea>
 
                 <button id="submit-button" type="submit">Tallenna</button>
                 <div id="saveMessageContainer">
@@ -133,9 +155,10 @@
           </div>
           <!-- Modaali -->
           <div id="chartModal" class="modal">
-            <div class="modal-content">
-              <span class="close">&times;</span>
-                            <div class="buttons">
+            <div class="Chartmodal-content">
+              <span class="close-modal">&times;</span>
+              <!-- Nappiryhmä (7/30 päivää) -->
+              <div class="daybuttons">
                 <button id="btn7days">Viimeiset 7 päivää</button>
                 <button id="btn30days">Viimeiset 30 päivää</button>
               </div>
@@ -144,15 +167,102 @@
               <canvas id="hrvPieChart" width="400" height="400"></canvas>
               <!-- Viivakaaviot 7/30 päivää -->
               <div id="lineChartGrid" class="chart-grid"></div>
-            </div>
+            </div> <!-- Sulkee .modal-content -->
+          </div> <!-- Sulkee .modal -->
           </div>
           </div>
         </div> 
+                
+
+                <!--  Opastusmodaali, joka aukeaa napista -->
+              
+        <div id="diaryInfoModal">
+          <div class="modal-content">
+            <h2>Opastus</h2>
+            <p>Tällä sivulla näet aiemmat päiväkirjamerkinnät kalenterin muodossa.</p>
+            <p>Klikkaa <strong>"Lisää päiväkirjamerkintä"</strong> lisätäksesi uuden merkinnän. Kun kirjaudut sisään, HRV-arvot täytetään automaattisesti.</p>
+            <p>Arvioi esimerkiksi <strong>unen laatua</strong> ja <strong>mielialaa</strong> (1–5).Kun kaikki on kunnossa, paina <strong>"Tallenna"</strong>.</p>
+            <p>Lisätyt merkinnät näkyvät kalenterissa symboleina. Klikkaa kalenterista päivää nähdäksesi sen sisällön.</p>
+            <p>Tällä sivulla myös näyttää HRV-kaaviot uusin päivä, viimeist 7 päivää ja viimeist 30 päivää.</p>
+          </div>
+        </div>
+
       </body>
       </main>
+
+      <!-- Lisää päivän yksityiskohtapaneeli -->
+      <div id="day-details-panel" class="day-details-panel">
+        <h3>Päiväkirjamerkintä</h3>
+        <div id="day-details-content" class="day-details-content">
+          <p id="no-entry-text">Valitse päivä kalenterista</p>
+          
+          <!-- HRV-tiedot -->
+          <div id="hrv-details" class="hrv-details hidden">
+            <h4>HRV-arvot</h4>
+            <div class="hrv-summary">
+              <div class="hrv-item">
+                <span class="hrv-label">Syke:</span>
+                <span id="detail-heart-rate">-</span>
+              </div>
+              <div class="hrv-item">
+                <span class="hrv-label">RMSSD:</span>
+                <span id="detail-rmssd">-</span>
+              </div>
+              <div class="hrv-item">
+                <span class="hrv-label">SDNN:</span>
+                <span id="detail-sdnn">-</span>
+              </div>
+            </div>
+          </div>
+          
+          <!--Päiväkirjamerkinnän tiedot pienessä ikkunassa-->
+          <div id="diary-entry-details" class="diary-entry-details hidden">
+            <div class="day-detail-item">
+              <span class="time-icon"></span>
+              <span class="detail-time"></span>
+            </div>
+            <div class="day-detail-item sleep-rating">
+              <span class="detail-label">Uni:</span>
+              <span id="detail-sleep">-/5</span>
+            </div>
+            <div class="day-detail-notes" id="sleep-notes-detail"></div>
+            <div class="day-detail-item mood-rating">
+              <span class="detail-label">Mieliala:</span>
+              <span id="detail-mood">-/5</span>
+            </div>
+            <div class="day-detail-notes" id="activity-notes-detail"></div>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <footer>NuFlow © 2025</footer>
       <script type="module" src="/src/js/diary.js"></script>
       <script type="module" src="/src/js/auth.js"></script>
       <script type="module" src="/src/js/diary-calendar.js"></script>
+      <script type="module" src="/src/js/hrv-report.js"></script>
+      <script>
+        document.querySelectorAll('textarea').forEach(textarea => {
+  const maxLength = textarea.getAttribute('maxlength');
+
+  // Luo näyttö jäljellä olevista merkeistä
+  const counter = document.createElement('p');
+  const span = document.createElement('span');
+  span.textContent = `${maxLength}`;
+  counter.innerHTML = `Merkkejä jäljellä: `;
+  counter.appendChild(span);
+
+  // Lisää laskuri tekstialueen jälkeen
+  textarea.parentNode.insertBefore(counter, textarea.nextSibling);
+
+  // Päivitä jäljellä olevat merkit kirjoitettaessa
+  textarea.addEventListener('input', () => {
+    const remaining = maxLength - textarea.value.length;
+    span.textContent = remaining;
+  });
+});
+
+      </script>
 
       </html>
