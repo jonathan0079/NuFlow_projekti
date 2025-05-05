@@ -369,6 +369,13 @@ function checkAuthStatus() {
         diaryNavLink.style.display = 'none';
         console.log('Diary nav link hidden');
       }
+      
+// Piilottaa "Omat tiedot" -linkin
+      const myInfoNavLink = document.querySelector('a[href="/myinfo.html"]');
+      if (myInfoNavLink) {
+        myInfoNavLink.parentElement.style.display = 'none';
+        console.log('MyInfo nav link hidden');
+      }
     }
   }
 
