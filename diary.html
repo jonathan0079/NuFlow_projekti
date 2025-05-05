@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fi">
 <head>
@@ -9,6 +8,8 @@
     <link rel="stylesheet" href="/src/css/diary.css">
     <link rel="stylesheet" href="/src/css/diary_chart.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 
 </head>
 <body>
@@ -40,6 +41,7 @@
             <div class="buttons">
               <button id="openDiaryBtn">Lisää päiväkirjamerkintä</button>
               <button id="openChartBtn">Näytä HRV-kaaviot</button>
+              <button id="generateHrvReportBtn" class="hidden">Luo HRV-raportti</button>
             </div>
           <!-- Päiväkirja-modal -->
           <div id="diaryModal" class="modal">
@@ -49,10 +51,21 @@
                 <div class="time-selector">
                   <span>Kirjauksen ajankohta:</span>
                   <div class="time-options">
-                    <label><input type="radio" name="time" value="morning"> Aamu</label>
-                    <label><input type="radio" name="time" value="evening"> Ilta</label>
+                      <label class="time-option">
+                          <input type="radio" name="time" value="morning">
+                          <span class="time-option-label">
+                              <img src="/src/img/sun.png" alt="" class="time-icon">
+                              Aamu
+                          </span>
+                      </label>
+                      <label class="time-option">
+                          <input type="radio" name="time" value="evening">
+                          <span class="time-option-label">
+                              <img src="/src/img/moon.png" alt="" class="time-icon">
+                              Ilta
+                          </span>
+                      </label>
                   </div>
-                </div>
               </div>
                 <div class="hrv-container">
                   <h2>HRV-arvot</h2>
@@ -156,10 +169,59 @@
         </div> 
       </body>
       </main>
+
+      <!-- Lisää päivän yksityiskohtapaneeli -->
+      <div id="day-details-panel" class="day-details-panel">
+        <h3>Päiväkirjamerkintä</h3>
+        <div id="day-details-content" class="day-details-content">
+          <p id="no-entry-text">Valitse päivä kalenterista</p>
+          
+          <!-- HRV-tiedot -->
+          <div id="hrv-details" class="hrv-details hidden">
+            <h4>HRV-arvot</h4>
+            <div class="hrv-summary">
+              <div class="hrv-item">
+                <span class="hrv-label">Syke:</span>
+                <span id="detail-heart-rate">-</span>
+              </div>
+              <div class="hrv-item">
+                <span class="hrv-label">RMSSD:</span>
+                <span id="detail-rmssd">-</span>
+              </div>
+              <div class="hrv-item">
+                <span class="hrv-label">SDNN:</span>
+                <span id="detail-sdnn">-</span>
+              </div>
+            </div>
+          </div>
+          
+          <!--Päiväkirjamerkinnän tiedot pienessä ikkunassa-->
+          <div id="diary-entry-details" class="diary-entry-details hidden">
+            <div class="day-detail-item">
+              <span class="time-icon"></span>
+              <span class="detail-time"></span>
+            </div>
+            <div class="day-detail-item sleep-rating">
+              <span class="detail-label">Uni:</span>
+              <span id="detail-sleep">-/5</span>
+            </div>
+            <div class="day-detail-notes" id="sleep-notes-detail"></div>
+            <div class="day-detail-item mood-rating">
+              <span class="detail-label">Mieliala:</span>
+              <span id="detail-mood">-/5</span>
+            </div>
+            <div class="day-detail-notes" id="activity-notes-detail"></div>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <footer>NuFlow © 2025</footer>
       <script type="module" src="/src/js/diary.js"></script>
       <script type="module" src="/src/js/auth.js"></script>
       <script type="module" src="/src/js/diary-calendar.js"></script>
+      <script type="module" src="/src/js/hrv-report.js"></script>
       <script>
         document.querySelectorAll('textarea').forEach(textarea => {
   const maxLength = textarea.getAttribute('maxlength');

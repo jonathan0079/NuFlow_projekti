@@ -48,39 +48,52 @@ cursor: pointer;
 }
 
 .buttons {
-display: flex;
-flex-direction: column; 
-gap: 10px; 
-align-items: center; 
-margin-bottom: 20px; /
+  display: flex;
+  flex-direction: column; 
+  gap: 10px; 
+  align-items: center; 
+  margin-bottom: 20px;
 }
 
-.hrv-buttons {
-display: flex;
-gap: 10px; 
-justify-content: center;
+/* Yhteinen tyyli kaikille napeille .buttons-säilön sisällä */
+.buttons > button {
+  display: block; 
+  width: 100%; 
+  max-width: 300px; 
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  margin: 10px auto; 
+  transition: background-color 0.3s ease;
 }
 
+/* Tavalliset napit (vihreä) */
 #openDiaryBtn,
 #openChartBtn {
-display: block; 
-width: 100%; 
-max-width: 300px; 
-padding: 10px 20px;
-background-color: #477668;
-color: white;
-border: none;
-border-radius: 8px;
-font-size: 1rem;
-cursor: pointer;
-text-align: center;
-margin: 10px auto; 
-transition: background-color 0.3s ease;
+  background-color: #477668;
 }
 
 #openDiaryBtn:hover,
 #openChartBtn:hover {
-background-color: #5a897a;
+  background-color: #5a897a;
+}
+
+/* Varoitusnappi (punainen) - tyylit */
+#generateHrvReportBtn {
+  background-color: #f44336;
+}
+
+#generateHrvReportBtn:hover {
+  background-color: #d32f2f;
+}
+
+/* Piilotusluokka */
+.hidden {
+  display: none !important;
 }
 
 #btn7days,
@@ -101,27 +114,69 @@ background-color: #5a897a;
 }
 
 .time-selector {
-  font-size: 14px;
-  margin-bottom: 10px;
-  max-width: 30%;
+  font-size: 16px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .time-selector span {
   font-weight: bold;
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 15px;
 }
 
 .time-options {
   display: flex;
-  flex-direction:row;
+  justify-content: center;
+  gap: 20px;
 }
 
-.time-options label {
-  display: flex;
+.time-option {
+  position: relative;
+}
+
+.time-option input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.time-option-label {
+  display: inline-flex;
   align-items: center;
-  gap: 5px;
-}  
+  padding: 15px 30px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+  justify-content: center;
+  gap: 10px;
+  font-size: 18px;
+  background-color: white;
+}
+
+.time-option-label:hover {
+  border-color: #477668;
+  background-color: #f8f8f8;
+}
+
+.time-option input[type="radio"]:checked + .time-option-label {
+  border-color: #477668;
+  background-color: #e8f0f0;
+  box-shadow: 0 0 0 3px rgba(71, 118, 104, 0.1);
+}
+
+.time-icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: 5px;
+}
 
 .hrv-container {
   margin: 10px auto;
@@ -471,4 +526,127 @@ background-color: #F9A825; /* Keltainen väri aamulle */
 
 .evening-indicator {
 background-color: #7E57C2; /* Violetti väri illalle */
+}
+
+.legend-item span {
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+#hrv-warning {
+  background-color: #FFA500; /* Oranssi tausta */
+  color: #000; /* Musta teksti */
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#hrv-warning button {
+  margin-top: 10px;
+  padding: 8px 15px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+#hrv-warning button:hover {
+  background-color: #d32f2f;
+}
+
+/* Päivän yksityiskohtapaneeli */
+.day-details-panel {
+  position: absolute;
+  left: 215px;
+  bottom: 100px;
+  width: 300px;
+  height: 390px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  z-index: 100;
+  border: 1px solid #ddd;
+}
+
+.day-details-panel h3 {
+  margin: 0 0 15px 0;
+  color: #477668;
+  font-size: 18px;
+  text-align: center;
+}
+
+.day-details-content {
+  height: calc(100% - 35px);
+  overflow-y: auto;
+}
+
+#no-entry-text {
+  text-align: center;
+  color: #888;
+  padding: 20px;
+  font-style: italic;
+}
+
+.hrv-details h4 {
+  margin: 10px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.hrv-summary {
+  margin-bottom: 15px;
+}
+
+.hrv-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.hrv-label {
+  font-weight: bold;
+}
+
+.diary-entry-details {
+  margin-top: 15px;
+}
+
+.day-detail-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  gap: 10px;
+}
+
+.day-detail-item.notes {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.time-icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.detail-label {
+  font-weight: bold;
+  min-width: 80px;
+}
+
+#detail-notes {
+  margin-top: 5px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #555;
 }
