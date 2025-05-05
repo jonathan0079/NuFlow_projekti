@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.2.2 (Python 3.13.1 on win32)" generated="2025-05-05T15:20:47.859856" rpa="false" schemaversion="5">
+<suite id="s1" name="Login Logout Testi" source="C:\KOULU\Koodi\NuFlow_projekti\NuFlow_projekti\tests\login_logout_testi.robot">
+<test id="s1-t1" name="Test Login Flow" line="7">
+<kw name="New Browser" owner="Browser">
+<msg time="2025-05-05T15:20:48.142970" level="INFO">{"browser": "chromium", "headless": false, "chromiumSandbox": false, "devtools": false, "handleSIGHUP": true, "handleSIGINT": true, "handleSIGTERM": true, "slowMo": 0.0, "timeout": 30000.0, "tracesDir": "C:\\KOULU\\Koodi\\NuFlow_projekti\\NuFlow_projekti\\tests\\browser\\traces\\temp\\85f73dca-25f5-4de6-8c72-f5c47255c733"}</msg>
+<msg time="2025-05-05T15:20:48.166091" level="INFO">Starting Browser process C:\KOULU\Koodi\NuFlow_projekti\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\index.js using at 127.0.0.1:61429</msg>
+<msg time="2025-05-05T15:20:49.424682" level="INFO">Successfully created browser with options: {"browser":"chromium","headless":false,"chromiumSandbox":false,"devtools":false,"handleSIGHUP":true,"handleSIGINT":true,"handleSIGTERM":true,"slowMo":0,"timeout":30000,"tracesDir":"C:\\KOULU\\Koodi\\NuFlow_projekti\\NuFlow_projekti\\tests\\browser\\traces\\temp\\85f73dca-25f5-4de6-8c72-f5c47255c733"}</msg>
+<arg>chromium</arg>
+<arg>headless=No</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Create a new playwright Browser with specified options.</doc>
+<status status="PASS" start="2025-05-05T15:20:48.142138" elapsed="1.282830"/>
+</kw>
+<kw name="New Page" owner="Browser">
+<msg time="2025-05-05T15:20:50.015018" level="INFO">Successfully initialized new page object and opened url: http://localhost:5500</msg>
+<msg time="2025-05-05T15:20:50.015101" level="INFO">No context was open. New context was automatically opened when this page is created.</msg>
+<arg>${URL}</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Open a new Page.</doc>
+<status status="PASS" start="2025-05-05T15:20:49.425415" elapsed="0.589860"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-05T15:20:50.016231" level="INFO">Clicks the element 'id=login-button'.</msg>
+<arg>id=login-button</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-05T15:20:50.015616" elapsed="0.094255"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-05T15:20:50.110956" level="INFO">Types the text 'elsikubios@gmail.com' in the given field.</msg>
+<arg>id=login-username</arg>
+<arg>${username}</arg>
+<arg>delay=80ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-05T15:20:50.110201" elapsed="1.887195"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-05T15:20:51.998298" level="INFO">Types the text '750GmuduMdLX' in the given field.</msg>
+<arg>id=login-password</arg>
+<arg>${password}</arg>
+<arg>delay=80ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-05T15:20:51.997699" elapsed="1.137520"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-05T15:20:53.135908" level="INFO">Clicks the element 'css=form#login-form button[class="form-button"]'.</msg>
+<arg>css=form#login-form button[class="form-button"]</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-05T15:20:53.135512" elapsed="0.018647"/>
+</kw>
+<kw name="Wait For Elements State" owner="Browser">
+<msg time="2025-05-05T15:20:54.510351" level="INFO">Waited for Element with selector id=myinfo-nav-link at state visible</msg>
+<arg>id=myinfo-nav-link</arg>
+<arg>visible</arg>
+<tag>PageContent</tag>
+<tag>Wait</tag>
+<doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
+<status status="PASS" start="2025-05-05T15:20:53.154485" elapsed="1.356008"/>
+</kw>
+<status status="PASS" start="2025-05-05T15:20:48.141008" elapsed="6.369752"/>
+</test>
+<test id="s1-t2" name="Test Logout Flow" line="18">
+<kw name="Wait For Elements State" owner="Browser">
+<msg time="2025-05-05T15:20:54.517917" level="INFO">Waited for Element with selector id=logoutButton at state visible</msg>
+<arg>id=logoutButton</arg>
+<arg>visible</arg>
+<arg>timeout=3s</arg>
+<tag>PageContent</tag>
+<tag>Wait</tag>
+<doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
+<status status="PASS" start="2025-05-05T15:20:54.513887" elapsed="0.004170"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-05T15:20:56.518622" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-05T15:20:54.518262" elapsed="2.000468"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-05T15:20:56.519544" level="INFO">Clicks the element 'id=logoutButton'.</msg>
+<arg>id=logoutButton</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-05T15:20:56.519011" elapsed="0.011459"/>
+</kw>
+<kw name="Wait For Elements State" owner="Browser">
+<msg time="2025-05-05T15:20:56.535153" level="INFO">Waited for Element with selector id=login-button at state visible</msg>
+<arg>id=login-button</arg>
+<arg>visible</arg>
+<arg>timeout=3s</arg>
+<tag>PageContent</tag>
+<tag>Wait</tag>
+<doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
+<status status="PASS" start="2025-05-05T15:20:56.530781" elapsed="0.004532"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-05T15:20:58.536258" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-05T15:20:56.535665" elapsed="2.000758"/>
+</kw>
+<kw name="Close Browser" owner="Browser">
+<msg time="2025-05-05T15:20:58.846298" level="INFO">Closed browser</msg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-05-05T15:20:58.536711" elapsed="0.309738"/>
+</kw>
+<status status="PASS" start="2025-05-05T15:20:54.513568" elapsed="4.333179"/>
+</test>
+<status status="PASS" start="2025-05-05T15:20:47.861054" elapsed="11.005302"/>
+</suite>
+<statistics>
+<total>
+<stat pass="2" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Login Logout Testi" id="s1" pass="2" fail="0" skip="0">Login Logout Testi</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

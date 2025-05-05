@@ -2,3 +2,5 @@
 node_modules/
 # MacOS piilotiedostot
 .DS_Store
+# .venv tiedostot
+.venv

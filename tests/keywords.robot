@@ -1,4 +1,4 @@
 *** Variables ***
 ${URL}          http://localhost:5500
-${username}     username
-${password}     password
+${username}     elsikubios@gmail.com
+${password}     750GmuduMdLX

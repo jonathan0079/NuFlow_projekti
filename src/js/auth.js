@@ -112,62 +112,72 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 //Käsittelee login formin lähettämistä
-  async function handleLogin(e) {
-    e.preventDefault();
-    console.log('Login form submitted');
-    
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-    
-// Validoi käyttäjän syötteet
-    if (!username || !password) {
-      loginError.textContent = 'Käyttäjänimi ja salasana vaaditaan';
+async function handleLogin(e) {
+  e.preventDefault();
+  console.log('Login form submitted');
+  
+  const username = document.getElementById('login-username').value;
+  const password = document.getElementById('login-password').value;
+  
+  if (!username || !password) {
+    loginError.textContent = 'Käyttäjänimi ja salasana vaaditaan';
+    return;
+  }
+  
+  console.log('Attempting login with username:', username);
+  
+  const submitButton = loginForm.querySelector('button[type="submit"]');
+  const originalButtonText = submitButton.textContent;
+  submitButton.textContent = 'Kirjaudutaan...';
+  submitButton.disabled = true;
+  
+  const loginUrl = `${API_URL}/auth/login`;
+  console.log('Login endpoint (full URL):', loginUrl);
+  
+  try {
+    const response = await secureFetch(loginUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, password })
+    });
+  
+    if (!response) return;
+  
+    const data = await response.json();
+  
+    if (!response.ok) {
+      loginError.textContent = data.message || 'Kirjautuminen epäonnistui';
+      console.error('Login failed:', data.message);
       return;
     }
+  
+    // Tallenna käyttäjätiedot
+    localStorage.setItem('user', JSON.stringify(data));
+    modal.style.display = 'none';
+    updateAuthUI(true);
     
-    console.log('Attempting login with username:', username);
+    // Tarkista käyttäjän tila
+    const hasMetrics = await checkUserStatus();
     
-// Näyttää lataus tilan
-    const submitButton = loginForm.querySelector('button[type="submit"]');
-    const originalButtonText = submitButton.textContent;
-    submitButton.textContent = 'Kirjaudutaan...';
-    submitButton.disabled = true;
-    
-// Rakentaa login endpointin
-    const loginUrl = `${API_URL}/auth/login`;
-    console.log('Login endpoint (full URL):', loginUrl);
-    
-    try {
-      const response = await secureFetch(loginUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-      });
-    
-      if (!response) return; // ← estää virheen jos response on null
-    
-      const data = await response.json();
-    
-      if (!response.ok) {
-        loginError.textContent = data.message || 'Kirjautuminen epäonnistui';
-        console.error('Login failed:', data.message);
-        return;
-      }
-    
-      localStorage.setItem('user', JSON.stringify(data));
-      modal.style.display = 'none';
-      updateAuthUI(true);
-      window.location.reload();
-    } catch (error) {
-      console.error('Login error:', error);
-      loginError.textContent = 'Palvelinvirhe, yritä myöhemmin uudelleen';
-    } finally {
-      submitButton.textContent = originalButtonText;
-      submitButton.disabled = false;
+    // Ohjaa käyttäjä oikealle sivulle
+    if (hasMetrics) {
+      // Olemassa oleva käyttäjä - vie päiväkirjasivulle
+      window.location.href = 'diary.html';
+    } else {
+      // Uusi käyttäjä - vie esitietosivulle
+      window.location.href = 'initial_info.html';
     }
+    
+  } catch (error) {
+    console.error('Login error:', error);
+    loginError.textContent = 'Palvelinvirhe, yritä myöhemmin uudelleen';
+  } finally {
+    submitButton.textContent = originalButtonText;
+    submitButton.disabled = false;
   }
+}
 
 // Käsittelee rekisteröinnin lähettämistä
   async function handleRegister(e) {
@@ -252,6 +262,14 @@ document.addEventListener('DOMContentLoaded', function() {
     e.preventDefault();
     console.log('Logging out user');
     localStorage.removeItem('user');
+
+  window.addEventListener('popstate', async function() {
+    const hasMetrics = await checkUserStatus();
+    if (!hasMetrics && !window.location.pathname.includes('initial_info.html')) {
+      showMessage('Täytä ensin esitietolomake', 'warning');
+      window.location.href = 'initial_info.html';
+  }
+  });
     
 // Päivittää UI:n uloskirjautumisen jälkeen
     updateAuthUI(false);
@@ -296,15 +314,19 @@ function checkAuthStatus() {
 
     console.log('User is logged in:', user.user.given_name);
     updateAuthUI(true);
-
-    if (window.location.pathname.includes('diary.html')) {
-      if (typeof loadDiaryEntries === 'function') {
-        loadDiaryEntries();
-      }
+    
+    // Tarkista ja ohjaa vain jos ei olla initial_info sivulla
+    if (!window.location.pathname.includes('initial_info.html')) {
+      checkAndRedirect();
     }
+    
+    // Estä navigointi uusille käyttäjille
+    checkUserStatusAndRestrictNavigation();
   } else {
     updateAuthUI(false);
-    if (window.location.pathname.includes('diary.html')) {
+    if (window.location.pathname.includes('diary.html') || 
+        window.location.pathname.includes('initial_info.html') ||
+        window.location.pathname.includes('myinfo.html')) {
       window.location.href = 'index.html';
     }
   }
@@ -506,3 +528,106 @@ function parseJwt(token) {
   }
 };
 
+async function checkUserStatus() {
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (!user || !user.token) return false;
+  
+  // Haetaan käyttäjän ID
+  const userId = user.user_id || user.id || user.userId || (user.user && user.user.id);
+  
+  try {
+    // Käytä ensimmäisenä metrics/:id endpointia
+    let response = await fetch(`${API_URL}/metrics/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${user.token}`
+      }
+    });
+    
+    // Jos 404, kokeile toista päätepistettä
+    if (response.status === 404) {
+      response = await fetch(`${API_URL}/metrics/user/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+    }
+    
+    if (response.status === 404) {
+      // Ei löytynyt tietoja, uusi käyttäjä
+      return false;
+    }
+    
+    if (!response.ok) {
+      // Älä heitä virhettä, vaan palauta false
+      console.error('Error checking user status:', response.status);
+      return false;
+    }
+    
+    const metrics = await response.json();
+    // Jos käyttäjällä on metriikat, hän on olemassa oleva käyttäjä
+    return metrics && metrics.length > 0;
+    
+  } catch (error) {
+    // Älä heitä virhettä, vaan palauta false
+    console.error('Error checking user status:', error);
+    return false;
+  }
+}
+
+// Lisää auth.js tiedostoon
+async function checkAndRedirect() {
+  const currentPath = window.location.pathname;
+  const hasMetrics = await checkUserStatus();
+  
+  // Jos käyttäjä on index.html sivulla, ohjaa hänet oikealle sivulle
+  if (currentPath.includes('index.html') || currentPath === '/') {
+    if (hasMetrics) {
+      window.location.href = 'diary.html';
+    } else {
+      window.location.href = 'initial_info.html';
+    }
+  }
+  
+  // Jos uusi käyttäjä yrittää päästä diary tai myinfo sivulle
+  if (!hasMetrics && (currentPath.includes('diary.html') || currentPath.includes('myinfo.html'))) {
+    showMessage('Täytä ensin esitietolomake', 'error');
+    window.location.href = 'initial_info.html';
+  }
+}
+
+async function checkUserStatusAndRestrictNavigation() {
+  const hasMetrics = await checkUserStatus();
+  
+  if (!hasMetrics) {
+    // Piilota kaikki navigaatiolinkit uusilta käyttäjiltä
+    const diaryLink = document.querySelector('a[href="/diary.html"]');
+    const myInfoLink = document.querySelector('a[href="/myinfo.html"]');
+    
+    if (diaryLink && diaryLink.parentElement) {
+      diaryLink.parentElement.style.display = 'none';
+    }
+    
+    if (myInfoLink && myInfoLink.parentElement) {
+      myInfoLink.parentElement.style.display = 'none';
+    }
+
+
+  } else {
+    // Varmista että linkit ovat näkyvissä kun käyttäjä on täyttänyt lomakkeen
+    const homeLink = document.querySelector('a[href="/index.html"]');
+    const diaryLink = document.querySelector('a[href="/diary.html"]');
+    const myInfoLink = document.querySelector('a[href="/myinfo.html"]');
+    
+    if (homeLink && homeLink.parentElement) {
+      homeLink.parentElement.style.display = '';
+    }
+    
+    if (diaryLink && diaryLink.parentElement) {
+      diaryLink.parentElement.style.display = '';
+    }
+    
+    if (myInfoLink && myInfoLink.parentElement) {
+      myInfoLink.parentElement.style.display = '';
+    }
+  }
+}
