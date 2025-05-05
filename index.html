@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/index.css">
 </head>
+
 <body>
       <nav>
       <div id="modal-overlay"></div>
@@ -14,8 +15,8 @@
     
       <ul>
         <li><a href="/index.html">Etusivu</a></li>
-        <li><a href="/myinfo.html">Omat tiedot</a></li>
-        <li><a href="/diary.html">Päiväkirja</a></li>
+        <li class="auth-required"><a href="/myinfo.html">Omat tiedot</a></li>
+        <li class="auth-required"><a href="/diary.html">Päiväkirja</a></li>
       </ul>
     
       <div class="auth-container">
@@ -32,7 +33,7 @@
         </a>
       </div>
     </nav> 
-    <main>
+<main>
         <div class="hero-text">
             <div class="hero-container">
                 <h1>NuFlow – Seuraa ja ymmärrä hyvinvointiasi</h1>
@@ -40,10 +41,11 @@
                 <p>Sovellus kokoaa vastauksistasi viikko- ja kuukausikoosteet, jotka auttavat tunnistamaan muutoksia hyvinvoinnissasi.</p>
                 <p>Jos tuloksissa ilmenee huolestuttavia merkkejä, voit helposti lähettää tietosi suoraan ammattilaisen arvioitavaksi.</p>
                 </div>
-    </main>
+        </div>
     
 <!-- Kirjautumis- ja rekisteröintimodaali -->
-<div id="login-modal" class="modal">
+
+  <div id="login-modal" class="modal">
     <div class="modal-content">
       <span id="close-modal" class="close-modal">&times;</span>
       <h2>Kirjaudu</h2>
@@ -64,6 +66,7 @@
       <div id="loginResponse"></div>
     </div>
   </div>
+</main>
   <footer>NuFlow © 2025</footer>
   <script type="module" src="/src/js/auth.js"></script>
 </body>
