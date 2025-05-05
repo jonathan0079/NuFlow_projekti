@@ -19,8 +19,8 @@
   
     <ul>
       <li><a href="/index.html">Etusivu</a></li>
-      <li><a href="/myinfo.html">Omat tiedot</a></li>
-      <li><a href="/diary.html">Päiväkirja</a></li>
+      <li class="auth-required"><a href="/myinfo.html">Omat tiedot</a></li>
+      <li class="auth-required"><a href="/diary.html">Päiväkirja</a></li>
     </ul>
   
     <div class="auth-container">
@@ -36,14 +36,14 @@
       </a>
     </div>
   </nav> 
-        <main>
-            <h1>Päiväkirja</h1>
-            <div class="buttons">
-              <button id="openDiaryBtn">Lisää päiväkirjamerkintä</button>
-              <button id="openChartBtn">Näytä HRV-kaaviot</button>
-              <button id="generateHrvReportBtn" class="hidden">Luo HRV-raportti</button>
-            </div>
-          <!-- Päiväkirja-modal -->
+  <main>
+        <h1>Päiväkirja</h1>
+        <div class="buttons">
+          <button id="openDiaryBtn">Lisää päiväkirjamerkintä</button>
+          <button id="openChartBtn">Näytä HRV-kaaviot</button>
+          <button id="generateHrvReportBtn" class="hidden">Luo HRV-raportti</button>
+        </div>
+        <!-- Päiväkirja-modal -->
           <div id="diaryModal" class="modal">
             <div class="modal-content">
               <span class="close-modal">&times;</span>
@@ -66,7 +66,7 @@
                           </span>
                       </label>
                   </div>
-              </div>
+                </div>
                 <div class="hrv-container">
                   <h2>HRV-arvot</h2>
                   <div class="hrv-grid">
@@ -164,12 +164,6 @@
               <div id="lineChartGrid" class="chart-grid"></div>
             </div> <!-- Sulkee .modal-content -->
           </div> <!-- Sulkee .modal -->
-          </div>
-          </div>
-        </div> 
-      </body>
-      </main>
-
       <!-- Lisää päivän yksityiskohtapaneeli -->
       <div id="day-details-panel" class="day-details-panel">
         <h3>Päiväkirjamerkintä</h3>
@@ -201,6 +195,7 @@
               <span class="time-icon"></span>
               <span class="detail-time"></span>
             </div>
+          </div>
             <div class="day-detail-item sleep-rating">
               <span class="detail-label">Uni:</span>
               <span id="detail-sleep">-/5</span>
@@ -212,37 +207,34 @@
             </div>
             <div class="day-detail-notes" id="activity-notes-detail"></div>
           </div>
-            </div>
-          </div>
         </div>
-      </div>
-
-      <footer>NuFlow © 2025</footer>
+  </main>
+ <footer>NuFlow © 2025</footer>
+</body>
       <script type="module" src="/src/js/diary.js"></script>
       <script type="module" src="/src/js/auth.js"></script>
       <script type="module" src="/src/js/diary-calendar.js"></script>
       <script type="module" src="/src/js/hrv-report.js"></script>
       <script>
-        document.querySelectorAll('textarea').forEach(textarea => {
-  const maxLength = textarea.getAttribute('maxlength');
+      document.querySelectorAll('textarea').forEach(textarea => {
+      const maxLength = textarea.getAttribute('maxlength');
 
-  // Luo näyttö jäljellä olevista merkeistä
-  const counter = document.createElement('p');
-  const span = document.createElement('span');
-  span.textContent = `${maxLength}`;
-  counter.innerHTML = `Merkkejä jäljellä: `;
-  counter.appendChild(span);
+      // Luo näyttö jäljellä olevista merkeistä
+      const counter = document.createElement('p');
+      const span = document.createElement('span');
+      span.textContent = `${maxLength}`;
+      counter.innerHTML = `Merkkejä jäljellä: `;
+      counter.appendChild(span);
 
-  // Lisää laskuri tekstialueen jälkeen
-  textarea.parentNode.insertBefore(counter, textarea.nextSibling);
+      // Lisää laskuri tekstialueen jälkeen
+      textarea.parentNode.insertBefore(counter, textarea.nextSibling);
 
-  // Päivitä jäljellä olevat merkit kirjoitettaessa
-  textarea.addEventListener('input', () => {
-    const remaining = maxLength - textarea.value.length;
-    span.textContent = remaining;
-  });
-});
-
-      </script>
+      // Päivitä jäljellä olevat merkit kirjoitettaessa
+      textarea.addEventListener('input', () => {
+        const remaining = maxLength - textarea.value.length;
+        span.textContent = remaining;
+      });
+    });
+    </script>
 
       </html>

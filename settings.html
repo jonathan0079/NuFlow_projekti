@@ -14,8 +14,8 @@
       
         <ul>
           <li><a href="/index.html">Etusivu</a></li>
-          <li><a href="/myinfo.html">Omat tiedot</a></li>
-          <li><a href="/diary.html">Päiväkirja</a></li>
+          <li class="auth-required"><a href="/myinfo.html">Omat tiedot</a></li>
+          <li class="auth-required"><a href="/diary.html">Päiväkirja</a></li>
         </ul>
       
         <div class="auth-container">
@@ -30,30 +30,18 @@
           </a>
         </div>
       </nav> 
-    <main>
+<main>
       <div id="status-message" class="status-message" style="display:none;"></div>
       <body>
         <h1>Asetukset</h1>
         <div class="settingsForm">
-          <h2>Valitse NuFlow- avatar</h2>
-          <div id="bottts-gallery"></div>
-          
-          <h3>Valitsemasi avatar:</h3>
-          <img id="selected-avatar" src="" alt="Valittu avatar" style="width: 80px;" />
               <label>Käyttäjänimi:
                 <input type="text">
               </label>
               <label>Sähköposti:
                 <input type="email">
               </label>
-              <label>Sovelluksen kieli:
-                <select>
-                  <option>suomi</option>
-                  <option>englanti</option>
-                </select>
-              </label>
             </div>
-          </div>
         </div>
         <div class="button-row">
           <button id="delete-account" class="danger-button">Poista käyttäjätili</button>

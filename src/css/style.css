@@ -12,6 +12,8 @@ body {
     min-width: 320px;
     min-height: 100vh;
     margin: 0;
+    background-attachment: fixed;
+
 }
 body.homepage {
     background-image: none;
@@ -274,8 +276,8 @@ textarea {
 /* FOOTER */
 footer {
     height: 70px;
-    padding-top: 40px;
-    margin-top: 20px;
+    padding-top: 30px;
+    margin-top: 10px;
     width: 100%;
     line-height: 70px;
     color: #ffffff;
@@ -317,5 +319,18 @@ footer {
 @media (max-width: 480px) {
     footer {
         font-size: 12px;
+    }
+}
+@media (max-width: 480px) {
+    .form-container {
+        padding: 10px;
+    }
+
+    input, textarea {
+        font-size: 18px;
+    }
+
+    #submit-button {
+        font-size: 18px;
     }
 }
