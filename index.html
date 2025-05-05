@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/index.css">
+    <script src="src/js/index.js" defer></script>
 </head>
 
 <body>
@@ -48,6 +49,10 @@
   <div id="login-modal" class="modal">
     <div class="modal-content">
       <span id="close-modal" class="close-modal">&times;</span>
+       <!-- opastus-->
+       <div class="info-container">
+        <button id="infoButton" class="info-icon">i</button>
+      </div>
       <h2>Kirjaudu</h2>
   
       <!-- Kirjautumislomake -->
@@ -67,6 +72,16 @@
     </div>
   </div>
 </main>
+
+  <!-- Info-modali -->
+  <div id="infoModal" class="modal">
+    <div class="modal-content">
+    <h3>Opastus</h3>
+    <p>Tällä sivulla voit kirjautua sovellukseen antamalla käyttäjätunnuksesi ja salasanasi. Kun olet kirjautunut sisään, siiry Omat tiedot sivulle ja täytä kyseinen osio. </p>
+    <button class="close-button">Sulje</button>
+  </div>
+</div>
+
   <footer>NuFlow © 2025</footer>
   <script type="module" src="/src/js/auth.js"></script>
 </body>

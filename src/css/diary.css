@@ -650,3 +650,77 @@ background-color: #7E57C2; /* Violetti väri illalle */
   word-break: break-word;
   color: #555;
 }
+/*  Opastusnappi tyyli */
+/* -------- Opastusnappi Päiväkirjan vieressä -------- */
+.title-with-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  width: 100%;             /* tärkeä keskitykselle */
+  text-align: center;      /* varmuuden vuoksi */
+}
+
+
+.title-with-button h1 {
+  margin: 0;
+}
+
+/* Itse opastusnappi (pyöreä i-nappi) */
+#diaryInfoButton {
+  background-color: #2d6a4f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+#diaryInfoButton:hover {
+  background-color: #1b4332;
+}
+
+/* -------- Modaalin tausta -------- */
+#diaryInfoModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* tumma tausta */
+}
+
+/* Näkyvä tila kun lisätään .show luokka */
+#diaryInfoModal.show {
+  
+  display: block;
+
+}
+
+/* -------- Modaalin sisältölaatikko -------- */
+#diaryInfoModal .modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #2d6a4f; /* tumma vihreä teksti */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+#diaryInfoModal .modal-content h2 {
+  color: #2d6a4f;
+}
