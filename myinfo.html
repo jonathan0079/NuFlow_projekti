@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/initial_info.css">
+    <link rel="stylesheet" href="/src/css/myinfo.css">
 </head>
 <body>
   <nav>
@@ -32,7 +33,11 @@
     </div>
   </nav> 
     <main>
+      <!-- Opastusnappi -->
+      <div class="title-with-button">
       <h1>Omat tietoni</h1>
+      <button id="infoButton" title="Näytä opastus">i</button>
+    </div>
       <!--Kubios-->
       <div id="infoForm" class="form-container">
         <h2 class="section-header">Henkilötiedot</h2>
@@ -80,6 +85,7 @@
 <footer>NuFlow © 2025</footer>
 <script type="module" src="/src/js/auth.js"></script>
 <script type="module" src="/src/js/myinfo.js"></script>
+<script type="module" src="/src/js/opastus.js"></script>
 <script>
   document.querySelectorAll('textarea, input[type="text"]').forEach(field => {
     const maxLength = field.getAttribute('maxlength');
@@ -102,4 +108,19 @@
     });
   });
 </script>
+<!-- Opastusmodaali -->
+<!-- MODAALI -->
+<div id="infoModal">
+  <div class="modal-content">
+    <span class="close-button" title="Sulje">&times;</span>
+    <h2>Opastus</h2>
+    <p>Kun kirjaudut sisään, sähköposti, etunimi,sukunimi ja syntymäaika täytetään automaattisesti.</p>
+    <p>Täytä puuttuvat kentät omilla tiedoillasi (esim. pituus, paino, sukupuoli sekä terveystiedot).</p>
+    <p>Kun kaikki on kunnossa, paina <strong>"Tallenna"</strong>.</p>
+    <p>Tämän jälkeen siirry ylhäällä valikosta <strong>"Päiväkirja"</strong>-sivulle.</p>
+    <p>Siellä klikkaa <strong>"Lisää päiväkirjamerkintä"</strong> ja täytä päivän tiedot.</p>
+    <p>Näin tietosi tallentuvat ja voit seurata hyvinvointiasi helposti!</p>
+  </div>
+</div>
+</body>
 </html>

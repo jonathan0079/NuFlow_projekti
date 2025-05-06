@@ -1375,3 +1375,34 @@ async function fetchMonthHrvData(token) {
         }
       }
     });
+
+    //Opastus
+    document.addEventListener("DOMContentLoaded", () => {
+      //  Etsitään tarvittavat elementit
+      const btn = document.getElementById("diaryInfoButton"); // i-nappi
+      const modal = document.getElementById("diaryInfoModal"); // taustamodaali
+      const closeBtn = document.getElementById("closeDiaryModal"); // Sulje-painike
+    
+      //  Avaa modaalin
+      if (btn && modal) {
+        btn.addEventListener("click", () => {
+          modal.classList.add("show"); // näkyviin
+        });
+      }
+    
+      //  Sulje-napin toiminto
+      if (closeBtn && modal) {
+        closeBtn.addEventListener("click", () => {
+          modal.classList.remove("show"); // piiloon
+        });
+      }
+    
+      //  Sulje klikkaamalla taustaa
+      window.addEventListener("click", function (e) {
+        const modal = document.getElementById("diaryInfoModal");
+        if (e.target === modal) {
+          modal.classList.remove("show");
+        }
+      });
+    });
+    

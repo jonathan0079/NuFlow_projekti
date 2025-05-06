@@ -361,6 +361,7 @@ justify-content: space-between;
 max-width: 1200px;
 margin: 0 auto;
 padding: 0 15px;
+position: relative;
 }
 
 /* Otsikko vie koko leveyden */
@@ -402,7 +403,8 @@ padding: 20px;
 border-radius: 10px;
 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 margin: 10px auto;
-align-self: center; /* Keskittää kalenterin flex-säiliössä */
+align-self: center;
+position: relative /* Keskittää kalenterin flex-säiliössä */
 }
 
 /* Kalenterin ylätunniste */
@@ -560,11 +562,11 @@ background-color: #7E57C2; /* Violetti väri illalle */
   background-color: #d32f2f;
 }
 
-/* Päivän yksityiskohtapaneeli */
 .day-details-panel {
   position: absolute;
-  left: 215px;
-  bottom: 90px;
+  /* Position relative to main container instead of fixed values */
+  top: 40%;
+  right: 930px ;
   width: 300px;
   height: 390px;
   background: white;
@@ -573,6 +575,9 @@ background-color: #7E57C2; /* Violetti väri illalle */
   padding: 15px;
   z-index: 100;
   border: 1px solid #ddd;
+  /* Add scaling properties */
+  transform-origin: top left;
+  margin-top: 10px;
 }
 
 .day-details-panel h3 {
@@ -649,4 +654,79 @@ background-color: #7E57C2; /* Violetti väri illalle */
   white-space: pre-wrap;
   word-break: break-word;
   color: #555;
+}
+/*  Opastusnappi tyyli */
+/* -------- Opastusnappi Päiväkirjan vieressä -------- */
+.title-with-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  width: 100%;             /* tärkeä keskitykselle */
+  text-align: center;      /* varmuuden vuoksi */
+}
+
+
+.title-with-button h1 {
+  margin: 0;
+}
+
+/* Itse opastusnappi (pyöreä i-nappi) */
+#diaryInfoButton {
+  background-color: #2d6a4f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+#diaryInfoButton:hover {
+  background-color: #1b4332;
+}
+
+/* -------- Modaalin tausta -------- */
+#diaryInfoModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* tumma tausta */
+}
+
+/* Näkyvä tila kun lisätään .show luokka */
+#diaryInfoModal.show {
+  
+  display: block;
+
+}
+
+/* -------- Modaalin sisältölaatikko -------- */
+#diaryInfoModal .modal-content {
+  background-color: white;
+  margin: 5% auto;
+  bottom: auto;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #2d6a4f; /* tumma vihreä teksti */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+#diaryInfoModal .modal-content h2 {
+  color: #2d6a4f;
 }

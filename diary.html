@@ -37,7 +37,12 @@
     </div>
   </nav> 
   <main>
+       <!-- Opastusnappi oikeaan yläkulmaan -->
+       <div class="title-with-button">
         <h1>Päiväkirja</h1>
+          <!-- Opastusnappi oikeaan yläkulmaan -->
+          <button id="diaryInfoButton" title="Näytä opastus">i</button>
+        </div>
         <div class="buttons">
           <button id="openDiaryBtn">Lisää päiväkirjamerkintä</button>
           <button id="openChartBtn">Näytä HRV-kaaviot</button>
@@ -209,6 +214,20 @@
           </div>
         </div>
   </main>
+    <!--  Opastusmodaali, joka aukeaa napista -->
+              
+    <div id="diaryInfoModal">
+      <div class="modal-content">
+        <h2>Opastus</h2>
+        <p>Tällä sivulla näet kaikki päiväkirjamerkinnät kalenterin muodossa.</p>
+        <p>Klikkaa <strong>"Lisää päiväkirjamerkintä"</strong> lisätäksesi uuden merkinnän. Kun kirjaudut sisään, HRV-arvot täytetään automaattisesti.</p>
+        <p>Päiväkirjamerkin lisäessä arvioi <strong>unen laatusi</strong> ja <strong>mielialasi</strong> (1–5).Kun kaikki on kunnossa, paina sen jälkeen <strong>"Tallenna" -nappia</strong>.</p>
+        <p>Lisätyt merkinnät näkyvät kalenterissa <strong>"kuu"-</strong> tai <strong> "aurinko" </strong> symboleina. Klikkaa kalenterista päivää nähdäksesi sen sisällön. siältö näkyy pienessä ikkunassa sivuston vasen alalaidassa</p>
+        <p>HRV-kaaviot tulevat näkyviin kun painat<strong> "Näytä HRV-kaaviot"</strong> -nappulaa. Kaaviot näyttävät viimeisimmän merkinnän, viimeiset 7 merkintää ja viimeiset 30 merkintää.</p>
+        <p>Kun poikkeava arvo tapahtuu mittauksen jälkeen, tulee esiin nappi jossa lukee <strong>"luo HRV-raportti"</strong>. Klikamalla sitä saat ladattua <strong>".pdf"</strong> -tiedoston, joka näyttää valitun päivän poikkeavan arvon ja sen kaaviot, jonka jälkeen pitää lähettää ammattilaisille. Tämä prosessi tapahtuu myös päiväkirjamerkkauksen tallentaessa automaattisesti.</p>
+      </div>
+    </div>
+
  <footer>NuFlow © 2025</footer>
 </body>
       <script type="module" src="/src/js/diary.js"></script>
