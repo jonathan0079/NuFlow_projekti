@@ -95,4 +95,7 @@ p {
     color: #2a5c4a; /* Tumma vihreä */
     text-shadow: none; /* Poistaa valkoisen varjon jos se on käytössä */
   }
-  
+  .opastus-otsikko {
+    color: #2e7d65; /* tumma vihreä sävy */
+    font-weight: bold;
+}

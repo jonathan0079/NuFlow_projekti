@@ -130,7 +130,7 @@ function setupModalFunctionality() {
 
       try {
         const user = JSON.parse(localStorage.getItem('user'));
-        const res = await fetch('http://localhost:3000/api/kubios/hrv/last-30-measurements', {
+        const res = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
           headers: {
             'Authorization': `Bearer ${user.token}`
           }
@@ -240,7 +240,7 @@ function setupModalFunctionality() {
       
       try {
         const user = JSON.parse(localStorage.getItem('user'));
-        const res = await fetch('http://localhost:3000/api/kubios/hrv/last-7-measurements', {
+        const res = await fetch('http://localhost:5000/api/kubios/hrv/last-7-measurements', {
           headers: {
             'Authorization': `Bearer ${user.token}`
           }
@@ -287,7 +287,7 @@ function setupModalFunctionality() {
       
       try {
         const user = JSON.parse(localStorage.getItem('user'));
-        const res = await fetch('http://localhost:3000/api/kubios/hrv/last-30-measurements', {
+        const res = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
           headers: {
             'Authorization': `Bearer ${user.token}`
           }
@@ -426,7 +426,7 @@ function addModalOverlay(modalElement, overlayId) {
 function initDiary(token) {
   const diaryForm = document.getElementById('diaryForm'); // Lomake-elementti
   const submitButton = document.querySelector('#submit-button'); // Tallennusnappi
-  const API_URL = 'http://localhost:3000/api/entries/insert'; // Backend-osoite merkintöjen lisäykseen
+  const API_URL = 'http://localhost:5000/api/entries/insert'; // Backend-osoite merkintöjen lisäykseen
 
   fetchAndDisplayHrvData(token); // Ladataan HRV-arvot automaattisesti heti sivun alussa
 
@@ -630,7 +630,7 @@ async function fetchAndDisplayHrvData(token) {
   console.log("📡 Haetaan HRV päivälle:", staticDate);
 
   try {
-    const response = await fetch(`http://localhost:3000/api/kubios/hrv/by-date/${staticDate}`, {
+    const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${staticDate}`, {
       headers: {
         'Authorization': `Bearer ${token}` // Käyttäjän token mukaan
       }
@@ -682,7 +682,7 @@ async function fetchAndDisplayHrvData(token) {
  */
 async function fetchMonthHrvData(token) {
   try {
-    const response = await fetch('http://localhost:3000/api/kubios/hrv/last-30-measurements', {
+    const response = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -708,7 +708,7 @@ async function fetchMonthHrvData(token) {
       console.log("📡 Haetaan HRV päivälle:", date);
       
       try {
-        const response = await fetch(`http://localhost:3000/api/kubios/hrv/by-date/${date}`, {
+        const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${date}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

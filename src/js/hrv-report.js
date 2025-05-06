@@ -83,7 +83,7 @@ async function fetchHrvDataForReport(days) {
       throw new Error('User token not found');
     }
 
-    const url = `http://localhost:3000/api/kubios/hrv/last-${days > 7 ? '30' : '7'}-measurements`;
+    const url = `http://localhost:5000/api/kubios/hrv/last-${days > 7 ? '30' : '7'}-measurements`;
     console.log(`Fetching HRV data from: ${url}`);
     
     const response = await fetch(url, {

@@ -230,7 +230,7 @@ function updateCalendar(year, month) {
  */
 async function fetchMonthHrvData(token) {
     try {
-        const response = await fetch('http://localhost:3000/api/kubios/hrv/last-30-measurements', {
+        const response = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -361,7 +361,7 @@ async function fetchUserEntries() {
         }
         
         // Haetaan käyttäjän merkinnät
-        const response = await fetch(`http://localhost:3000/api/entries/user`, {
+        const response = await fetch(`http://localhost:5000/api/entries/user`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
