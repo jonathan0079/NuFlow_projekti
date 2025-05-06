@@ -1,4 +1,4 @@
-// Updated hrv-report.js - PDF Report Generation with better data handling
+// Fixed hrv-report.js - PDF Report Generation with better date selection handling
 window.generateHrvPdfReport = generateHrvPdfReport;
 window.HRV_THRESHOLDS = {
   '18-25': { rmssd: { min: 25, max: 100 }, sdnn: { min: 50, max: 150 } },
@@ -183,8 +183,17 @@ function hideReportButton() {
 // Main function to generate the PDF report
 async function generateHrvPdfReport() {
   console.log("PDF generation started");
+  
+  // KORJAUS: Käytä aina nykyistä valittua päivää, ei kuluvan päivän päivämäärää
+  const selectedDate = currentSelectedDate || window.currentSelectedDate;
+  
+  if (!selectedDate) {
+    showMessage('Valitse ensin päivä kalenterista', 'error');
+    return;
+  }
+  
+  // Tarkista onko kyseessä juuri tallennettu merkintä
   const today = new Date().toISOString().split('T')[0];
-  const selectedDate = currentSelectedDate || window.currentSelectedDate || today;
   const isAfterSave = (formatDateToYYYYMMDD(selectedDate) === today);
 
   try {
@@ -193,6 +202,7 @@ async function generateHrvPdfReport() {
     
     showMessage('Luodaan PDF-raporttia...', 'info');
     
+    // Haetaan HRV-data valitulle päivälle window.hrvData objektista
     const dayHrvData = window.hrvData ? window.hrvData[formattedSelectedDate] : null;
     
     if (!dayHrvData) {
@@ -267,10 +277,11 @@ async function generateHrvPdfReport() {
       rowStyles: tableRows
     });
     
-    // Handle diary entry data
+    // Handle diary entry data - KORJATTU KOHTA
     let latestEntry = null;
 
-    // Check if generating right after saving
+    // KORJAUS: Hae merkintätiedot valitulle päivälle, ei tämän päivän kirjaukselle
+    // Jos päivä on tämä päivä ja juuri tallennettu, käytä tallennettua lomaketta
     if (isAfterSave) {
       const savedEntryData = localStorage.getItem('lastEntryData');
       if (savedEntryData) {
@@ -282,12 +293,13 @@ async function generateHrvPdfReport() {
         console.log("Using form data directly:", latestEntry);
       }
     } else {
-      // Find entry from stored data
+      // Etsi päiväkirjamerkintä kalenterielementistä valitulle päivälle
       const dayElement = document.querySelector(`.calendar-day[data-date="${formattedSelectedDate}"]`);
       if (dayElement && dayElement.dataset.entries) {
         try {
           const entriesFromCalendar = JSON.parse(dayElement.dataset.entries);
           if (entriesFromCalendar && entriesFromCalendar.length > 0) {
+            // Käytä viimeisintä merkintää päivälle
             latestEntry = entriesFromCalendar[entriesFromCalendar.length - 1];
             console.log("Found entry from calendar element:", latestEntry);
           }
@@ -296,15 +308,17 @@ async function generateHrvPdfReport() {
         }
       }
       
+      // Jos ei löytynyt kalenterielementistä, kokeile userEntries-taulukosta
       if (!latestEntry && window.userEntries && Array.isArray(window.userEntries)) {
-        const todayEntries = window.userEntries.filter(entry => {
+        const dayEntries = window.userEntries.filter(entry => {
           if (!entry || !entry.entry_date) return false;
           const entryDate = formatDateToYYYYMMDD(entry.entry_date);
           return entryDate === formattedSelectedDate;
         });
         
-        if (todayEntries.length > 0) {
-          latestEntry = todayEntries[todayEntries.length - 1];
+        if (dayEntries.length > 0) {
+          // Käytä viimeisintä merkintää päivälle
+          latestEntry = dayEntries[dayEntries.length - 1];
           console.log("Found entry in userEntries:", latestEntry);
         }
       }

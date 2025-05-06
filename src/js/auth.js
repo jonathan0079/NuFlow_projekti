@@ -580,13 +580,6 @@ async function checkAndRedirect() {
   const hasMetrics = await checkUserStatus();
   
   // Jos käyttäjä on index.html sivulla, ohjaa hänet oikealle sivulle
-  if (currentPath.includes('index.html') || currentPath === '/') {
-    if (hasMetrics) {
-      window.location.href = 'diary.html';
-    } else {
-      window.location.href = 'initial_info.html';
-    }
-  }
   
   // Jos uusi käyttäjä yrittää päästä diary tai myinfo sivulle
   if (!hasMetrics && (currentPath.includes('diary.html') || currentPath.includes('myinfo.html'))) {
@@ -602,6 +595,11 @@ async function checkUserStatusAndRestrictNavigation() {
     // Piilota kaikki navigaatiolinkit uusilta käyttäjiltä
     const diaryLink = document.querySelector('a[href="/diary.html"]');
     const myInfoLink = document.querySelector('a[href="/myinfo.html"]');
+    const homeLink = document.querySelector('a[href="/index.html"]');
+
+    if (homeLink && homeLink.parentElement) {
+      homeLink.parentElement.style.display = 'none';
+    }
     
     if (diaryLink && diaryLink.parentElement) {
       diaryLink.parentElement.style.display = 'none';

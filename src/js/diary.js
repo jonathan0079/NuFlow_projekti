@@ -121,7 +121,7 @@ function setupModalFunctionality() {
       chartModal.style.display = 'block';
       document.getElementById('chart-modal-overlay').style.display = 'block';
       
-      title.textContent = 'HRV-arvot (uusin päivä)';
+      title.textContent = 'HRV-arvot (Viimeisin mittaus)';
       pieCanvas.style.display = 'block';
       
       if (chartGrid) {
@@ -943,7 +943,6 @@ async function fetchMonthHrvData(token) {
           plugins: {
             title: {
               display: true,
-              text: 'HRV-arvot (uusin päivä)'
             }
           }
         }
@@ -1263,73 +1262,86 @@ async function fetchMonthHrvData(token) {
       });
       window.dispatchEvent(todayDateEvent);
     }
-    function updateDayDetailsPanel(date, data) {
-      const panel = document.getElementById('day-details-panel');
-      const noEntryText = document.getElementById('no-entry-text');
-      const hrvDetails = document.getElementById('hrv-details');
-      const diaryDetails = document.getElementById('diary-entry-details');
-      
-      // Piilota kaikki osiot aluksi
-      noEntryText.classList.add('hidden');
-      hrvDetails.classList.add('hidden');
-      diaryDetails.classList.add('hidden');
-      
-      // Yksityiskohtapaneelin otsikko
-      const formattedDate = new Date(date).toLocaleDateString('fi-FI');
-      document.querySelector('.day-details-panel h3').textContent = 
-        `Päiväkirja - ${formattedDate}`;
-      
-      if (!data || (!data.entries && !data.hrvData)) {
-        noEntryText.textContent = 'Ei merkintöjä tälle päivälle';
-        noEntryText.classList.remove('hidden');
-        return;
-      }
-      
-      // HRV-tietojen näyttö
-      if (data.hrvData) {
-        document.getElementById('detail-heart-rate').textContent = 
-          data.hrvData.heart_rate ? data.hrvData.heart_rate.toFixed(1) : '-';
-        document.getElementById('detail-rmssd').textContent = 
-          data.hrvData.rmssd ? data.hrvData.rmssd.toFixed(1) : '-';
-        document.getElementById('detail-sdnn').textContent = 
-          data.hrvData.sdnn ? data.hrvData.sdnn.toFixed(1) : '-';
-        hrvDetails.classList.remove('hidden');
-      }
-      
-      // Päiväkirjamerkinnän tiedot
-      if (data.entries && data.entries.length > 0) {
-        const entry = data.entries[0];
-        
-        // Ajankohta (aamu/ilta)
-        const timeIcon = document.querySelector('.time-icon');
-        const timeText = document.querySelector('.detail-time');
-        
-        if (entry.time_of_day === 'morning') {
-          timeIcon.style.backgroundImage = 'url(/src/img/sun.png)';
-          timeText.textContent = 'Aamu';
-        } else {
-          timeIcon.style.backgroundImage = 'url(/src/img/moon.png)';
-          timeText.textContent = 'Ilta';
-        }
-        
-        // Uni ja mieliala
-        const sleepValue = entry.sleep_duration || 0;
-        const moodValue = entry.current_mood || 0;
-        
-        document.getElementById('detail-sleep').textContent = `${Math.round(sleepValue)}/5`;
-        document.getElementById('detail-mood').textContent = `${Math.round(moodValue)}/5`;
-        
-        // Unen muistiinpanot
-        const sleepNotes = document.getElementById('sleep-notes-detail');
-        sleepNotes.textContent = entry.sleep_notes || '';
-        
-        // Mielialan muistiinpanot
-        const activityNotes = document.getElementById('activity-notes-detail');
-        activityNotes.textContent = entry.activity || '';
-          
-        diaryDetails.classList.remove('hidden');
-      }
+function updateDayDetailsPanel(date, data) {
+  const panel = document.getElementById('day-details-panel');
+  const noEntryText = document.getElementById('no-entry-text');
+  const hrvDetails = document.getElementById('hrv-details');
+  const diaryDetails = document.getElementById('diary-entry-details');
+  
+  // Piilota kaikki osiot aluksi
+  noEntryText.classList.add('hidden');
+  hrvDetails.classList.add('hidden');
+  diaryDetails.classList.add('hidden');
+  
+  // Clear all values first to ensure no old data persists
+  document.getElementById('detail-heart-rate').textContent = '-';
+  document.getElementById('detail-rmssd').textContent = '-';
+  document.getElementById('detail-sdnn').textContent = '-';
+  document.getElementById('detail-sleep').textContent = '-/5';
+  document.getElementById('detail-mood').textContent = '-/5';
+  document.getElementById('sleep-notes-detail').textContent = '';
+  document.getElementById('activity-notes-detail').textContent = '';
+  
+  // Reset icon and time text to ensure no lingering values
+  const timeIcon = document.querySelector('.time-icon');
+  const timeText = document.querySelector('.detail-time');
+  if (timeIcon) timeIcon.style.backgroundImage = '';
+  if (timeText) timeText.textContent = '';
+  
+  // Yksityiskohtapaneelin otsikko
+  const formattedDate = new Date(date).toLocaleDateString('fi-FI');
+  document.querySelector('.day-details-panel h3').textContent = 
+    `Päiväkirja - ${formattedDate}`;
+  
+  if (!data || (!data.entries && !data.hrvData)) {
+    noEntryText.textContent = 'Ei merkintöjä tälle päivälle';
+    noEntryText.classList.remove('hidden');
+    return;
+  }
+  
+  // HRV-tietojen näyttö
+  if (data.hrvData) {
+    document.getElementById('detail-heart-rate').textContent = 
+      data.hrvData.heart_rate ? data.hrvData.heart_rate.toFixed(1) : '-';
+    document.getElementById('detail-rmssd').textContent = 
+      data.hrvData.rmssd ? data.hrvData.rmssd.toFixed(1) : '-';
+    document.getElementById('detail-sdnn').textContent = 
+      data.hrvData.sdnn ? data.hrvData.sdnn.toFixed(1) : '-';
+    hrvDetails.classList.remove('hidden');
+  }
+  
+  // Päiväkirjamerkinnän tiedot
+  if (data.entries && data.entries.length > 0) {
+    const entry = data.entries[0];
+    
+    // Ajankohta (aamu/ilta)
+    const timeIcon = document.querySelector('.time-icon');
+    const timeText = document.querySelector('.detail-time');
+    
+    if (entry.time_of_day === 'morning') {
+      timeText.textContent = 'Aamu';
+    } else {
+      timeText.textContent = 'Ilta';
     }
+    
+    // Uni ja mieliala
+    const sleepValue = entry.sleep_duration || 0;
+    const moodValue = entry.current_mood || 0;
+    
+    document.getElementById('detail-sleep').textContent = `${Math.round(sleepValue)}/5`;
+    document.getElementById('detail-mood').textContent = `${Math.round(moodValue)}/5`;
+    
+    // Unen muistiinpanot
+    const sleepNotes = document.getElementById('sleep-notes-detail');
+    sleepNotes.textContent = entry.sleep_notes || '';
+    
+    // Mielialan muistiinpanot
+    const activityNotes = document.getElementById('activity-notes-detail');
+    activityNotes.textContent = entry.activity || '';
+      
+    diaryDetails.classList.remove('hidden');
+  }
+}
     
     // Päivitä selectedDateChanged tapahtumakäsittelijä diary.js tiedostossa
     window.addEventListener('selectedDateChanged', function(event) {
@@ -1375,34 +1387,3 @@ async function fetchMonthHrvData(token) {
         }
       }
     });
-
-    //Opastus
-    document.addEventListener("DOMContentLoaded", () => {
-      //  Etsitään tarvittavat elementit
-      const btn = document.getElementById("diaryInfoButton"); // i-nappi
-      const modal = document.getElementById("diaryInfoModal"); // taustamodaali
-      const closeBtn = document.getElementById("closeDiaryModal"); // Sulje-painike
-    
-      //  Avaa modaalin
-      if (btn && modal) {
-        btn.addEventListener("click", () => {
-          modal.classList.add("show"); // näkyviin
-        });
-      }
-    
-      //  Sulje-napin toiminto
-      if (closeBtn && modal) {
-        closeBtn.addEventListener("click", () => {
-          modal.classList.remove("show"); // piiloon
-        });
-      }
-    
-      //  Sulje klikkaamalla taustaa
-      window.addEventListener("click", function (e) {
-        const modal = document.getElementById("diaryInfoModal");
-        if (e.target === modal) {
-          modal.classList.remove("show");
-        }
-      });
-    });
-    

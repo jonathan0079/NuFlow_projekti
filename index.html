@@ -6,7 +6,10 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/index.css">
-    <script src="src/js/index.js" defer></script>
+    <link rel="stylesheet" href="/src/css/opastus.css">
+    
+    
+    <script src="src/js/opastus.js" defer></script>
 </head>
 
 <body>
@@ -50,8 +53,8 @@
     <div class="modal-content">
       <span id="close-modal" class="close-modal">&times;</span>
        <!-- opastus-->
-       <div class="info-container">
-        <button id="infoButton" class="info-icon">i</button>
+       <div class="login-info-container">
+        <button id="infoButton" class="login-info-icon">i</button>
       </div>
       <h2>Kirjaudu</h2>
   
@@ -74,11 +77,11 @@
 </main>
 
   <!-- Info-modali -->
-  <div id="infoModal" class="modal">
+  <div id="logininfoModal" class="modal">
     <div class="modal-content">
     <p class="opastus-otsikko">Opastus</p>
-    <p>Tällä sivulla voit kirjautua sovellukseen antamalla käyttäjätunnuksesi ja salasanasi. Kun olet kirjautunut sisään, siiry Omat tiedot sivulle ja täytä kyseinen osio. </p>
-    <button class="close-button">Sulje</button>
+    <p>Voit kirjautua sovellukseen antamalla Kubios käyttäjätunnuksesi ja salasanasi. Jos kirjaudut ensimmäistä kertaa, sinun pitää täyttää esitietolomake ennen sovelluksen käyttöä. </p>
+    <span class="close-button" title="Sulje">&times;</span>
   </div>
 </div>
 
