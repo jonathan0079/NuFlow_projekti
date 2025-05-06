@@ -12,6 +12,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  background-attachment: fixed;
+
 }
 body.homepage {
   background-image: none;
@@ -113,7 +115,7 @@ li a:hover {
   align-items: right;
 }
 
-login-button:hover {
+#login-button:hover {
   background-color: #dddddd;
 }
 .hidden {
@@ -134,7 +136,7 @@ login-button:hover {
   align-items: right;
 }
 
-.logoutButton:hover {
+#logoutButton:hover {
   background-color: #dddddd;
 }
 .hidden {
@@ -238,7 +240,7 @@ input[type=text], input[type=password], input[type=email], textarea {
   padding: 12px 20px;
   margin: 8px 0;
   box-sizing: border-box;
-  font-size: 1em;
+  font-size: 20px;
 }
 
 textarea {
@@ -274,7 +276,8 @@ textarea {
 /* FOOTER */
 footer {
   height: 70px;
-  margin-top: 20px;
+  padding-top: 30px;
+  margin-top: 10px;
   width: 100%;
   line-height: 70px;
   color: #ffffff;
@@ -318,22 +321,16 @@ footer {
       font-size: 12px;
   }
 }
-
-  /*diary.js*/
-  button.success {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-
-  #logoutButton {
-      width: 100%;
-      text-align: center;
-  }
-
-
 @media (max-width: 480px) {
-  footer {
-      font-size: 12px;
+  .form-container {
+      padding: 10px;
+  }
+
+  input, textarea {
+      font-size: 18px;
+  }
+
+  #submit-button {
+      font-size: 18px;
   }
 }

@@ -14,8 +14,8 @@
       
         <ul>
           <li><a href="/index.html">Etusivu</a></li>
-          <li><a href="/myinfo.html">Omat tiedot</a></li>
-          <li><a href="/diary.html">Päiväkirja</a></li>
+          <li class="auth-required"><a href="/myinfo.html">Omat tiedot</a></li>
+          <li class="auth-required"><a href="/diary.html">Päiväkirja</a></li>
         </ul>
       
         <div class="auth-container">
@@ -30,7 +30,7 @@
           </a>
         </div>
       </nav> 
-    <main>
+<main>
       <div id="status-message" class="status-message" style="display:none;"></div>
       <body>
         <h1>Asetukset</h1>
@@ -41,20 +41,7 @@
               <label>Sähköposti:
                 <input type="email">
               </label>
-              <label>Uusi salasana:
-                <input type="password">
-              </label>
-              <label>Vahvista salasana:
-                <input type="password">
-              </label>
-              <label>Sovelluksen kieli:
-                <select>
-                  <option>suomi</option>
-                  <option>englanti</option>
-                </select>
-              </label>
             </div>
-          </div>
         </div>
         <div class="button-row">
           <button id="delete-account" class="danger-button">Poista käyttäjätili</button>
@@ -95,6 +82,26 @@ function deleteUserAccount() {
   console.log('Käyttäjän tili poistettu');
   // Tähän voit lisätä koodin, joka poistaa käyttäjän tilin palvelimelta
 }
+</script>
+<script>
+  // Voit lisätä tai vaihtaa näitä siemeniä halutessasi
+  const seeds = ['robot1', 'robot2', 'robot3', 'robot5', 'robot5', 'robot6', 'robot7', 'robot8'];
 
+  const gallery = document.getElementById('bottts-gallery');
+  const selectedAvatar = document.getElementById('selected-avatar');
+
+  seeds.forEach(seed => {
+    const img = document.createElement('img');
+    img.src = `https://api.dicebear.com/8.x/bottts/svg?seed=${seed}`;
+    img.alt = `Bottts avatar - ${seed}`;
+    img.classList.add('avatar-option');
+
+    img.addEventListener('click', () => {
+      selectedAvatar.src = img.src;
+    });
+
+    gallery.appendChild(img);
+  });
+</script>
 </script>
 </html>

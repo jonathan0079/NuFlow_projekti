@@ -1305,10 +1305,10 @@ async function fetchMonthHrvData(token) {
         const timeText = document.querySelector('.detail-time');
         
         if (entry.time_of_day === 'morning') {
-          timeIcon.style.backgroundImage = 'url("../img/sun.png")';
+          timeIcon.style.backgroundImage = 'url(/src/img/sun.png)';
           timeText.textContent = 'Aamu';
         } else {
-          timeIcon.style.backgroundImage = 'url("../img/moon.png")';
+          timeIcon.style.backgroundImage = 'url(/src/img/moon.png)';
           timeText.textContent = 'Ilta';
         }
         
@@ -1375,6 +1375,7 @@ async function fetchMonthHrvData(token) {
         }
       }
     });
+
 
     //Opastus
     document.addEventListener("DOMContentLoaded", () => {
