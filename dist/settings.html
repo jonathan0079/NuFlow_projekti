@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <title>NuFlow</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
+
+  <script type="module" crossorigin src="./assets/auth-CgT9UiaM.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/auth-TpPhA5kL.css">
+  <link rel="stylesheet" crossorigin href="./assets/settings-CQkgHprm.css">
+  <link rel="stylesheet" crossorigin href="./assets/opastus-qzLrFL7C.css">
+</head>
+    <nav>
+        <div id="modal-overlay"></div>
+        <div class="otsikko">NuFlow</div>
+      
+        <ul>
+          <li><a href="/index.html">Etusivu</a></li>
+          <li class="auth-required"><a href="/myinfo.html">Omat tiedot</a></li>
+          <li class="auth-required"><a href="/diary.html">Päiväkirja</a></li>
+        </ul>
+      
+        <div class="auth-container">
+          <button id="login-button" class="login-button">Kirjaudu sisään</button>
+          <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button> 
+      
+          <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+            <span id="user-greeting">Hei, Käyttäjä!</span>
+          </div>
+          <a href="settings.html" class="settings-link">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAADi0lEQVR4nN1X2UtUURgfaHnvnwiC6qWXNghC79UMsmwiqN5izhkN1Jx7xxF1MtyeXLACqYdKyKTILRLtrfQhKBUVS9x1UmMs1xwX4ovfmRln8965Y4nUDw5czvJ9v/Odb7sm078GWWEbssppy6GwjR1Vfsxi2aep3DfOOJ17d4xAgs16FEou5mdQODCHNez564rjbeyUrLJmSWG/oOTqXTWCAOawJvYovElSrSe3p8zOz0oKr0vMvnnQa3JW6lec4rxN5S9r6ONAfwQBzGEtxZkZIKKyUsiALMiEbF3lZrN5j6TwHr9DSSofwvf5nFtU8/Y1rax6KBp+ejxU09YszggikOFzXMiGDk0Ckp1b/Tc9l50qBNwoyaHRaRfFipEplzgLGZAFmYKEnVu3VJ6UbT0gqdyNTR29XeRyz1DVq2c0uzBP2wXOQgZktfd2+i3ihq7I2yusEhvs1eW6QueWFulxayOlVhTShdx0MVIrisTc/PKS7lnHw0o/iYoQ5XGq9ZCs8vXE7FRhOi286/lE5gIbPWiso8/jI+RZWxUD3/cbntOVApu4qRbGZqa8T6uwjfgsfniTgKzyFjAz38mi7qEBTeXXix00PDWpqWDo6yRdK3JokoBs6PAlrZZNAgl2y2lJYX0ikdit9ObD+wiz4+Z6ygMkJoQlwp8DMiHbF6J90Bkagk7zflllXX4nDAbeF2Y3inv1tfS0rTlkDjK9N2dd0LVlJMgK68emmR+zIYet5YX0ZWLUMAH4BBwzGNPf3f6C1a+dB1S+iE1rG+shh5Nz02llbdUwAexNzgutF5Dpi4BFHQJsQRBYDyOQlxETAWTD8IK1ur7mswCf1yQgazwBYh5mNYr+sWFKqyyO7QnMOk74pLUpJiesqq8V9cCwEyZECUOEFEILcR4Ng65xsXchljCUDSQiJBckGT0SUI49HX3dsSWiuKBUrJdsQAK3Q9rFO8MxMfANs2Mt/PmCMa6VigEUCDBTq8tIDzAtkgycDOGJCME35sLNHo6cR95iJCus3KRXjtt7OwPleH6O/qgc19eSy/1t0wk1y7FmQ1KcY6gGhANncBYykhxpdNn39poNSbSWDCZGgomGZc+K2Jvk8LZkssIGDbdkWzalCisJNKWZVPZCuynF2qX8QFMqKbw4pqZUC7LNckJSWaPRtlxSeEOCyo+bduPHJNFuOWL6b3/NgF39Od0J/AYU31r3qeXK5QAAAABJRU5ErkJggg==" alt="Asetukset" width="20" height="20">
+          </a>
+        </div>
+      </nav> 
+<main>
+      <body>
+        <h1>Asetukset</h1>
+        <div id="settingsinfoModal">
+          <div class="settings-modal-content">
+            <span class="close-button" title="Sulje">&times;</span>
+            <p>Asetukset -sivulla voit poistaa käyttäjäsi.</p>
+            <p>Käyttäjän poisto tapahtuu kirjoittamalla ensin oman sähköpostiosoitteen tekstikenttään, jonka jälkeen sovellus varmistaa, että todella haluat poistaa sen.</p>
+            <p>Kun käyttäjäsi poistetaan, sinut kirjautetaan ulos ja siirryt takaisin etusivulle.</p>
+            <p>Käyttäjän poisto ainoastaan tyhjentää henkilötiedot NuFlow -sovelluksesta.</p>
+            <p><strong>Kaikki data mitkä kuuluvat Kubios -sovellukseen eivät ole meidän vastuussa.</strong></p>
+          </div>
+        </div>
+        <div class="settingsForm">
+          <button id="settingsinfoButton" title="Näytä opastus">i</button>
+              <label>Sähköposti:
+                <input type="email">
+              </label>
+            </div>
+        </div>
+        <div class="button-row">
+          <button id="delete-account" class="danger-button">Poista käyttäjätili</button>
+        </div>
+        <!-- Varmistus poistamisesta -->
+        <div id="confirmation-modal" class="delete-modal">
+          <div class="modal-content">
+            <p>Haluatko varmasti poistaa käyttäjäsi?</p>
+            <button id="confirm-delete" class="danger-button">Kyllä, poista</button>
+            <button id="cancel-delete" class="cancel-button">Peruuta</button>
+          </div>
+        </div>
+  </body>
+  <div id="status-message" class="status-message" style="display:none;"></div>
+</main>
+<footer>NuFlow © 2025</footer>
+<script>
+
+// Javascript lisätty HTML-tiedostoon luulien että olisi lyhyt,
+// mutta nyt ei riittänyt aikaa tehdä erillinen tiedosto ja sen yhteensopivuuksia.
+// Tästä syystä itse logout -nappi ei toimi kunnolla tässä sivussa,
+// mutta uloskirjautuminen toimii sentään käyttäjän poistamisen jälkeen automaattisesti.
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Haetaan kirjautuneen käyttäjän tiedot
+  let currentUser = null;
+  try {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      currentUser = JSON.parse(userData);
+      
+      // Täytetään email-kenttä automaattisesti käyttäjän sähköpostilla jos se on saatavilla
+      const emailField = document.querySelector('input[type="email"]');
+      if (emailField && currentUser.user && currentUser.user.email) {
+        emailField.placeholder = currentUser.user.email;
+      }
+    }
+  } catch (e) {
+    console.error('Virhe käyttäjätietojen haussa:', e);
+  }
+
+  // Ylikirjoitetaan olemassa olevat tapahtumankäsittelijät
+  document.getElementById('delete-account').addEventListener('click', function() {
+    // Tarkistetaan, että sähköposti vastaa kirjautunutta käyttäjää
+    const emailField = document.querySelector('input[type="email"]');
+    
+    const emailValue = emailField.value.trim();
+    
+    // Tarkistetaan täsmääkö annettu sähköposti kirjautuneen käyttäjän sähköpostiin
+    if (!currentUser || !currentUser.user || currentUser.user.email !== emailValue) {
+      showMessage('Sähköposti ei täsmää nykyistä käyttäjätiliä', 'error');
+      return;
+    }
+    
+    // Näytetään varmistusikkuna
+    document.getElementById('confirmation-modal').style.display = 'flex';
+  });
+
+  document.getElementById('confirm-delete').addEventListener('click', function() {
+    // Käyttäjä haluaa poistaa tilin
+    deleteUserAccount();
+    // Piilotetaan varmistusikkuna
+    document.getElementById('confirmation-modal').style.display = 'none';
+  });
+
+  document.getElementById('cancel-delete').addEventListener('click', function() {
+    // Käyttäjä perui toiminnon
+    document.getElementById('confirmation-modal').style.display = 'none';
+  });
+
+  // Funktio käyttäjätilin poistamiseksi
+  async function deleteUserAccount() {
+    try {
+      if (!currentUser || !currentUser.token) {
+        showMessage('Et ole kirjautunut sisään', 'error');
+        return;
+      }
+      
+      const userId = currentUser.user_id || currentUser.id || (currentUser.user && currentUser.user.id);
+      if (!userId) {
+        showMessage('Käyttäjätunnusta ei löydy', 'error');
+        return;
+      }
+      
+      // Näytetään latausanimaatio tai -viesti
+      showMessage('Poistetaan käyttäjätiliä...', 'info');
+      
+      // Lähetetään poistopyyntö backendille
+      const response = await fetch(`http://localhost:5000/api/auth/delete/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${currentUser.token}`
+        }
+      });
+      
+      // Poisto onnistui, kirjataan käyttäjä ulos
+      const logoutButton = document.getElementById('logoutButton');
+
+      if (logoutButton) {
+        showMessage('Käyttäjätili poistettu.', 'success');
+          logoutButton.click();
+          setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1000);
+      }
+      
+    } catch (error) {
+      console.error('Virhe käyttäjätilin poistamisessa:', error);
+      showMessage(`Virhe: ${error.message}`, 'error');
+    }
+  }
+  
+  // Apufunktio viestien näyttämiseen
+  function showMessage(message, type = 'info') {
+  // Poista mahdollinen olemassa oleva viesti
+  let oldMessage = document.getElementById('status-message');
+  if (oldMessage) {
+    oldMessage.remove();
+  }
+  
+  // Luo uusi viestielementti
+  let messageElement = document.createElement('div');
+  messageElement.id = 'status-message';
+  messageElement.textContent = message;
+  
+  // Lisää tyyliluokka
+  messageElement.classList.add(type);
+  
+  // Lisää elementti sivulle
+  document.body.appendChild(messageElement);
+  
+  // Näytä viesti
+  messageElement.style.display = 'block';
+  
+  // Piilota viesti 3 sekunnin jälkeen
+  setTimeout(function() {
+    messageElement.style.display = 'none';
+    setTimeout(function() {
+      messageElement.remove(); // Poista elementti kokonaan
+    }, 500);
+  }, 3000);
+}
+});
+</script>
+<script src="/src/js/opastus.js"></script>
+</html>

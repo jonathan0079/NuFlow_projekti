@@ -11,6 +11,7 @@ export default defineConfig({
         index: path.resolve(__dirname, 'index.html'),
         diary: path.resolve(__dirname, 'diary.html'),
         myinfo: path.resolve(__dirname, 'myinfo.html'),
+        settings: path.resolve(__dirname, 'settings.html'),
         initial_info: path.resolve(__dirname, 'initial_info.html'),
       }
     }

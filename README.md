@@ -91,20 +91,41 @@ on neljä avointa kenttää: "”Nikotiinituotteet, alko-holi ja muut päihteet�
 
 * Omien tietojen muokkaus poislukien sähköposti ja syntymäaika.
 
-Omat tiedot- sivulta löytyvät Kubioksesta tuodut käyttäjän tiedot eli nimi, syntymäaika, sukupuoli,
+Omat tiedot- sivulta löytyvät Kubioksesta tuodut käyttäjän tiedot eli email, etunimi, sukunimi, syntymäaika,
+sukupuoli, sekä esitietolomakkeessa annetut tiedot. Kaikki nämä, lukuunottamatta sähköposti ja syntymäaika
+ovat muokattavissa.
+
 
 
 * Päiväkirjamerkinnän täyttäminen ja tallentaminen.
 
+Päiväkirjamerkintään tuodaan Kubioksesta HRV-arvot, ja arvio omasta voinnista, unesta, ja vapaat tekstikentät
+täytetään itse.
+
+
 * Päivän, viikon ja kuukauden HRV- analyysikaaviot Kubios- datalla.
+
+Päivän, viikon ja kuukauden HRV- analyysikaaviot tulevat näkyviin välittömästi päiväkirjamerkinnän lisäämisen
+jälkeen, tai painettaessa "näytä HRV- kaaviot".
 
 * Poikkeavista arvoista hälyttäminen.
 
+HRV- arvojen ollessa jatkuvasti huolestuttavia, ilmoitetaan tästä värjäämällä päiväkirja- sivulla olevan kalenterin¨
+kyseiset päivät punaisella. Poikkeavien arvojen määrittäminen: Poikkeavat HRV- arvot määrittyvät käyttäjän iän mukaan. 
+Mikäli käyttäjä on 18–25-vuotias, jaRMSSD on alle 25 ms, tai yli 100 ms, tai SDNN alle 50 ms tai yli 150 ms, pidetään 
+tätä huolestuttavana. Jos taas käyttäjä on 26–35-vuotias, ja RMSSD on alle 20 ms, tai yli 90 ms tai SDNN on alle 40 ms
+tai yli 130 ms, pidetään tätä huolestuttavana. Käyttäjän ollessa 36–45- 16-vuotias, ja RMSSD on alle 15 ms, tai yli 80 ms 
+ja SDNN alle 30 ms tai yli 110 ms, pidetään tätä huolestuttavana. Jos käyttäjä on 46–56-vuotias, ja RMSSD on alle 10 ms, 
+tai yli 60 ms ja SDNN alle 20 ms tai yli 80 ms, pidetään tätä huolestuttavana. 
+
+
 * PDF- Raportin muodostaminen.
 
-
+Päiväkirja- sivulla, "Lähetä ammattilaiselle"- nappia painamalla ohjelma muodostaa PDF- tiedoston JS- pdf työkalulla. Raporttiin tulevat nykyisen päivän, viimeisen 7 ja viimeisen 30 päivän HRV- arvot. 
 
 * Käyttäjätilin poistaminen
+
+Asetuksissa käyttäjätilin saa poistettua tietokannasta syöttämällä sähköpostin, sekä painamalla "poista käyttäjätili", ja vahvistamalla.
 
 
 ## Mahdolliset tiedossa olevat bugit/ongelmat
