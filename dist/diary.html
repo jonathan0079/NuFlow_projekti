@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <title>NuFlow</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+  <script type="module" crossorigin src="./assets/diary-D7MUPePR.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/auth-CgT9UiaM.js">
+  <link rel="modulepreload" crossorigin href="./assets/opastus-B5Ddp_SE.js">
+  <link rel="stylesheet" crossorigin href="./assets/auth-TpPhA5kL.css">
+  <link rel="stylesheet" crossorigin href="./assets/diary-CYi_pvGU.css">
+  <link rel="stylesheet" crossorigin href="./assets/opastus-qzLrFL7C.css">
+</head>
+<body>
+  <nav>
+    <div id="modal-overlay"></div>
+    <div class="otsikko">NuFlow</div>
+  
+    <ul>
+      <li><a href="/index.html">Etusivu</a></li>
+      <li class="auth-required"><a href="/myinfo.html">Omat tiedot</a></li>
+      <li class="auth-required"><a href="/diary.html">Päiväkirja</a></li>
+    </ul>
+  
+    <div class="auth-container">
+      <button id="login-button" class="login-button">Kirjaudu sisään</button>
+      <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+  
+      <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+        <span id="user-greeting">Hei, Elsi!</span>
+      </div>
+  
+      <a href="settings.html" class="settings-link">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAADi0lEQVR4nN1X2UtUURgfaHnvnwiC6qWXNghC79UMsmwiqN5izhkN1Jx7xxF1MtyeXLACqYdKyKTILRLtrfQhKBUVS9x1UmMs1xwX4ovfmRln8965Y4nUDw5czvJ9v/Odb7sm078GWWEbssppy6GwjR1Vfsxi2aep3DfOOJ17d4xAgs16FEou5mdQODCHNez564rjbeyUrLJmSWG/oOTqXTWCAOawJvYovElSrSe3p8zOz0oKr0vMvnnQa3JW6lec4rxN5S9r6ONAfwQBzGEtxZkZIKKyUsiALMiEbF3lZrN5j6TwHr9DSSofwvf5nFtU8/Y1rax6KBp+ejxU09YszggikOFzXMiGDk0Ckp1b/Tc9l50qBNwoyaHRaRfFipEplzgLGZAFmYKEnVu3VJ6UbT0gqdyNTR29XeRyz1DVq2c0uzBP2wXOQgZktfd2+i3ihq7I2yusEhvs1eW6QueWFulxayOlVhTShdx0MVIrisTc/PKS7lnHw0o/iYoQ5XGq9ZCs8vXE7FRhOi286/lE5gIbPWiso8/jI+RZWxUD3/cbntOVApu4qRbGZqa8T6uwjfgsfniTgKzyFjAz38mi7qEBTeXXix00PDWpqWDo6yRdK3JokoBs6PAlrZZNAgl2y2lJYX0ikdit9ObD+wiz4+Z6ygMkJoQlwp8DMiHbF6J90Bkagk7zflllXX4nDAbeF2Y3inv1tfS0rTlkDjK9N2dd0LVlJMgK68emmR+zIYet5YX0ZWLUMAH4BBwzGNPf3f6C1a+dB1S+iE1rG+shh5Nz02llbdUwAexNzgutF5Dpi4BFHQJsQRBYDyOQlxETAWTD8IK1ur7mswCf1yQgazwBYh5mNYr+sWFKqyyO7QnMOk74pLUpJiesqq8V9cCwEyZECUOEFEILcR4Ng65xsXchljCUDSQiJBckGT0SUI49HX3dsSWiuKBUrJdsQAK3Q9rFO8MxMfANs2Mt/PmCMa6VigEUCDBTq8tIDzAtkgycDOGJCME35sLNHo6cR95iJCus3KRXjtt7OwPleH6O/qgc19eSy/1t0wk1y7FmQ1KcY6gGhANncBYykhxpdNn39poNSbSWDCZGgomGZc+K2Jvk8LZkssIGDbdkWzalCisJNKWZVPZCuynF2qX8QFMqKbw4pqZUC7LNckJSWaPRtlxSeEOCyo+bduPHJNFuOWL6b3/NgF39Od0J/AYU31r3qeXK5QAAAABJRU5ErkJggg==" alt="Asetukset" width="20" height="20">
+      </a>
+    </div>
+  </nav> 
+  <main>
+       <!-- Opastusnappi oikeaan yläkulmaan -->
+       <div class="title-with-button">
+        <h1>Päiväkirja</h1>
+          <!-- Opastusnappi oikeaan yläkulmaan -->
+          <button id="infoButton" title="Näytä opastus">i</button>
+        </div>
+        <div class="buttons">
+          <button id="openDiaryBtn">Lisää päiväkirjamerkintä</button>
+          <button id="openChartBtn">Näytä HRV-kaaviot</button>
+          <button id="generateHrvReportBtn" class="hidden">Luo HRV-raportti</button>
+        </div>
+        <!-- Päiväkirja-modal -->
+          <div id="diaryModal" class="modal">
+            <div class="modal-content">
+              <span class="close-modal">&times;</span>
+              <form id="diaryForm">
+                <div class="time-selector">
+                  <span>Kirjauksen ajankohta:</span>
+                  <div class="time-options">
+                      <label class="time-option">
+                          <input type="radio" name="time" value="morning">
+                          <span class="time-option-label">
+                              <img src="/src/img/sun.png" alt="" class="time-icon">
+                              Aamu
+                          </span>
+                      </label>
+                      <label class="time-option">
+                          <input type="radio" name="time" value="evening">
+                          <span class="time-option-label">
+                              <img src="/src/img/moon.png" alt="" class="time-icon">
+                              Ilta
+                          </span>
+                      </label>
+                  </div>
+                </div>
+                <div class="hrv-container">
+                  <h2>HRV-arvot</h2>
+                  <div class="hrv-grid">
+                    <!-- Syke -->
+                    <div>
+                      <div class="hrv-label tooltip">Syke
+                        <span class="tooltiptext">Sydämen lyöntitiheys (bpm)</span>
+                      </div>
+                      <div class="hrv-value" id="hrv-syke">-</div>
+                    </div>
+                    <!-- RMSSD -->
+                    <div>
+                      <div class="hrv-label tooltip">RMSSD
+                        <span class="tooltiptext">Parasympaattista hermostoa mittaava arvo</span>
+                      </div>
+                      <div class="hrv-value" id="hrv-rmssd">-</div>
+                    </div>
+                    <!-- Mean RR -->
+                    <div>
+                      <div class="hrv-label tooltip">Mean RR
+                        <span class="tooltiptext">Keskimääräinen aika lyöntien välillä (ms)</span>
+                      </div>
+                      <div class="hrv-value" id="hrv-meanrr">-</div>
+                    </div>
+                    <!-- SDNN -->
+                    <div>
+                      <div class="hrv-label tooltip">SDNN
+                        <span class="tooltiptext">Sykevälivaihtelun keskihajonta</span>
+                      </div>
+                      <div class="hrv-value" id="hrv-sdnn">-</div>
+                    </div>
+                    <!-- PNS -->
+                    <div>
+                      <div class="hrv-label tooltip">PNS indeksi
+                        <span class="tooltiptext">Parasympaattisen hermoston aktiivisuusindeksi</span>
+                      </div>
+                      <div class="hrv-value" id="hrv-pns">-</div>
+                    </div>
+                    <!-- SNS -->
+                    <div>
+                      <div class="hrv-label tooltip">SNS indeksi
+                        <span class="tooltiptext">Sympaattisen hermoston aktiivisuusindeksi</span>
+                      </div>
+                      <div class="hrv-value" id="hrv-sns">-</div>
+                    </div>
+                  </div>
+                </div>
+
+                <h2>Uni</h2>
+                <div class="slidecontainer">
+                  <div class="labels">
+                    <span>Huono</span>
+                    <span>Kohtalainen</span>
+                    <span>Ok</span>
+                    <span>Hyvä</span>
+                    <span>Erinomainen</span>
+                  </div>
+                  <input type="range" min="1" max="5" value="3" class="slider" id="sleepRange">
+                </div>
+                <textarea placeholder="Lisätietoa..." maxlength="250"></textarea>
+
+                <h2>Oloni juuri nyt</h2>
+                <div class="slidecontainer">
+                  <div class="labels">
+                    <span>Huono</span>
+                    <span>Kohtalainen</span>
+                    <span>Ok</span>
+                    <span>Hyvä</span>
+                    <span>Erinomainen</span>
+                  </div>
+                  <input type="range" min="1" max="5" value="3" class="slider" id="moodRange">
+                </div>
+                <textarea placeholder="Tähän voit kirjoittaa muita muistiinpanoja: " maxlength="250"></textarea>
+
+                <button id="submit-button" type="submit">Tallenna</button>
+                <div id="saveMessageContainer">
+                  <p id="saveResponse" class="save-message"></p>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- Modaali -->
+          <div id="chartModal" class="modal">
+            <div class="Chartmodal-content">
+              <span class="close-modal">&times;</span>
+              <!-- Nappiryhmä (7/30 päivää) -->
+              <div class="daybuttons">
+                <button id="btn7days">Viimeiset 7 mittausta</button>
+                <button id="btn30days">Viimeiset 30 mittausta</button>
+              </div>
+              <!-- Polar-kaavio -->
+              <h2 id="chartHeaderTitle" style="text-align: center;">HRV-arvot (Viimeisin mdittaus)</h2>
+              <canvas id="hrvPieChart" width="400" height="400"></canvas>
+              <!-- Viivakaaviot 7/30 päivää -->
+              <div id="lineChartGrid" class="chart-grid"></div>
+            </div> <!-- Sulkee .modal-content -->
+          </div> <!-- Sulkee .modal -->
+      <!-- Lisää päivän yksityiskohtapaneeli -->
+      <div id="day-details-panel" class="day-details-panel">
+        <h3>Päiväkirjamerkintä</h3>
+        <div id="day-details-content" class="day-details-content">
+          <p id="no-entry-text">Valitse päivä kalenterista</p>
+          
+          <!-- HRV-tiedot -->
+          <div id="hrv-details" class="hrv-details hidden">
+            <h4>HRV-arvot</h4>
+            <div class="hrv-summary">
+              <div class="hrv-item">
+                <span class="hrv-label">Syke:</span>
+                <span id="detail-heart-rate">-</span>
+              </div>
+              <div class="hrv-item">
+                <span class="hrv-label">RMSSD:</span>
+                <span id="detail-rmssd">-</span>
+              </div>
+              <div class="hrv-item">
+                <span class="hrv-label">SDNN:</span>
+                <span id="detail-sdnn">-</span>
+              </div>
+            </div>
+          </div>
+          
+          <!--Päiväkirjamerkinnän tiedot pienessä ikkunassa-->
+          <div id="diary-entry-details" class="diary-entry-details hidden">
+            <div class="day-detail-item">
+              <span class="time-icon"></span>
+              <span class="detail-time"></span>
+            </div>
+          </div>
+            <div class="day-detail-item sleep-rating">
+              <span class="detail-label">Uni:</span>
+              <span id="detail-sleep">-/5</span>
+            </div>
+            <div class="day-detail-notes" id="sleep-notes-detail"></div>
+            <div class="day-detail-item mood-rating">
+              <span class="detail-label">Mieliala:</span>
+              <span id="detail-mood">-/5</span>
+            </div>
+            <div class="day-detail-notes" id="activity-notes-detail"></div>
+          </div>
+        </div>
+  </main>
+    <!--  Opastusmodaali, joka aukeaa napista -->
+              
+    <div id="infoModal">
+      <div class="modal-content">
+        <span class="close-button" title="Sulje">&times;</span>
+        <p>Klikkaa <strong>Lisää päiväkirjamerkintä</strong> lisätäksesi uuden merkinnän.</p>
+        <p>uusi lisäys ainoastaan lisää- tai päivittää nykyisen päivän tiedot</p>
+        <p>Kun olet valmis, paina <strong>Tallenna</strong> -nappia merkinnän lisäämiseen kalenteriin.</p>
+        <p>tämän jälkeen sivusto vie sinut automaattisesti HRV-kaavioihin</p>
+        <p>Lisätyt merkinnät näkyvät kalenterissa <strong> <img src="./img/moon.png" alt="Kuu">kuu-</strong> tai <strong><img src="./img/sun.png" alt="Aurinko">aurinko </strong> symboleina. Klikkaa kalenterista päivää nähdäksesi sen sisällön. sisältö näkyy pienessä ikkunassa sivuston vasen alalaidassa</p>
+        <p>HRV-kaaviot tulevat näkyviin kun painat<strong> Näytä HRV-kaaviot</strong> -nappulaa. Kaaviot näyttävät viimeisimmän merkinnän, viimeiset 7 merkintää ja viimeiset 30 merkintää.</p>
+        <p>Kun poikkeava arvo tapahtuu HRV-mittauksen jälkeen, tulee esiin nappi jossa lukee <strong>luo HRV-raportti</strong>. Klikaamalla sitä saat ladattua <strong>.pdf</strong> -tiedoston, joka näyttää valitun päivän poikkeavan arvon ja sen kaaviot. Tiedosto on tarkoitettu lähetettäväksi ammattilaisille.</p>
+      </div>
+    </div>
+
+ <footer>NuFlow © 2025</footer>
+</body>
+      <script>
+      document.querySelectorAll('textarea').forEach(textarea => {
+      const maxLength = textarea.getAttribute('maxlength');
+
+      // Luo näyttö jäljellä olevista merkeistä
+      const counter = document.createElement('p');
+      const span = document.createElement('span');
+      span.textContent = `${maxLength}`;
+      counter.innerHTML = `Merkkejä jäljellä: `;
+      counter.appendChild(span);
+
+      // Lisää laskuri tekstialueen jälkeen
+      textarea.parentNode.insertBefore(counter, textarea.nextSibling);
+
+      // Päivitä jäljellä olevat merkit kirjoitettaessa
+      textarea.addEventListener('input', () => {
+        const remaining = maxLength - textarea.value.length;
+        span.textContent = remaining;
+      });
+    });
+    </script>
+
+      </html>

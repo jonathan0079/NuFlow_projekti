@@ -182,7 +182,7 @@ function updateCalendar(year, month) {
                 // Tarkista onko aamumerkintä
                 if (dayEntries.some(entry => entry.time_of_day === 'morning')) {
                     const morningIcon = document.createElement('img');
-                    morningIcon.src = '/src/img/sun.png';
+                    morningIcon.src = '/img/sun.png';
                     morningIcon.alt = 'Aamu-merkintä';
                     morningIcon.style.width = '16px';
                     morningIcon.style.height = '16px';
@@ -193,7 +193,7 @@ function updateCalendar(year, month) {
                 // Tarkista onko iltamerkintä
                 if (dayEntries.some(entry => entry.time_of_day === 'evening')) {
                     const eveningIcon = document.createElement('img');
-                    eveningIcon.src = '/src/img/moon.png';
+                    eveningIcon.src = '/img/moon.png';
                     eveningIcon.alt = 'Ilta-merkintä';
                     eveningIcon.style.width = '16px';
                     eveningIcon.style.height = '16px';
@@ -229,7 +229,7 @@ function updateCalendar(year, month) {
  */
 async function fetchMonthHrvData(token) {
     try {
-        const response = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
+        const response = await fetch('http://72.145.13.207:5000/api/kubios/hrv/last-30-measurements', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -360,7 +360,7 @@ async function fetchUserEntries() {
         }
         
         // Haetaan käyttäjän merkinnät
-        const response = await fetch(`http://localhost:5000/api/entries/user`, {
+        const response = await fetch(`http://72.145.13.207:5000/api/entries/user`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -521,8 +521,8 @@ function addHrvLegend() {
   
   // Lisää selitteet
   const legendItems = [
-    { icon: '/src/img/sun.png', text: 'Aamu-merkintä', alt: 'Aurinko' },
-    { icon: '/src/img/moon.png', text: 'Ilta-merkintä', alt: 'Kuu' },
+    { icon: '/img/sun.png', text: 'Aamu-merkintä', alt: 'Aurinko' },
+    { icon: '/img/moon.png', text: 'Ilta-merkintä', alt: 'Kuu' },
     { class: 'abnormal-hrv', text: 'Poikkeava HRV', type: 'box' }
   ];
   

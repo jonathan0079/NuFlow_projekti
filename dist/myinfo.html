@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <title>NuFlow</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
+  <script type="module" crossorigin src="./assets/myinfo-C7KzVVOf.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/auth-CgT9UiaM.js">
+  <link rel="modulepreload" crossorigin href="./assets/opastus-B5Ddp_SE.js">
+  <link rel="stylesheet" crossorigin href="./assets/auth-TpPhA5kL.css">
+  <link rel="stylesheet" crossorigin href="./assets/initial_info-DMMYXa65.css">
+  <link rel="stylesheet" crossorigin href="./assets/opastus-qzLrFL7C.css">
+</head>
+<body>
+  <nav>
+    <div id="modal-overlay"></div>
+    <div class="otsikko">NuFlow</div>
+  
+    <ul>
+      <li><a href="/index.html">Etusivu</a></li>
+      <li class="auth-required"><a href="/myinfo.html">Omat tiedot</a></li>
+      <li class="auth-required"><a href="/diary.html">Päiväkirja</a></li>
+    </ul>
+    
+    <div class="auth-container">
+      <button id="login-button" class="login-button">Kirjaudu sisään</button>
+      <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+  
+      <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+        <span id="user-greeting">Hei, käyttäjä!</span>
+      </div>
+  
+      <a href="settings.html" class="settings-link">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAADi0lEQVR4nN1X2UtUURgfaHnvnwiC6qWXNghC79UMsmwiqN5izhkN1Jx7xxF1MtyeXLACqYdKyKTILRLtrfQhKBUVS9x1UmMs1xwX4ovfmRln8965Y4nUDw5czvJ9v/Odb7sm078GWWEbssppy6GwjR1Vfsxi2aep3DfOOJ17d4xAgs16FEou5mdQODCHNez564rjbeyUrLJmSWG/oOTqXTWCAOawJvYovElSrSe3p8zOz0oKr0vMvnnQa3JW6lec4rxN5S9r6ONAfwQBzGEtxZkZIKKyUsiALMiEbF3lZrN5j6TwHr9DSSofwvf5nFtU8/Y1rax6KBp+ejxU09YszggikOFzXMiGDk0Ckp1b/Tc9l50qBNwoyaHRaRfFipEplzgLGZAFmYKEnVu3VJ6UbT0gqdyNTR29XeRyz1DVq2c0uzBP2wXOQgZktfd2+i3ihq7I2yusEhvs1eW6QueWFulxayOlVhTShdx0MVIrisTc/PKS7lnHw0o/iYoQ5XGq9ZCs8vXE7FRhOi286/lE5gIbPWiso8/jI+RZWxUD3/cbntOVApu4qRbGZqa8T6uwjfgsfniTgKzyFjAz38mi7qEBTeXXix00PDWpqWDo6yRdK3JokoBs6PAlrZZNAgl2y2lJYX0ikdit9ObD+wiz4+Z6ygMkJoQlwp8DMiHbF6J90Bkagk7zflllXX4nDAbeF2Y3inv1tfS0rTlkDjK9N2dd0LVlJMgK68emmR+zIYet5YX0ZWLUMAH4BBwzGNPf3f6C1a+dB1S+iE1rG+shh5Nz02llbdUwAexNzgutF5Dpi4BFHQJsQRBYDyOQlxETAWTD8IK1ur7mswCf1yQgazwBYh5mNYr+sWFKqyyO7QnMOk74pLUpJiesqq8V9cCwEyZECUOEFEILcR4Ng65xsXchljCUDSQiJBckGT0SUI49HX3dsSWiuKBUrJdsQAK3Q9rFO8MxMfANs2Mt/PmCMa6VigEUCDBTq8tIDzAtkgycDOGJCME35sLNHo6cR95iJCus3KRXjtt7OwPleH6O/qgc19eSy/1t0wk1y7FmQ1KcY6gGhANncBYykhxpdNn39poNSbSWDCZGgomGZc+K2Jvk8LZkssIGDbdkWzalCisJNKWZVPZCuynF2qX8QFMqKbw4pqZUC7LNckJSWaPRtlxSeEOCyo+bduPHJNFuOWL6b3/NgF39Od0J/AYU31r3qeXK5QAAAABJRU5ErkJggg==" alt="Asetukset" width="20" height="20">
+      </a>
+    </div>
+  </nav> 
+    <main>
+      <!-- Opastusnappi -->
+      <div class="title-with-button">
+      <h1>Omat tietoni</h1>
+      <button id="infoButton" title="Näytä opastus">i</button>
+    </div>
+      <!--Kubios-->
+      <div id="infoForm" class="form-container">
+        <h2 class="section-header">Henkilötiedot</h2>
+        
+        <label for="email">Sähköposti:</label>
+        <input type="email" id="email" name="email" disabled />
+        
+        <label for="first_name">Etunimi:</label>
+        <input type="text" id="first_name" name="first_name"/>
+        
+        <label for="last_name">Sukunimi:</label>
+        <input type="text" id="last_name" name="last_name" />
+    
+        <label for="birthday">Syntymäaika:</label>
+        <input type="date" id="birthday" name="birthday" disabled />
+    
+        <label for="height">Pituus (cm):</label>
+        <input type="number" id="height" name="height"/>
+    
+        <label for="weight">Paino (kg):</label>
+        <input type="number" id="weight" name="weight"/>
+    
+        <label for="gender">Sukupuoli:</label>
+        <input type="text" id="gender" name="gender"/>
+
+        <h2 class="section-header">Terveystiedot</h2>
+        <!--Tietokanta-->
+    
+        <label for="drug_use">Nikotiinituotteet, alkoholi ja muut päihteet:</label>
+        <textarea id="drug_use" name="drug_use" maxlength="100"></textarea>
+        
+        <label for="diseases_medications">Sairaudet ja lääkitykset:</label>
+        <textarea id="diseases_medications" name="diseases_medications" maxlength="100"></textarea>
+        
+        <label for="sleep">Arvio unesta (hyvä/huono) miksi?:</label>
+        <textarea id="sleep" name="sleep" maxlength="100"></textarea>
+        
+        <label for="self_assessment">Tämän hetkinen vointi:</label>
+        <textarea id="self_assessment" name="self_assessment" maxlength="200"></textarea>
+    
+    
+        <button type="submit" id="submit-button">Tallenna</button>
+    </div>
+</main>
+<footer>NuFlow © 2025</footer>
+<script>
+  document.querySelectorAll('textarea, input[type="text"]').forEach(field => {
+    const maxLength = field.getAttribute('maxlength');
+    if (!maxLength) return;
+
+    // Luo näyttö jäljellä olevista merkeistä
+    const counter = document.createElement('p');
+    const span = document.createElement('span');
+    span.textContent = `${maxLength}`;
+    counter.innerHTML = `Merkkejä jäljellä: `;
+    counter.appendChild(span);
+
+    // Lisää laskuri kentän jälkeen
+    field.parentNode.insertBefore(counter, field.nextSibling);
+
+    // Päivitä jäljellä olevat merkit kirjoitettaessa
+    field.addEventListener('input', () => {
+      const remaining = maxLength - field.value.length;
+      span.textContent = remaining;
+    });
+  });
+</script>
+<!-- Opastusmodaali -->
+<div id="OmaInfoModal">
+  <div class="omamodal-content">
+    <span class="oma-close-button" title="Sulje">&times;</span>
+    <p>Kun kirjaudut sisään, sähköposti, etunimi,sukunimi ja syntymäaika täytetään automaattisesti.</p>
+    <p>Täytä puuttuvat kentät omilla tiedoillasi (esim. pituus, paino, sukupuoli sekä terveystiedot).</p>
+    <p>Kun kaikki on kunnossa, paina <strong>"Tallenna"</strong>.</p>
+    <p>Tämän jälkeen siirry ylhäällä valikosta <strong>"Päiväkirja"</strong>-sivulle.</p>
+    <p>Siellä klikkaa <strong>"Lisää päiväkirjamerkintä"</strong> ja täytä päivän tiedot.</p>
+    <p>Näin tietosi tallentuvat ja voit seurata hyvinvointiasi helposti!</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <title>NuFlow</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
+    
+    
+    <script src="src/js/opastus.js" defer></script>
+  <script type="module" crossorigin src="./assets/auth-CgT9UiaM.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/auth-TpPhA5kL.css">
+  <link rel="stylesheet" crossorigin href="./assets/index-Y6oRk3T8.css">
+  <link rel="stylesheet" crossorigin href="./assets/opastus-qzLrFL7C.css">
+</head>
+
+<body>
+      <nav>
+      <div id="modal-overlay"></div>
+      <div class="otsikko">NuFlow</div>
+    
+      <ul>
+        <li><a href="/index.html">Etusivu</a></li>
+        <li class="auth-required"><a href="/myinfo.html" id="myinfo-nav-link">Omat tiedot</a></li>
+        <li class="auth-required"><a href="/diary.html" id="diary-nav-link">Päiväkirja</a></li>
+      </ul>
+    
+      <div class="auth-container">
+        <button id="login-button" class="login-button">Kirjaudu sisään</button>
+        <button id="logoutButton" class="logoutButton">Kirjaudu ulos</button>
+    
+        <div id="user-menu-trigger" class="user-menu-trigger" style="display: none;">
+          <span id="user-greeting">Hei, Käyttäjä!</span>
+        </div>
+
+    
+        <a href="settings.html" class="settings-link">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAADi0lEQVR4nN1X2UtUURgfaHnvnwiC6qWXNghC79UMsmwiqN5izhkN1Jx7xxF1MtyeXLACqYdKyKTILRLtrfQhKBUVS9x1UmMs1xwX4ovfmRln8965Y4nUDw5czvJ9v/Odb7sm078GWWEbssppy6GwjR1Vfsxi2aep3DfOOJ17d4xAgs16FEou5mdQODCHNez564rjbeyUrLJmSWG/oOTqXTWCAOawJvYovElSrSe3p8zOz0oKr0vMvnnQa3JW6lec4rxN5S9r6ONAfwQBzGEtxZkZIKKyUsiALMiEbF3lZrN5j6TwHr9DSSofwvf5nFtU8/Y1rax6KBp+ejxU09YszggikOFzXMiGDk0Ckp1b/Tc9l50qBNwoyaHRaRfFipEplzgLGZAFmYKEnVu3VJ6UbT0gqdyNTR29XeRyz1DVq2c0uzBP2wXOQgZktfd2+i3ihq7I2yusEhvs1eW6QueWFulxayOlVhTShdx0MVIrisTc/PKS7lnHw0o/iYoQ5XGq9ZCs8vXE7FRhOi286/lE5gIbPWiso8/jI+RZWxUD3/cbntOVApu4qRbGZqa8T6uwjfgsfniTgKzyFjAz38mi7qEBTeXXix00PDWpqWDo6yRdK3JokoBs6PAlrZZNAgl2y2lJYX0ikdit9ObD+wiz4+Z6ygMkJoQlwp8DMiHbF6J90Bkagk7zflllXX4nDAbeF2Y3inv1tfS0rTlkDjK9N2dd0LVlJMgK68emmR+zIYet5YX0ZWLUMAH4BBwzGNPf3f6C1a+dB1S+iE1rG+shh5Nz02llbdUwAexNzgutF5Dpi4BFHQJsQRBYDyOQlxETAWTD8IK1ur7mswCf1yQgazwBYh5mNYr+sWFKqyyO7QnMOk74pLUpJiesqq8V9cCwEyZECUOEFEILcR4Ng65xsXchljCUDSQiJBckGT0SUI49HX3dsSWiuKBUrJdsQAK3Q9rFO8MxMfANs2Mt/PmCMa6VigEUCDBTq8tIDzAtkgycDOGJCME35sLNHo6cR95iJCus3KRXjtt7OwPleH6O/qgc19eSy/1t0wk1y7FmQ1KcY6gGhANncBYykhxpdNn39poNSbSWDCZGgomGZc+K2Jvk8LZkssIGDbdkWzalCisJNKWZVPZCuynF2qX8QFMqKbw4pqZUC7LNckJSWaPRtlxSeEOCyo+bduPHJNFuOWL6b3/NgF39Od0J/AYU31r3qeXK5QAAAABJRU5ErkJggg==" alt="Asetukset" width="20" height="20">
+        </a>
+      </div>
+    </nav> 
+<main>
+        <div class="hero-text">
+            <div class="hero-container">
+                <h1>NuFlow – Seuraa ja ymmärrä hyvinvointiasi</h1>
+                <p>NuFlow auttaa sinua seuraamaan päivittäistä hyvinvointiasi helposti ja järjestelmällisesti. Syötä aamulla ja illalla tietosi valmiiseen lomakkeeseen ja saat kattavan kuvan terveydestäsi ajan mittaan.</p>
+                <p>Sovellus kokoaa vastauksistasi viikko- ja kuukausikoosteet, jotka auttavat tunnistamaan muutoksia hyvinvoinnissasi.</p>
+                <p>Jos tuloksissa ilmenee huolestuttavia merkkejä, voit helposti lähettää tietosi suoraan ammattilaisen arvioitavaksi.</p>
+                </div>
+        </div>
+    
+<!-- Kirjautumis- ja rekisteröintimodaali -->
+
+  <div id="login-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close-modal">&times;</span>
+       <!-- opastus-->
+       <div class="login-info-container">
+        <button id="infoButton" class="login-info-icon">i</button>
+      </div>
+      <h2>Kirjaudu</h2>
+  
+      <!-- Kirjautumislomake -->
+      <form id="login-form" class="modal-form active">
+        <div class="form-group">
+          <label for="login-username">Käyttäjänimi:</label>
+          <input type="text" id="login-username" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Salasana:</label>
+          <input type="password" id="login-password" required>
+        </div>
+        <p id="login-error" class="login-error"></p>
+        <button type="submit" class="form-button">Kirjaudu sisään</button>
+      </form>
+      <div id="loginResponse"></div>
+    </div>
+  </div>
+</main>
+
+  <!-- Info-modali -->
+  <div id="logininfoModal" class="modal">
+    <div class="modal-content">
+    <p>Voit kirjautua sovellukseen antamalla Kubios käyttäjätunnuksesi ja salasanasi. Jos kirjaudut ensimmäistä kertaa, sinun pitää täyttää esitietolomake ennen sovelluksen käyttöä. </p>
+    <span class="close-button" title="Sulje">&times;</span>
+  </div>
+</div>
+
+  <footer>NuFlow © 2025</footer>
+</body>
+</html>

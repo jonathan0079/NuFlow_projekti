@@ -1,6 +1,6 @@
 
 import './auth.js';
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://72.145.13.207:5000/api';
 
 document.addEventListener('DOMContentLoaded', function() {
   console.log('myinfo.js loaded');

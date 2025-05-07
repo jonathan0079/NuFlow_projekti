@@ -1,6 +1,17 @@
 {
+  "name": "vite-project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "chart": "^0.1.2",
     "chart.js": "^4.4.9"
+  },
+  "devDependencies": {
+    "vite": "^4.0.0"
   }
 }

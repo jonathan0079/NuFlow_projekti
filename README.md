@@ -79,11 +79,20 @@
 ![Asetukset](src/img/NuFlow_BE.png)
 
 
-## listaus ja kuvaus kaikista toiminnallisuuksista, mitä on toteutettu.
+## Listaus ja kuvaus kaikista toiminnallisuuksista, mitä on toteutettu.
 
 * Kirjautuminen Kubios- tunnuksilla.
 
-* Esitietolomakkeen täyttäminen.
+* Esitietolomakkeen täyttäminen:
+
+Ensimmäisellä kirjautumiskerralla käyttäjälle annetaan esitietolomake (Kuva 3), jossa
+on neljä avointa kenttää: "”Nikotiinituotteet, alko-holi ja muut päihteet”, ”Sairaudet ja lääkitykset”,
+”Nukun mielestäni hyvin”, ja ”Oma arvio voinnistani”. 
+
+* Omien tietojen muokkaus poislukien sähköposti ja syntymäaika.
+
+Omat tiedot- sivulta löytyvät Kubioksesta tuodut käyttäjän tiedot eli nimi, syntymäaika, sukupuoli,
+
 
 * Päiväkirjamerkinnän täyttäminen ja tallentaminen.
 
@@ -93,7 +102,7 @@
 
 * PDF- Raportin muodostaminen.
 
-* Omien tietojen muokkaus poislukien sähköposti ja syntymäaika.
+
 
 * Käyttäjätilin poistaminen
 
