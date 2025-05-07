@@ -1,33 +1,51 @@
 # NuFlow_projekti
 
-### Kuvakaappaukset sovelluksen käyttöliittymästä
+## Kuvakaappaukset sovelluksen käyttöliittymästä
 
 ![Etusivu](src/img/etusivu.png)
+### Kuva 1. Etusivu.
+
 ![Kirjautuminen](src/img/kirjautuminen.png)
+### Kuva 2. Kirjautumissivu.
+
 ![Esitietolomake](src/img/esitieto.png)
+### Kuva 3. Esitietolomake.
+
 ![Kirjautuneen käyttäjän etusivu](src/img/kirjautunut_etusivu.png)
+### Kuva 4. Kirjautuneen käyttäjän etusivu.
+
 ![Päiväkirjasivu](src/img/päiväkirjasivu.png)
+### Kuva 5. Päiväkirjasivu.
+
 ![Päiväkirjasivun analyysikaaviot](src/img/päiväkirjasivu_analyysi.png)
+### Kuva 6. Päiväkirjasivun analyysikaaviot.
+
 ![Päiväkirjasivu raportin lähetys ammattilaiselle](src/img/päiväkirjasivu_lomake.png)
+### Kuva 7. Päiväkirjasivu raportin lähetys ammattilaiselle.
+
 ![Asetukset](src/img/asetukset.png)
+### Kuva 8. Asetukset.
+
 ![Omat tiedot](src/img/omat_tiedot.png)
+### Kuva 9. Omat tiedot.
 
 
-### Linkki julkaistuun sovellukseen (front-end)
+## Linkki julkaistuun sovellukseen (front-end)
 
 [Linkki sovellukseen](http://72.145.13.207:5000/)
 
-### linkki käytössä olevaan back-end-sovellukseen/APIin
+## Linkki käytössä olevaan back-end-sovellukseen/APIin
 
 [Linkki APIin](http://72.145.13.207:5000/api/)
 
 
-### linkki API-dokumentaatioon (apidoc)
+## Linkki API-dokumentaatioon (apidoc)
 
 [API-dokumentaatio](https://attekangasmaki.github.io/NuFlow_backend/docs/index.html)
 
 
-### rautalankamallit tai linkki niihin
+## Rautalankamallit
+
 
 ![Kirjautuminen](src/img/rautalanka_kirjautuminen.png)
 ![Esitietolomake](src/img/rautalanka_esitieto.png)
@@ -37,46 +55,44 @@
 ![Asetukset](src/img/rautalanka_asetukset.png)
 
 
-### tietokannan kuvaus 
+## Tietokannan kuvaus 
 
 ![Asetukset](src/img/NuFlow_BE.png)
 
 
-### listaus ja kuvaus kaikista toiminnallisuuksista, mitä on toteutettu.
+## listaus ja kuvaus kaikista toiminnallisuuksista, mitä on toteutettu.
 
-# Kirjautuminen Kubios- tunnuksilla.
+* Kirjautuminen Kubios- tunnuksilla.
 
-# Esitietolomakkeen täyttäminen.
+* Esitietolomakkeen täyttäminen.
 
-# Päiväkirjamerkinnän täyttäminen ja tallentaminen.
+* Päiväkirjamerkinnän täyttäminen ja tallentaminen.
 
-# Päivän, viikon ja kuukauden HRV- analyysikaaviot Kubios- datalla.
+* Päivän, viikon ja kuukauden HRV- analyysikaaviot Kubios- datalla.
 
-# Poikkeavista arvoista hälyttäminen.
+* Poikkeavista arvoista hälyttäminen.
 
-# PDF- Raportin muodostaminen.
+* PDF- Raportin muodostaminen.
 
-# Omien tietojen muokkaus poislukien sähköposti ja syntymäaika.
+* Omien tietojen muokkaus poislukien sähköposti ja syntymäaika.
 
-# Käyttäjätilin poistaminen
-
-
-### Mahdolliset tiedossa olevat bugit/ongelmat
-
-Ei tiedossa olevia bugeja tai ongelmia.
+* Käyttäjätilin poistaminen
 
 
-### Referenssit, käytetyt tutoriaalit, grafiikkakirjastot, tms.
+## Mahdolliset tiedossa olevat bugit/ongelmat
+
+* Ei tiedossa olevia bugeja tai ongelmia.
 
 
-### Linkki ohjelmistotestauskansioon, mistä löytyvät testitapaukset ja -raportit
+
+## Linkki ohjelmistotestauskansioon, mistä löytyvät testitapaukset ja -raportit
 
 ![Testit](tests/)
 
 
-### Tekoälyn käyttö
+## Tekoälyn käyttö
 
-Sovelluksen kehityksessä on käytetty apuna Chat GPT 4.0- ja Claude Sonnet 3.7- tekoälykielimalleja
+* Sovelluksen kehityksessä on käytetty apuna Chat GPT 4.0- ja Claude Sonnet 3.7- tekoälykielimalleja
 
 
 
