@@ -2,8 +2,8 @@ const API_URL = 'http://localhost:5000/api';
 
 // Odottaa, että koko sivu on ladattu
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Auth client script loaded');
-  console.log('API URL is set to:', API_URL);
+  console.log('Auth client script ladattu');
+  console.log('API URL on asetettu:', API_URL);
   
 // Etsii tarvittavat elementit DOM:sta
   const loginButton = document.getElementById('login-button');
@@ -23,37 +23,37 @@ document.addEventListener('DOMContentLoaded', function() {
  // Tarkistaa käyttäjän kirjautumistilan
   checkAuthStatus();
 
-  // Näyttää login modalin, kun login nappia painetaan
+  // Näyttää login-modal ikkunan, kun login-nappia painetaan
   if (loginButton) {
-    console.log('Login button found');
+    console.log('Login-nappi löytyi');
     loginButton.addEventListener('click', () => {
-      console.log('Login button clicked');
+      console.log('Login-nappia painettu');
       modal.style.display = 'block';
       showLoginForm();
     });
   } else {
-    console.warn('Login button not found in the DOM');
+    console.warn('Login-nappia ei löytynyt DOM:sta');
   }
 
-// Sulkee login modalin, kun close modal nappia painetaan
+// Sulkee login-modal ikkunan, kun sulje-nappia painetaan
   if (closeModal) {
     closeModal.addEventListener('click', () => {
-      console.log('Close modal button clicked');
+      console.log('Sulje-nappia painettu');
       modal.style.display = 'none';
       clearForms();
     });
   }
 
-// Sulkee login modalin, kun klikataan ulkopuolelle
+// Sulkee login-modal ikkunan, kun klikataan ulkopuolelle
   window.addEventListener('click', (e) => {
     if (e.target === modal) {
-      console.log('Clicked outside modal, closing');
+      console.log('Klikattu modalin ulkopuolelle, suljetaan');
       modal.style.display = 'none';
       clearForms();
     }
   });
 
- // vaihtaa login ja register formien välillä
+ // Vaihtaa login- ja rekisteröintilomakkeiden välillä
   if (loginTab) {
     loginTab.addEventListener('click', showLoginForm);
   }
@@ -62,21 +62,21 @@ document.addEventListener('DOMContentLoaded', function() {
     registerTab.addEventListener('click', showRegisterForm);
   }
 
-// Käsittelee login formia
+// Käsittelee login-lomakkeen lähettämistä
   if (loginForm) {
     loginForm.addEventListener('submit', handleLogin);
   } else {
-    console.warn('Login form not found in the DOM');
+    console.warn('Login-lomaketta ei löytynyt DOM:sta');
   }
 
-// Käsittelee logout nappia
+// Käsittelee logout-nappia
   if (logoutButton) {
     logoutButton.addEventListener('click', handleLogout);
   }
 
-// Näyttää login formia ja piilottaa register formia
+// Näyttää login-lomakkeen ja piilottaa rekisteröintilomakkeen
   function showLoginForm() {
-    console.log('Showing login form');
+    console.log('Näytetään login-lomake');
     loginTab.classList.add('active');
     registerTab.classList.remove('active');
     loginForm.classList.add('active');
@@ -84,9 +84,9 @@ document.addEventListener('DOMContentLoaded', function() {
     clearErrors();
   }
 
-// sama kuin edellinen mutta toisinpäin
+// Näyttää rekisteröintilomakkeen ja piilottaa login-lomakkeen
   function showRegisterForm() {
-    console.log('Showing register form');
+    console.log('Näytetään rekisteröintilomake');
     registerTab.classList.add('active');
     loginTab.classList.remove('active');
     registerForm.classList.add('active');
@@ -94,15 +94,15 @@ document.addEventListener('DOMContentLoaded', function() {
     clearErrors();
   }
 
-// Tyhjentää formit
+// Tyhjentää lomakkeet
   function clearForms() {
-    console.log('Clearing forms');
+    console.log('Tyhjennetään lomakkeet');
     loginForm.reset();
     registerForm.reset();
     clearErrors();
   }
 
- // Tyhjentää errorit
+ // Tyhjentää virheilmoitukset
   function clearErrors() {
     if (loginError) loginError.textContent = '';
     if (registerError) {
@@ -111,10 +111,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-//Käsittelee login formin lähettämistä
+// Käsittelee login-lomakkeen lähettämistä
 async function handleLogin(e) {
   e.preventDefault();
-  console.log('Login form submitted');
+  console.log('Login-lomake lähetetty');
   
   const username = document.getElementById('login-username').value;
   const password = document.getElementById('login-password').value;
@@ -124,7 +124,7 @@ async function handleLogin(e) {
     return;
   }
   
-  console.log('Attempting login with username:', username);
+  console.log('Yritetään kirjautua käyttäjänimellä:', username);
   
   const submitButton = loginForm.querySelector('button[type="submit"]');
   const originalButtonText = submitButton.textContent;
@@ -132,7 +132,7 @@ async function handleLogin(e) {
   submitButton.disabled = true;
   
   const loginUrl = `${API_URL}/auth/login`;
-  console.log('Login endpoint (full URL):', loginUrl);
+  console.log('Login-päätepiste (täysi URL):', loginUrl);
   
   try {
     const response = await secureFetch(loginUrl, {
@@ -149,7 +149,7 @@ async function handleLogin(e) {
   
     if (!response.ok) {
       loginError.textContent = data.message || 'Kirjautuminen epäonnistui';
-      console.error('Login failed:', data.message);
+      console.error('Kirjautuminen epäonnistui:', data.message);
       return;
     }
   
@@ -171,7 +171,7 @@ async function handleLogin(e) {
     }
     
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('Kirjautumisvirhe:', error);
     loginError.textContent = 'Palvelinvirhe, yritä myöhemmin uudelleen';
   } finally {
     submitButton.textContent = originalButtonText;
@@ -262,6 +262,10 @@ async function handleLogin(e) {
     e.preventDefault();
     console.log('Logging out user');
     localStorage.removeItem('user');
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1000);
+
 
   window.addEventListener('popstate', async function() {
     const hasMetrics = await checkUserStatus();
@@ -276,6 +280,7 @@ async function handleLogin(e) {
     
 // Näyttää viestin onnistuneesta uloskirjautumisesta
     showMessage('Olet kirjautunut ulos onnistuneesti', 'success');
+    
     
 // jos käyttäjä on päiväkirja sivulla, ohjaa hänet etusivulle
     if (window.location.pathname.includes('diary.html')) {

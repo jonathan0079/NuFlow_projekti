@@ -34,10 +34,18 @@
 <main>
       <body>
         <h1>Asetukset</h1>
+        <div id="settingsinfoModal">
+          <div class="settings-modal-content">
+            <span class="close-button" title="Sulje">&times;</span>
+            <p>Asetukset -sivulla voit poistaa käyttäjäsi.</p>
+            <p>Käyttäjän poisto tapahtuu kirjoittamalla ensin oman sähköpostiosoitteen tekstikenttään, jonka jälkeen sovellus varmistaa, että todella haluat poistaa sen.</p>
+            <p>Kun käyttäjäsi poistetaan, sinut kirjautetaan ulos ja siirryt takaisin etusivulle.</p>
+            <p>Käyttäjän poisto ainoastaan tyhjentää henkilötiedot NuFlow -sovelluksesta.</p>
+            <p><strong>Kaikki data mitkä kuuluvat Kubios -sovellukseen eivät ole meidän vastuussa.</strong></p>
+          </div>
+        </div>
         <div class="settingsForm">
-              <label>Käyttäjänimi:
-                <input type="text">
-              </label>
+          <button id="settingsinfoButton" title="Näytä opastus">i</button>
               <label>Sähköposti:
                 <input type="email">
               </label>
@@ -45,7 +53,6 @@
         </div>
         <div class="button-row">
           <button id="delete-account" class="danger-button">Poista käyttäjätili</button>
-          <button type="submit" id="save-button">Tallenna</button>
         </div>
         <!-- Varmistus poistamisesta -->
         <div id="confirmation-modal" class="delete-modal">
@@ -61,6 +68,12 @@
 <footer>NuFlow © 2025</footer>
 <script type="module" src="/src/js/auth.js"></script>
 <script>
+
+// Javascript lisätty HTML-tiedostoon luulien että olisi lyhyt,
+// mutta nyt ei riittänyt aikaa tehdä erillinen tiedosto ja sen yhteensopivuuksia.
+// Tästä syystä itse logout -nappi ei toimi kunnolla tässä sivussa,
+// mutta uloskirjautuminen toimii sentään käyttäjän poistamisen jälkeen automaattisesti.
+
 document.addEventListener("DOMContentLoaded", function() {
   // Haetaan kirjautuneen käyttäjän tiedot
   let currentUser = null;
@@ -133,21 +146,16 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
       
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.message || 'Käyttäjän poistaminen epäonnistui.');
-      }
-      
       // Poisto onnistui, kirjataan käyttäjä ulos
-      localStorage.removeItem('user');
-      
-      // Näytetään onnistumisviesti
-      showMessage('Käyttäjätili poistettu.', 'success');
-      
-      // Ohjataan käyttäjä etusivulle
-      setTimeout(() => {
-        window.location.href = '/index.html';
-      }, 1500);
+      const logoutButton = document.getElementById('logoutButton');
+
+      if (logoutButton) {
+        showMessage('Käyttäjätili poistettu.', 'success');
+          logoutButton.click();
+          setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1000);
+      }
       
     } catch (error) {
       console.error('Virhe käyttäjätilin poistamisessa:', error);
@@ -186,28 +194,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }, 3000);
 }
 });
-</script>
-<script>
-  // Voit lisätä tai vaihtaa näitä siemeniä halutessasi
-  const seeds = ['robot1', 'robot2', 'robot3', 'robot5', 'robot5', 'robot6', 'robot7', 'robot8'];
-
-  const gallery = document.getElementById('bottts-gallery');
-  const selectedAvatar = document.getElementById('selected-avatar');
-
-  if (gallery && selectedAvatar) {
-    seeds.forEach(seed => {
-      const img = document.createElement('img');
-      img.src = `https://api.dicebear.com/8.x/bottts/svg?seed=${seed}`;
-      img.alt = `Bottts avatar - ${seed}`;
-      img.classList.add('avatar-option');
-
-      img.addEventListener('click', () => {
-        selectedAvatar.src = img.src;
-      });
-
-      gallery.appendChild(img);
-    });
-  }
 </script>
 <script src="/src/js/opastus.js"></script>
 </html>

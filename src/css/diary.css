@@ -282,7 +282,7 @@ background-color: #5a897a;
   text-align: center;
   font-size: 14px;
   z-index: 2; 
-  margin-bottom: 0px; /* lisää tilaa labelien ja sliderin väliin */
+  margin-bottom: 0px;
 
 }
 
@@ -390,8 +390,8 @@ font-size: 14px;
 
 /* Lomakkeen tyylit muutetaan vastaamaan flex-asettelua, mutta lomakkeen sisältö pysyy samana */
 main > form {
-flex: 0 1 650px; /* Sama maksimileveys kuin alkuperäisellä */
-margin: 0;       /* Ei enää auto-marginaalia, jotta se ei keskittyisi */
+flex: 0 1 650px;
+margin: 0;
 }
 
 /* Kalenterin tyylit */
@@ -405,7 +405,7 @@ border-radius: 10px;
 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 margin: 10px auto;
 align-self: center;
-position: relative /* Keskittää kalenterin flex-säiliössä */
+position: relative
 }
 
 /* Kalenterin ylätunniste */
@@ -486,17 +486,17 @@ background-color: #b3e5fc;
 
 /* Poikkeavien HRV-arvojen tyyli */
 .calendar-day.abnormal-hrv {
-background-color: #ffcdd2; /* Vaaleanpunainen tausta */
-border: 1px solid #e57373; /* Punertava reunus */
+background-color: #ffcdd2;
+border: 1px solid #e57373;
 }
 
 .calendar-day.abnormal-hrv:hover {
-background-color: #ef9a9a; /* Tummempi punainen hover-tilassa */
+background-color: #ef9a9a;
 }
 
 /* Jos päivä on valittu ja sillä on poikkeavia arvoja, näytä molemmat tyylit */
 .calendar-day.selected.abnormal-hrv {
-background-color: #e1bee7; /* Violetti väri molempien yhdistelmälle */
+background-color: #e1bee7;
 border: 2px solid #ba68c8;
 }
 
@@ -524,11 +524,11 @@ border-radius: 50%;
 }
 
 .morning-indicator {
-background-color: #F9A825; /* Keltainen väri aamulle */
+background-color: #F9A825;
 }
 
 .evening-indicator {
-background-color: #7E57C2; /* Violetti väri illalle */
+background-color: #7E57C2;
 }
 
 .legend-item span {
@@ -537,8 +537,8 @@ background-color: #7E57C2; /* Violetti väri illalle */
 }
 
 #hrv-warning {
-  background-color: #FFA500; /* Oranssi tausta */
-  color: #000; /* Musta teksti */
+  background-color: #FFA500;
+  color: #000;
   padding: 15px;
   margin-bottom: 20px;
   border-radius: 5px;

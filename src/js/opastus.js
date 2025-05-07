@@ -1,31 +1,31 @@
 // Opastus kirjautumiselle
 document.addEventListener("DOMContentLoaded", () => {
-  const infoButton = document.getElementById("infoButton");
-  const infoModal = document.getElementById("infoModal");
-  const loginfoModal = document.getElementById("logininfoModal");
-  const closeButton = document.querySelector(".close-button");
+  const infoButton = document.getElementById("infoButton"); // i-nappi
+  const infoModal = document.getElementById("infoModal"); // taustamodaali
+  const loginfoModal = document.getElementById("logininfoModal"); // taustamodaali - login
+  const closeButton = document.querySelector(".close-button"); // Sulje-painike
   
-  
+    //  Avaa modaalin
   infoButton.addEventListener("click", () => {
     infoModal.style.display = "flex";
   });
-
+  //  Avaa modaalin
   infoButton.addEventListener("click", () => {
     OmaInfoModal.style.display = "flex";
   });
-
+  //  Avaa modaalin
   infoButton.addEventListener("click", () => {
     loginfoModal.style.display = "flex";
   });
-
+  //  Sulkee modaalin
   closeButton.addEventListener("click", () => {
     infoModal.style.display = "none";
   });
-
+  //  Sulkee modaalin
   closeButton.addEventListener("click", () => {
     loginfoModal.style.display = "none";
   });
-
+  //  Sulkee modaalin
   window.addEventListener("click", (e) => {
     if (e.target === infoModal) {
       infoModal.style.display = "none";
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //Opastus Päiväkirjalle
 document.addEventListener("DOMContentLoaded", () => {
-  //  Etsitään tarvittavat elementit
+
   const btn = document.getElementById("diaryInfoButton"); // i-nappi
   const modal = document.getElementById("diaryInfoModal"); // taustamodaali
   const closeBtn = document.querySelector(".close-button"); // Sulje-painike
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //  Avaa modaalin
   if (btn && modal) {
     btn.addEventListener("click", () => {
-      modal.classList.add("show"); // näkyviin
+      modal.classList.add("show");
     });
   }
 
@@ -82,23 +82,48 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
   const infoButton = document.getElementById("infoButton");
   const OmaInfoModal = document.getElementById("OmaInfoModal");
-  
+
+    //  Avaa modaalin
   if (infoButton && OmaInfoModal) {
     infoButton.addEventListener("click", () => {
       OmaInfoModal.style.display = "flex";
     });
-    
+      //  Sulkee modaalin
     const closeButton2 = OmaInfoModal.querySelector(".oma-close-button");
     if (closeButton2) {
       closeButton2.addEventListener("click", () => {
         OmaInfoModal.style.display = "none";
       });
     }
-    
+      //  Sulje klikkaamalla taustaa
     window.addEventListener("click", (e) => {
       if (e.target === OmaInfoModal) {
         OmaInfoModal.style.display = "none";
       }
     });
   }
+});
+
+//Opastus Asetukset -sivulle
+document.addEventListener("DOMContentLoaded", () => {
+  const settingsinfoButton = document.getElementById("settingsinfoButton"); // i-nappi
+  const infoModal = document.getElementById("settingsinfoModal"); // taustamodaali
+  const closeButton = document.querySelector(".close-button"); // Sulje-painike
+  
+      //  Avaa modaalin
+  settingsinfoButton.addEventListener("click", () => {
+    infoModal.style.display = "flex";
+  });
+      //  Sulkee modaalin
+  closeButton.addEventListener("click", () => {
+    infoModal.style.display = "none";
+  });
+
+  //  Sulje klikkaamalla taustaa
+  window.addEventListener("click", function (e) {
+    const modal = document.getElementById("settingsinfoModal");
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
 });

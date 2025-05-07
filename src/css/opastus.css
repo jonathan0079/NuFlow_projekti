@@ -6,8 +6,8 @@
   justify-content: center;
   gap: 12px;
   margin-bottom: 24px;
-  width: 100%;             /* tärkeä keskitykselle */
-  text-align: center;      /* varmuuden vuoksi */
+  width: 100%;
+  text-align: center; 
 }
 
   /* Sulje-nappi */
@@ -54,11 +54,12 @@
   display: none;
   position: fixed;
   z-index: 1000;
+
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* tumma tausta */
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Näkyvä tila kun lisätään .show luokka */
@@ -71,16 +72,20 @@
 /* -------- Modaalin sisältölaatikko -------- */
 #infoModal .modal-content {
   background-color: white;
-  margin: 5% auto;
-  bottom: auto;
   padding: 24px;
   border-radius: 12px;
-  width: 90%;
+  width: auto;
   max-width: 500px;
   font-size: 16px;
   line-height: 1.6;
-  color: #2d6a4f; /* tumma vihreä teksti */
+  color: #2d6a4f;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  height: auto;
 }
 #infoModal .modal-content h2 {
   color: #2d6a4f;
@@ -147,11 +152,11 @@
     justify-content: center;
   }
   .modal-content p {
-    color: #2a5c4a; /* Tumma vihreä */
-    text-shadow: none; /* Poistaa valkoisen varjon jos se on käytössä */;
+    color: #2a5c4a;
+    text-shadow: none;
   }
   .opastus-otsikko {
-    color: #2e7d65; /* tumma vihreä sävy */
+    color: #2e7d65;
     font-weight: bold;
 }
   /* Sulje-nappi */
@@ -174,11 +179,11 @@
     border-radius: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Tämä lisää tumman taustan */
+    background-color: rgba(0, 0, 0, 0.5);
   }
   
   #logininfoModal.show {
-    display: flex; /* Vaihdettu blockista flexiin paremman keskityksen vuoksi */
+    display: flex;
     align-items: center;
     justify-content: center;
   }
@@ -190,7 +195,7 @@
     border-radius: 12px;
     width: 100%;
     max-width: 500px;
-    position: relative; /* Suhteellinen paikotus sulkemisnappia varten */
+    position: relative;
   }
 
 /* omat tiedot info-modaalin tyyli */
@@ -212,16 +217,20 @@
   
   #OmaInfoModal .omamodal-content {
     background-color: white;
-    margin: 10% auto;
     padding: 24px;
     border-radius: 12px;
-    width: 90%;
+    width: auto;
     max-width: 500px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     font-size: 16px;
     line-height: 1.6;
-    word-wrap: break-word;
     color: #2d6a4f;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    height: auto;
   }
   
   #OmaInfoModal .omamodal-content ul {
@@ -244,3 +253,83 @@
     .oma-close-button:hover {
     color: #000;
     }
+
+
+/* Settings Opastusnappi tyyli */
+#settingsinfoButton {
+  margin-left: 320px;
+  background-color: #2d6a4f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+#settingsinfoButton:hover {
+  background-color: #1b4332;
+}
+
+.settings-modal-content {
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  width: auto;
+  max-width: 500px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #2d6a4f;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  height: auto;
+}
+
+/* -------- Modaalin tausta -------- */
+#settingsinfoModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Näkyvä tila kun lisätään .show luokka */
+#settingsinfoModal.show {
+  
+  display: block;
+
+}
+
+/* -------- Modaalin sisältölaatikko -------- */
+#settingsinfoModal .modal-content {
+  background-color: white;
+  margin: 5% auto;
+  bottom: auto;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #2d6a4f;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+#settingsinfoModal .modal-content h2 {
+  color: #2d6a4f;
+}
