@@ -2,32 +2,41 @@
 
 ## Kuvakaappaukset sovelluksen käyttöliittymästä
 
-![Etusivu](src/img/etusivu.png)
 ### Kuva 1. Etusivu.
+![Etusivu](src/img/etusivu.png)
 
-![Kirjautuminen](src/img/kirjautuminen.png)
+
 ### Kuva 2. Kirjautumissivu.
+![Kirjautuminen](src/img/kirjautuminen.png)
 
-![Esitietolomake](src/img/esitieto.png)
+
 ### Kuva 3. Esitietolomake.
+![Esitietolomake](src/img/esitieto.png)
 
-![Kirjautuneen käyttäjän etusivu](src/img/kirjautunut_etusivu.png)
+
 ### Kuva 4. Kirjautuneen käyttäjän etusivu.
+![Kirjautuneen käyttäjän etusivu](src/img/kirjautunut_etusivu.png)
 
-![Päiväkirjasivu](src/img/päiväkirjasivu.png)
+
 ### Kuva 5. Päiväkirjasivu.
+![Päiväkirjasivu](src/img/päiväkirjasivu.png)
 
-![Päiväkirjasivun analyysikaaviot](src/img/päiväkirjasivu_analyysi.png)
+
 ### Kuva 6. Päiväkirjasivun analyysikaaviot.
+![Päiväkirjasivun analyysikaaviot](src/img/päiväkirjasivu_analyysi.png)
 
-![Päiväkirjasivu raportin lähetys ammattilaiselle](src/img/päiväkirjasivu_lomake.png)
+
 ### Kuva 7. Päiväkirjasivu raportin lähetys ammattilaiselle.
+![Päiväkirjasivu raportin lähetys ammattilaiselle](src/img/päiväkirjasivu_lomake.png)
 
-![Asetukset](src/img/asetukset.png)
+
 ### Kuva 8. Asetukset.
+![Asetukset](src/img/asetukset.png)
 
-![Omat tiedot](src/img/omat_tiedot.png)
+
 ### Kuva 9. Omat tiedot.
+![Omat tiedot](src/img/omat_tiedot.png)
+
 
 
 ## Linkki julkaistuun sovellukseen (front-end)
@@ -46,12 +55,22 @@
 
 ## Rautalankamallit
 
-
+### Kuva 10. Rautalankamallin kirjautumissivu.
 ![Kirjautuminen](src/img/rautalanka_kirjautuminen.png)
+
+### Kuva 11. Rautalankamallin esitietolomake.
 ![Esitietolomake](src/img/rautalanka_esitieto.png)
+
+### Kuva 12. Rautalankamallin päiväkirjasivu.
 ![Päiväkirjasivu](src/img/rautalanka_päiväkirja.png)
+
+### Kuva 13. Rautalankamallin prototyyppi analyysikuvaajista.
 ![Analyysi päiväkirjasivulla](src/img/rautalanka_analyysi.png)
+
+### Kuva 14. Rautalankamallin omat tiedot- sivu.
 ![Omat tiedot](src/img/rautalanka_omat_tiedot.png)
+
+### Kuva 15. Rautalankamallin asetukset.
 ![Asetukset](src/img/rautalanka_asetukset.png)
 
 
@@ -87,7 +106,7 @@
 
 ## Linkki ohjelmistotestauskansioon, mistä löytyvät testitapaukset ja -raportit
 
-![Testit](tests/)
+[Testit](tests/)
 
 
 ## Tekoälyn käyttö
