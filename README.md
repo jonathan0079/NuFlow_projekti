@@ -1,5 +1,85 @@
 # NuFlow_projekti
 
+### Kuvakaappaukset sovelluksen käyttöliittymästä
+
+![Etusivu](src/img/etusivu.png)
+![Kirjautuminen](src/img/kirjautuminen.png)
+![Esitietolomake](src/img/esitieto.png)
+![Kirjautuneen käyttäjän etusivu](src/img/kirjautunut_etusivu.png)
+![Päiväkirjasivu](src/img/päiväkirjasivu.png)
+![Päiväkirjasivun analyysikaaviot](src/img/päiväkirjasivu_analyysi.png)
+![Päiväkirjasivu raportin lähetys ammattilaiselle](src/img/päiväkirjasivu_lomake.png)
+![Asetukset](src/img/asetukset.png)
+![Omat tiedot](src/img/omat_tiedot.png)
+
+
+### Linkki julkaistuun sovellukseen (front-end)
+
+[Linkki sovellukseen](http://72.145.13.207:5000/)
+
+### linkki käytössä olevaan back-end-sovellukseen/APIin
+
+[Linkki APIin](http://72.145.13.207:5000/api/)
+
+
+### linkki API-dokumentaatioon (apidoc)
+
+[API-dokumentaatio](https://attekangasmaki.github.io/NuFlow_backend/docs/index.html)
+
+
+### rautalankamallit tai linkki niihin
+
+![Kirjautuminen](src/img/rautalanka_kirjautuminen.png)
+![Esitietolomake](src/img/rautalanka_esitieto.png)
+![Päiväkirjasivu](src/img/rautalanka_päiväkirja.png)
+![Analyysi päiväkirjasivulla](src/img/rautalanka_analyysi.png)
+![Omat tiedot](src/img/rautalanka_omat_tiedot.png)
+![Asetukset](src/img/rautalanka_asetukset.png)
+
+
+### tietokannan kuvaus 
+
+![Asetukset](src/img/NuFlow_BE.png)
+
+
+### listaus ja kuvaus kaikista toiminnallisuuksista, mitä on toteutettu.
+
+# Kirjautuminen Kubios- tunnuksilla.
+
+# Esitietolomakkeen täyttäminen.
+
+# Päiväkirjamerkinnän täyttäminen ja tallentaminen.
+
+# Päivän, viikon ja kuukauden HRV- analyysikaaviot Kubios- datalla.
+
+# Poikkeavista arvoista hälyttäminen.
+
+# PDF- Raportin muodostaminen.
+
+# Omien tietojen muokkaus poislukien sähköposti ja syntymäaika.
+
+# Käyttäjätilin poistaminen
+
+
+### Mahdolliset tiedossa olevat bugit/ongelmat
+
+Ei tiedossa olevia bugeja tai ongelmia.
+
+
+### Referenssit, käytetyt tutoriaalit, grafiikkakirjastot, tms.
+
+
+### Linkki ohjelmistotestauskansioon, mistä löytyvät testitapaukset ja -raportit
+
+![Testit](tests/)
+
+
+### Tekoälyn käyttö
+
+Sovelluksen kehityksessä on käytetty apuna Chat GPT 4.0- ja Claude Sonnet 3.7- tekoälykielimalleja
+
+
+
 ## GIT-Käyttöohje ryhmälle
 Kaikki ryhmäläiset seuraavat tätä sääntöä jotta ei tulisi ongelmia GIT:n puolelta.
 
