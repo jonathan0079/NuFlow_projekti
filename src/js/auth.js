@@ -10,11 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const modal = document.getElementById('login-modal');
   const closeModal = document.getElementById('close-modal');
   const loginTab = document.getElementById('login-tab');
-  const registerTab = document.getElementById('register-tab');
   const loginForm = document.getElementById('login-form');
-  const registerForm = document.getElementById('register-form');
   const loginError = document.getElementById('login-error');
-  const registerError = document.getElementById('register-error');
   const userMenuTrigger = document.getElementById('user-menu-trigger');
   const userMenuContent = document.getElementById('user-menu-content');
   const logoutButton = document.getElementById('logoutButton');
@@ -58,10 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loginTab.addEventListener('click', showLoginForm);
   }
 
-  if (registerTab) {
-    registerTab.addEventListener('click', showRegisterForm);
-  }
-
 // Käsittelee login-lomakkeen lähettämistä
   if (loginForm) {
     loginForm.addEventListener('submit', handleLogin);
@@ -74,23 +67,11 @@ document.addEventListener('DOMContentLoaded', function() {
     logoutButton.addEventListener('click', handleLogout);
   }
 
-// Näyttää login-lomakkeen ja piilottaa rekisteröintilomakkeen
+// Näyttää login-lomakkeen
   function showLoginForm() {
     console.log('Näytetään login-lomake');
     loginTab.classList.add('active');
-    registerTab.classList.remove('active');
     loginForm.classList.add('active');
-    registerForm.classList.remove('active');
-    clearErrors();
-  }
-
-// Näyttää rekisteröintilomakkeen ja piilottaa login-lomakkeen
-  function showRegisterForm() {
-    console.log('Näytetään rekisteröintilomake');
-    registerTab.classList.add('active');
-    loginTab.classList.remove('active');
-    registerForm.classList.add('active');
-    loginForm.classList.remove('active');
     clearErrors();
   }
 
@@ -98,17 +79,12 @@ document.addEventListener('DOMContentLoaded', function() {
   function clearForms() {
     console.log('Tyhjennetään lomakkeet');
     loginForm.reset();
-    registerForm.reset();
     clearErrors();
   }
 
  // Tyhjentää virheilmoitukset
   function clearErrors() {
     if (loginError) loginError.textContent = '';
-    if (registerError) {
-      registerError.textContent = '';
-      registerError.className = 'login-error'; // Resetoinnin jälkeen palautetaan alkuperäinen tyyli
-    }
   }
 
 // Käsittelee login-lomakkeen lähettämistä
@@ -178,84 +154,6 @@ async function handleLogin(e) {
     submitButton.disabled = false;
   }
 }
-
-// Käsittelee rekisteröinnin lähettämistä
-  async function handleRegister(e) {
-    e.preventDefault();
-    console.log('Register form submitted');
-    
-// Tyhjentää errorit
-    if (registerError) {
-      registerError.textContent = '';
-      registerError.className = 'login-error';
-    }
-    
-    const username = document.getElementById('register-username').value;
-    const password = document.getElementById('register-password').value;
-    const confirmPassword = document.getElementById('register-confirm-password').value;
-    
-// Validoi käyttäjän syötteet
-    if (!username || !password || !confirmPassword) {
-      registerError.textContent = 'Kaikki kentät vaaditaan';
-      return;
-    }
-    
-    if (password !== confirmPassword) {
-      registerError.textContent = 'Salasanat eivät täsmää';
-      return;
-    }
-    
-    console.log('Attempting to register user:', { username });
-    
-    try {
-// Näyttää lataus tilan
-      const submitButton = registerForm.querySelector('button[type="submit"]');
-      const originalButtonText = submitButton.textContent;
-      submitButton.textContent = 'Rekisteröidään...';
-      submitButton.disabled = true;
-      
-      const response = await secureFetch(`${API_URL}/users`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-      });
-      
-      const data = await response.json();
-      console.log('Registration response:', data);
-      
-// Palauttaa alkuperäisen tilan napille
-      submitButton.textContent = originalButtonText;
-      submitButton.disabled = false;
-      
-// tarkistaa vastauksen
-      if (!response.ok) {
-        registerError.textContent = data.message || 'Rekisteröinti epäonnistui';
-        console.error('Registration failed:', data.message || 'Unknown error');
-        return;
-      }
-      
-// rekisteröinti onnistui
-      if (data.success) {
-// Näyttää onnistuneen rekisteröinnin viestin
-        registerError.textContent = 'Rekisteröinti onnistui! Voit nyt kirjautua sisään.';
-        registerError.className = 'login-error success';
-        
-// Tyhjentää formit
-        registerForm.reset();
-        
-// Näyttää login formia
-        setTimeout(() => {
-          showLoginForm();
-        }, 2000);
-      }
-      
-    } catch (error) {
-      console.error('Registration error:', error);
-      registerError.textContent = 'Palvelinvirhe, yritä myöhemmin uudelleen';
-    }
-  }
 
 // Käsittelee uloskirjautumista
   function handleLogout(e) {
