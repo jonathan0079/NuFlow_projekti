@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/diary.css">
     <link rel="stylesheet" href="/src/css/diary_chart.css">
+    <link rel="stylesheet" href="/src/css/opastus.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -41,7 +42,7 @@
        <div class="title-with-button">
         <h1>Päiväkirja</h1>
           <!-- Opastusnappi oikeaan yläkulmaan -->
-          <button id="diaryInfoButton" title="Näytä opastus">i</button>
+          <button id="infoButton" title="Näytä opastus">i</button>
         </div>
         <div class="buttons">
           <button id="openDiaryBtn">Lisää päiväkirjamerkintä</button>
@@ -159,11 +160,11 @@
               <span class="close-modal">&times;</span>
               <!-- Nappiryhmä (7/30 päivää) -->
               <div class="daybuttons">
-                <button id="btn7days">Viimeiset 7 päivää</button>
-                <button id="btn30days">Viimeiset 30 päivää</button>
+                <button id="btn7days">Viimeiset 7 mittausta</button>
+                <button id="btn30days">Viimeiset 30 mittausta</button>
               </div>
               <!-- Polar-kaavio -->
-              <h2 id="chartHeaderTitle" style="text-align: center;">HRV-arvot (uusin päivä)</h2>
+              <h2 id="chartHeaderTitle" style="text-align: center;">HRV-arvot (Viimeisin mdittaus)</h2>
               <canvas id="hrvPieChart" width="400" height="400"></canvas>
               <!-- Viivakaaviot 7/30 päivää -->
               <div id="lineChartGrid" class="chart-grid"></div>
@@ -216,15 +217,16 @@
   </main>
     <!--  Opastusmodaali, joka aukeaa napista -->
               
-    <div id="diaryInfoModal">
+    <div id="infoModal">
       <div class="modal-content">
-        <h2>Opastus</h2>
-        <p>Tällä sivulla näet kaikki päiväkirjamerkinnät kalenterin muodossa.</p>
-        <p>Klikkaa <strong>"Lisää päiväkirjamerkintä"</strong> lisätäksesi uuden merkinnän. Kun kirjaudut sisään, HRV-arvot täytetään automaattisesti.</p>
-        <p>Päiväkirjamerkin lisäessä arvioi <strong>unen laatusi</strong> ja <strong>mielialasi</strong> (1–5).Kun kaikki on kunnossa, paina sen jälkeen <strong>"Tallenna" -nappia</strong>.</p>
-        <p>Lisätyt merkinnät näkyvät kalenterissa <strong>"kuu"-</strong> tai <strong> "aurinko" </strong> symboleina. Klikkaa kalenterista päivää nähdäksesi sen sisällön. siältö näkyy pienessä ikkunassa sivuston vasen alalaidassa</p>
-        <p>HRV-kaaviot tulevat näkyviin kun painat<strong> "Näytä HRV-kaaviot"</strong> -nappulaa. Kaaviot näyttävät viimeisimmän merkinnän, viimeiset 7 merkintää ja viimeiset 30 merkintää.</p>
-        <p>Kun poikkeava arvo tapahtuu mittauksen jälkeen, tulee esiin nappi jossa lukee <strong>"luo HRV-raportti"</strong>. Klikamalla sitä saat ladattua <strong>".pdf"</strong> -tiedoston, joka näyttää valitun päivän poikkeavan arvon ja sen kaaviot, jonka jälkeen pitää lähettää ammattilaisille. Tämä prosessi tapahtuu myös päiväkirjamerkkauksen tallentaessa automaattisesti.</p>
+        <span class="close-button" title="Sulje">&times;</span>
+        <p>Klikkaa <strong>Lisää päiväkirjamerkintä</strong> lisätäksesi uuden merkinnän.</p>
+        <p>uusi lisäys ainoastaan lisää- tai päivittää nykyisen päivän tiedot</p>
+        <p>Kun olet valmis, paina <strong>Tallenna</strong> -nappia merkinnän lisäämiseen kalenteriin.</p>
+        <p>tämän jälkeen sivusto vie sinut automaattisesti HRV-kaavioihin</p>
+        <p>Lisätyt merkinnät näkyvät kalenterissa <strong> <img src="src\img\moon.png" alt="Kuu">kuu-</strong> tai <strong><img src="src\img\sun.png" alt="Aurinko">aurinko </strong> symboleina. Klikkaa kalenterista päivää nähdäksesi sen sisällön. sisältö näkyy pienessä ikkunassa sivuston vasen alalaidassa</p>
+        <p>HRV-kaaviot tulevat näkyviin kun painat<strong> Näytä HRV-kaaviot</strong> -nappulaa. Kaaviot näyttävät viimeisimmän merkinnän, viimeiset 7 merkintää ja viimeiset 30 merkintää.</p>
+        <p>Kun poikkeava arvo tapahtuu HRV-mittauksen jälkeen, tulee esiin nappi jossa lukee <strong>luo HRV-raportti</strong>. Klikaamalla sitä saat ladattua <strong>.pdf</strong> -tiedoston, joka näyttää valitun päivän poikkeavan arvon ja sen kaaviot. Tiedosto on tarkoitettu lähetettäväksi ammattilaisille.</p>
       </div>
     </div>
 
@@ -234,6 +236,7 @@
       <script type="module" src="/src/js/auth.js"></script>
       <script type="module" src="/src/js/diary-calendar.js"></script>
       <script type="module" src="/src/js/hrv-report.js"></script>
+      <script type="module" src="/src/js/opastus.js"></script>
       <script>
       document.querySelectorAll('textarea').forEach(textarea => {
       const maxLength = textarea.getAttribute('maxlength');

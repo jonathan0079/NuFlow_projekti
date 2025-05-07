@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-  // Helper function to show messages to the user
+  // Funktio viestin näyttämiseen
   function showMessage(message, type = 'info') {
     let messageElement = document.getElementById('status-message');
     if (!messageElement) {

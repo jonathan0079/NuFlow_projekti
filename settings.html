@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400&display=swap"/>
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/settings.css">
+    <link rel="stylesheet" href="/src/css/opastus.css">
 
 </head>
     <nav>
@@ -31,13 +32,20 @@
         </div>
       </nav> 
 <main>
-      <div id="status-message" class="status-message" style="display:none;"></div>
       <body>
         <h1>Asetukset</h1>
+        <div id="settingsinfoModal">
+          <div class="settings-modal-content">
+            <span class="close-button" title="Sulje">&times;</span>
+            <p>Asetukset -sivulla voit poistaa käyttäjäsi.</p>
+            <p>Käyttäjän poisto tapahtuu kirjoittamalla ensin oman sähköpostiosoitteen tekstikenttään, jonka jälkeen sovellus varmistaa, että todella haluat poistaa sen.</p>
+            <p>Kun käyttäjäsi poistetaan, sinut kirjautetaan ulos ja siirryt takaisin etusivulle.</p>
+            <p>Käyttäjän poisto ainoastaan tyhjentää henkilötiedot NuFlow -sovelluksesta.</p>
+            <p><strong>Kaikki data mitkä kuuluvat Kubios -sovellukseen eivät ole meidän vastuussa.</strong></p>
+          </div>
+        </div>
         <div class="settingsForm">
-              <label>Käyttäjänimi:
-                <input type="text">
-              </label>
+          <button id="settingsinfoButton" title="Näytä opastus">i</button>
               <label>Sähköposti:
                 <input type="email">
               </label>
@@ -45,7 +53,6 @@
         </div>
         <div class="button-row">
           <button id="delete-account" class="danger-button">Poista käyttäjätili</button>
-          <button type="submit" id="save-button">Tallenna</button>
         </div>
         <!-- Varmistus poistamisesta -->
         <div id="confirmation-modal" class="delete-modal">
@@ -56,52 +63,137 @@
           </div>
         </div>
   </body>
+  <div id="status-message" class="status-message" style="display:none;"></div>
 </main>
 <footer>NuFlow © 2025</footer>
 <script type="module" src="/src/js/auth.js"></script>
 <script>
+
+// Javascript lisätty HTML-tiedostoon luulien että olisi lyhyt,
+// mutta nyt ei riittänyt aikaa tehdä erillinen tiedosto ja sen yhteensopivuuksia.
+// Tästä syystä itse logout -nappi ei toimi kunnolla tässä sivussa,
+// mutta uloskirjautuminen toimii sentään käyttäjän poistamisen jälkeen automaattisesti.
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Haetaan kirjautuneen käyttäjän tiedot
+  let currentUser = null;
+  try {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      currentUser = JSON.parse(userData);
+      
+      // Täytetään email-kenttä automaattisesti käyttäjän sähköpostilla jos se on saatavilla
+      const emailField = document.querySelector('input[type="email"]');
+      if (emailField && currentUser.user && currentUser.user.email) {
+        emailField.placeholder = currentUser.user.email;
+      }
+    }
+  } catch (e) {
+    console.error('Virhe käyttäjätietojen haussa:', e);
+  }
+
+  // Ylikirjoitetaan olemassa olevat tapahtumankäsittelijät
   document.getElementById('delete-account').addEventListener('click', function() {
-  // Näytetään varmistusikkuna
-  document.getElementById('confirmation-modal').style.display = 'flex';
-});
-
-document.getElementById('confirm-delete').addEventListener('click', function() {
-  // Käyttäjä haluaa poistaa tilin
-  deleteUserAccount();
-  // Piilotetaan varmistusikkuna
-  document.getElementById('confirmation-modal').style.display = 'none';
-});
-
-document.getElementById('cancel-delete').addEventListener('click', function() {
-  // Käyttäjä perui toiminnon
-  document.getElementById('confirmation-modal').style.display = 'none';
-});
-
-function deleteUserAccount() {
-  // Tämä funktio suorittaa käyttäjän poistamisen tietokannasta
-  console.log('Käyttäjän tili poistettu');
-  // Tähän voit lisätä koodin, joka poistaa käyttäjän tilin palvelimelta
-}
-</script>
-<script>
-  // Voit lisätä tai vaihtaa näitä siemeniä halutessasi
-  const seeds = ['robot1', 'robot2', 'robot3', 'robot5', 'robot5', 'robot6', 'robot7', 'robot8'];
-
-  const gallery = document.getElementById('bottts-gallery');
-  const selectedAvatar = document.getElementById('selected-avatar');
-
-  seeds.forEach(seed => {
-    const img = document.createElement('img');
-    img.src = `https://api.dicebear.com/8.x/bottts/svg?seed=${seed}`;
-    img.alt = `Bottts avatar - ${seed}`;
-    img.classList.add('avatar-option');
-
-    img.addEventListener('click', () => {
-      selectedAvatar.src = img.src;
-    });
-
-    gallery.appendChild(img);
+    // Tarkistetaan, että sähköposti vastaa kirjautunutta käyttäjää
+    const emailField = document.querySelector('input[type="email"]');
+    
+    const emailValue = emailField.value.trim();
+    
+    // Tarkistetaan täsmääkö annettu sähköposti kirjautuneen käyttäjän sähköpostiin
+    if (!currentUser || !currentUser.user || currentUser.user.email !== emailValue) {
+      showMessage('Sähköposti ei täsmää nykyistä käyttäjätiliä', 'error');
+      return;
+    }
+    
+    // Näytetään varmistusikkuna
+    document.getElementById('confirmation-modal').style.display = 'flex';
   });
+
+  document.getElementById('confirm-delete').addEventListener('click', function() {
+    // Käyttäjä haluaa poistaa tilin
+    deleteUserAccount();
+    // Piilotetaan varmistusikkuna
+    document.getElementById('confirmation-modal').style.display = 'none';
+  });
+
+  document.getElementById('cancel-delete').addEventListener('click', function() {
+    // Käyttäjä perui toiminnon
+    document.getElementById('confirmation-modal').style.display = 'none';
+  });
+
+  // Funktio käyttäjätilin poistamiseksi
+  async function deleteUserAccount() {
+    try {
+      if (!currentUser || !currentUser.token) {
+        showMessage('Et ole kirjautunut sisään', 'error');
+        return;
+      }
+      
+      const userId = currentUser.user_id || currentUser.id || (currentUser.user && currentUser.user.id);
+      if (!userId) {
+        showMessage('Käyttäjätunnusta ei löydy', 'error');
+        return;
+      }
+      
+      // Näytetään latausanimaatio tai -viesti
+      showMessage('Poistetaan käyttäjätiliä...', 'info');
+      
+      // Lähetetään poistopyyntö backendille
+      const response = await fetch(`http://localhost:5000/api/auth/delete/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${currentUser.token}`
+        }
+      });
+      
+      // Poisto onnistui, kirjataan käyttäjä ulos
+      const logoutButton = document.getElementById('logoutButton');
+
+      if (logoutButton) {
+        showMessage('Käyttäjätili poistettu.', 'success');
+          logoutButton.click();
+          setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1000);
+      }
+      
+    } catch (error) {
+      console.error('Virhe käyttäjätilin poistamisessa:', error);
+      showMessage(`Virhe: ${error.message}`, 'error');
+    }
+  }
+  
+  // Apufunktio viestien näyttämiseen
+  function showMessage(message, type = 'info') {
+  // Poista mahdollinen olemassa oleva viesti
+  let oldMessage = document.getElementById('status-message');
+  if (oldMessage) {
+    oldMessage.remove();
+  }
+  
+  // Luo uusi viestielementti
+  let messageElement = document.createElement('div');
+  messageElement.id = 'status-message';
+  messageElement.textContent = message;
+  
+  // Lisää tyyliluokka
+  messageElement.classList.add(type);
+  
+  // Lisää elementti sivulle
+  document.body.appendChild(messageElement);
+  
+  // Näytä viesti
+  messageElement.style.display = 'block';
+  
+  // Piilota viesti 3 sekunnin jälkeen
+  setTimeout(function() {
+    messageElement.style.display = 'none';
+    setTimeout(function() {
+      messageElement.remove(); // Poista elementti kokonaan
+    }, 500);
+  }, 3000);
+}
+});
 </script>
-</script>
+<script src="/src/js/opastus.js"></script>
 </html>

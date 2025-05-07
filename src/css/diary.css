@@ -127,6 +127,7 @@ background-color: #5a897a;
 
 .time-options {
   display: flex;
+  padding: 0;
   justify-content: center;
   gap: 20px;
 }
@@ -145,14 +146,14 @@ background-color: #5a897a;
 .time-option-label {
   display: inline-flex;
   align-items: center;
-  padding: 15px 30px;
+  padding: 10px 15px;
   border: 2px solid #ccc;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   min-width: 120px;
   justify-content: center;
-  gap: 10px;
+  gap: 0px;
   font-size: 18px;
   background-color: white;
 }
@@ -179,7 +180,7 @@ background-color: #5a897a;
 }
 
 .hrv-container {
-  margin: 10px auto;
+  margin: 0px auto;
   max-width: 700px;
   text-align: center;
 }
@@ -281,7 +282,7 @@ background-color: #5a897a;
   text-align: center;
   font-size: 14px;
   z-index: 2; 
-  margin-bottom: 10px; /* lisää tilaa labelien ja sliderin väliin */
+  margin-bottom: 0px;
 
 }
 
@@ -294,7 +295,7 @@ form {
 
 label {
   display: block;
-  margin-top: 10px;
+  margin-bottom: 0px;
 }
 
 input, textarea {
@@ -389,8 +390,8 @@ font-size: 14px;
 
 /* Lomakkeen tyylit muutetaan vastaamaan flex-asettelua, mutta lomakkeen sisältö pysyy samana */
 main > form {
-flex: 0 1 650px; /* Sama maksimileveys kuin alkuperäisellä */
-margin: 0;       /* Ei enää auto-marginaalia, jotta se ei keskittyisi */
+flex: 0 1 650px;
+margin: 0;
 }
 
 /* Kalenterin tyylit */
@@ -404,7 +405,7 @@ border-radius: 10px;
 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 margin: 10px auto;
 align-self: center;
-position: relative /* Keskittää kalenterin flex-säiliössä */
+position: relative
 }
 
 /* Kalenterin ylätunniste */
@@ -485,17 +486,17 @@ background-color: #b3e5fc;
 
 /* Poikkeavien HRV-arvojen tyyli */
 .calendar-day.abnormal-hrv {
-background-color: #ffcdd2; /* Vaaleanpunainen tausta */
-border: 1px solid #e57373; /* Punertava reunus */
+background-color: #ffcdd2;
+border: 1px solid #e57373;
 }
 
 .calendar-day.abnormal-hrv:hover {
-background-color: #ef9a9a; /* Tummempi punainen hover-tilassa */
+background-color: #ef9a9a;
 }
 
 /* Jos päivä on valittu ja sillä on poikkeavia arvoja, näytä molemmat tyylit */
 .calendar-day.selected.abnormal-hrv {
-background-color: #e1bee7; /* Violetti väri molempien yhdistelmälle */
+background-color: #e1bee7;
 border: 2px solid #ba68c8;
 }
 
@@ -523,11 +524,11 @@ border-radius: 50%;
 }
 
 .morning-indicator {
-background-color: #F9A825; /* Keltainen väri aamulle */
+background-color: #F9A825;
 }
 
 .evening-indicator {
-background-color: #7E57C2; /* Violetti väri illalle */
+background-color: #7E57C2;
 }
 
 .legend-item span {
@@ -536,8 +537,8 @@ background-color: #7E57C2; /* Violetti väri illalle */
 }
 
 #hrv-warning {
-  background-color: #FFA500; /* Oranssi tausta */
-  color: #000; /* Musta teksti */
+  background-color: #FFA500;
+  color: #000;
   padding: 15px;
   margin-bottom: 20px;
   border-radius: 5px;
@@ -564,7 +565,6 @@ background-color: #7E57C2; /* Violetti väri illalle */
 
 .day-details-panel {
   position: absolute;
-  /* Position relative to main container instead of fixed values */
   top: 40%;
   right: 930px ;
   width: 300px;
@@ -575,7 +575,6 @@ background-color: #7E57C2; /* Violetti väri illalle */
   padding: 15px;
   z-index: 100;
   border: 1px solid #ddd;
-  /* Add scaling properties */
   transform-origin: top left;
   margin-top: 10px;
 }
@@ -654,79 +653,4 @@ background-color: #7E57C2; /* Violetti väri illalle */
   white-space: pre-wrap;
   word-break: break-word;
   color: #555;
-}
-/*  Opastusnappi tyyli */
-/* -------- Opastusnappi Päiväkirjan vieressä -------- */
-.title-with-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 24px;
-  width: 100%;             /* tärkeä keskitykselle */
-  text-align: center;      /* varmuuden vuoksi */
-}
-
-
-.title-with-button h1 {
-  margin: 0;
-}
-
-/* Itse opastusnappi (pyöreä i-nappi) */
-#diaryInfoButton {
-  background-color: #2d6a4f;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.2s ease;
-}
-
-#diaryInfoButton:hover {
-  background-color: #1b4332;
-}
-
-/* -------- Modaalin tausta -------- */
-#diaryInfoModal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* tumma tausta */
-}
-
-/* Näkyvä tila kun lisätään .show luokka */
-#diaryInfoModal.show {
-  
-  display: block;
-
-}
-
-/* -------- Modaalin sisältölaatikko -------- */
-#diaryInfoModal .modal-content {
-  background-color: white;
-  margin: 5% auto;
-  bottom: auto;
-  padding: 24px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 500px;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #2d6a4f; /* tumma vihreä teksti */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-}
-#diaryInfoModal .modal-content h2 {
-  color: #2d6a4f;
 }

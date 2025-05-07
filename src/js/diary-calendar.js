@@ -1,4 +1,3 @@
-// This is the optimized version of diary-calendar.js
 document.addEventListener('DOMContentLoaded', function() {
     initializeCalendar();
     const today = new Date();

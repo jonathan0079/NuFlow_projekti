@@ -1,4 +1,4 @@
-// myinfo.js - Käsittelee käyttäjän tietojen näyttämisen myinfo.html-sivulla
+
 import './auth.js';
 const API_URL = 'http://localhost:5000/api';
 

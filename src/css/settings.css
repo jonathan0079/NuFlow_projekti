@@ -64,13 +64,13 @@ flex-wrap: wrap;
 }
   /* Varmistusikkuna */
   .delete-modal {
-    display: none; /* Aluksi piilotettu */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Taustahämy */
+    background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -135,5 +135,40 @@ flex-wrap: wrap;
     transform: scale(1.05);
   }
 
-
+  #status-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    padding: 12px;
+    text-align: center;
+    font-size: 1.1em;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    /* Oletuksena piilotettu */
+    display: none;
+  }
   
+  #status-message.error {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  #status-message.success {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  #status-message.warning {
+    background-color: #ff9800;
+    color: white;
+  }
+  
+  #status-message.info {
+    background-color: #2196F3;
+    color: white;
+  }

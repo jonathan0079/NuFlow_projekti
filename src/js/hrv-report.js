@@ -1,4 +1,4 @@
-// Updated hrv-report.js - PDF Report Generation with better data handling
+//PDF-raportin luonti päivämäärän valinnalla
 window.generateHrvPdfReport = generateHrvPdfReport;
 window.HRV_THRESHOLDS = {
   '18-25': { rmssd: { min: 25, max: 100 }, sdnn: { min: 50, max: 150 } },
@@ -7,7 +7,7 @@ window.HRV_THRESHOLDS = {
   '46-56': { rmssd: { min: 10, max: 60 }, sdnn: { min: 20, max: 80 } }
 };
 
-// Function to show messages to the user
+// Funktio viestien näyttämiseen käyttäjälle
 function showMessage(message, type = 'info') {
   let messageElement = document.getElementById('status-message');
   if (!messageElement) {
@@ -42,7 +42,7 @@ function showMessage(message, type = 'info') {
   }, 3000);
 }
 
-// Helper function to standardize date format
+// Apufunktio päivämäärän muotoiluun
 function formatDateToYYYYMMDD(dateInput) {
   let dateObj;
 
@@ -75,7 +75,7 @@ function formatDateToYYYYMMDD(dateInput) {
   return `${year}-${month}-${day}`;
 }
 
-// Helper function to fetch HRV data from API
+// Apufunktio HRV-tietojen hakemiseen rajapinnasta
 async function fetchHrvDataForReport(days) {
   try {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -105,7 +105,7 @@ async function fetchHrvDataForReport(days) {
   }
 }
 
-// Helper function to get form data values
+// Apufunktio lomakkeen tietojen hakemiseen
 function getFormData() {
   const diaryForm = document.getElementById('diaryForm');
   if (!diaryForm) return null;
@@ -134,11 +134,11 @@ function getFormData() {
   return data;
 }
 
-// Global variables
+// Globaalit muuttujat
 let currentDayHasAbnormalHrv = false;
 let currentSelectedDate = null;
 
-// Add event listeners when document is loaded
+// Lisää tapahtumakuuntelijat kun dokumentti on ladattu
 document.addEventListener('DOMContentLoaded', () => {
   console.log("HRV-report script loaded");
   
@@ -180,11 +180,20 @@ function hideReportButton() {
   }
 }
 
-// Main function to generate the PDF report
+// Päätoiminto PDF-raportin luontiin
 async function generateHrvPdfReport() {
   console.log("PDF generation started");
+  
+  // Käytä aina nykyistä valittua päivää, ei kuluvan päivän päivämäärää
+  const selectedDate = currentSelectedDate || window.currentSelectedDate;
+  
+  if (!selectedDate) {
+    showMessage('Valitse ensin päivä kalenterista', 'error');
+    return;
+  }
+  
+  // Tarkista onko kyseessä juuri tallennettu merkintä
   const today = new Date().toISOString().split('T')[0];
-  const selectedDate = currentSelectedDate || window.currentSelectedDate || today;
   const isAfterSave = (formatDateToYYYYMMDD(selectedDate) === today);
 
   try {
@@ -193,6 +202,7 @@ async function generateHrvPdfReport() {
     
     showMessage('Luodaan PDF-raporttia...', 'info');
     
+    // Haetaan HRV-data valitulle päivälle window.hrvData objektista
     const dayHrvData = window.hrvData ? window.hrvData[formattedSelectedDate] : null;
     
     if (!dayHrvData) {
@@ -267,10 +277,11 @@ async function generateHrvPdfReport() {
       rowStyles: tableRows
     });
     
-    // Handle diary entry data
+    // latestEntry on null, jos ei löydy merkintätietoja
     let latestEntry = null;
 
-    // Check if generating right after saving
+    // Hae merkintätiedot valitulle päivälle
+    // Jos päivä on tämä päivä ja juuri tallennettu, käytä tallennettua lomaketta
     if (isAfterSave) {
       const savedEntryData = localStorage.getItem('lastEntryData');
       if (savedEntryData) {
@@ -282,12 +293,13 @@ async function generateHrvPdfReport() {
         console.log("Using form data directly:", latestEntry);
       }
     } else {
-      // Find entry from stored data
+      // Etsi päiväkirjamerkintä kalenterielementistä valitulle päivälle
       const dayElement = document.querySelector(`.calendar-day[data-date="${formattedSelectedDate}"]`);
       if (dayElement && dayElement.dataset.entries) {
         try {
           const entriesFromCalendar = JSON.parse(dayElement.dataset.entries);
           if (entriesFromCalendar && entriesFromCalendar.length > 0) {
+            // Käytä viimeisintä merkintää päivälle
             latestEntry = entriesFromCalendar[entriesFromCalendar.length - 1];
             console.log("Found entry from calendar element:", latestEntry);
           }
@@ -296,21 +308,23 @@ async function generateHrvPdfReport() {
         }
       }
       
+      // Jos ei löytynyt kalenterielementistä, kokeile userEntries-taulukosta
       if (!latestEntry && window.userEntries && Array.isArray(window.userEntries)) {
-        const todayEntries = window.userEntries.filter(entry => {
+        const dayEntries = window.userEntries.filter(entry => {
           if (!entry || !entry.entry_date) return false;
           const entryDate = formatDateToYYYYMMDD(entry.entry_date);
           return entryDate === formattedSelectedDate;
         });
         
-        if (todayEntries.length > 0) {
-          latestEntry = todayEntries[todayEntries.length - 1];
+        if (dayEntries.length > 0) {
+          // Käytä viimeisintä merkintää päivälle
+          latestEntry = dayEntries[dayEntries.length - 1];
           console.log("Found entry in userEntries:", latestEntry);
         }
       }
     }
 
-    // Add diary entry to PDF if found
+    // lisää päiväkirjamerkintä raporttiin
     if (latestEntry) {
       let startY = doc.lastAutoTable.finalY + 20;
       
@@ -392,11 +406,11 @@ async function generateHrvPdfReport() {
       console.log("No entries found for the selected date");
     }
     
-    // Add simple HRV charts
+    // lisää yksinkertaiset kaaviot raporttiin
     let startY = doc.lastAutoTable.finalY + (latestEntry ? 220 : 20);
     await addSimpleChartsToReport(doc, startY);
     
-    // Add a footer with the date and page number
+    // lisää sivunumerot ja luontipäivämäärä jokaiselle sivulle
     const totalPages = doc.internal.getNumberOfPages();
     for (let i = 1; i <= totalPages; i++) {
       doc.setPage(i);
@@ -409,7 +423,7 @@ async function generateHrvPdfReport() {
         { align: 'right' });
     }
     
-    // Save the PDF
+    // Tallenna PDF-tiedosto
     doc.save(`HRV-raportti-${formattedSelectedDate}.pdf`);
     
     showMessage('PDF-raportti luotu onnistuneesti!', 'success');
@@ -420,16 +434,16 @@ async function generateHrvPdfReport() {
   }
 }
 
-// Function to add simple charts to report
+// Funktio yksinkertaisten kaavioiden lisäämiseen raporttiin
 async function addSimpleChartsToReport(doc, startY) {
   try {
     let currentY = startY;
     
-    // Try to get data from different sources
+    // Yritä hakea dataa globaaleista muuttujista
     let rawData7 = [];
     let rawData30 = [];
     
-    // First try to get from global/window variables
+    // Ensin yritä hakea dataa globaalista muuttujasta
     if (typeof fullRawData !== 'undefined' && fullRawData) {
       rawData7 = fullRawData.slice(-7);
       rawData30 = fullRawData;
@@ -438,7 +452,7 @@ async function addSimpleChartsToReport(doc, startY) {
       rawData30 = window.fullRawData;
     }
     
-    // If no data available, fetch from API
+    // Jos ei löydy dataa globaaleista muuttujista, hae se API:sta
     if ((!rawData7.length && !rawData30.length)) {
       console.log("No data available in variables, fetching from API...");
       rawData7 = await fetchHrvDataForReport(7);
@@ -468,7 +482,7 @@ async function addSimpleChartsToReport(doc, startY) {
     for (const period of periods) {
       if (!period.data.length) continue;
       
-      if (currentY > 240) { // Back to original threshold
+      if (currentY > 240) { 
         doc.addPage();
         currentY = 20;
       }
@@ -479,7 +493,7 @@ async function addSimpleChartsToReport(doc, startY) {
       currentY += 10;
       
       for (const chart of chartTypes) {
-        if (currentY > 230) { // Back to original threshold
+        if (currentY > 230) { 
           doc.addPage();
           currentY = 20;
         }
@@ -487,9 +501,9 @@ async function addSimpleChartsToReport(doc, startY) {
         const chartUrl = await createSingleHrvChart(period.data, period.days, chart);
         
         if (chartUrl) {
-          // No text label since chart already has title
-          doc.addImage(chartUrl, 'PNG', 20, currentY, 120, 40); // Reduced width, original height
-          currentY += 50; // More space for original height
+
+          doc.addImage(chartUrl, 'PNG', 20, currentY, 120, 40); 
+          currentY += 50; 
         }
       }
       
@@ -501,23 +515,23 @@ async function addSimpleChartsToReport(doc, startY) {
   }
 }
 
-// Function to create single HRV chart
+// Funktio yksittäisen HRV-kaavion luomiseen
 async function createSingleHrvChart(rawData, days, chartConfig) {
   try {
     const chartContainer = document.createElement('div');
     chartContainer.style.width = '600px';
-    chartContainer.style.height = '200px'; // Back to original height
+    chartContainer.style.height = '200px'; 
     chartContainer.style.position = 'fixed';
     chartContainer.style.top = '-9999px';
     
     const canvas = document.createElement('canvas');
     canvas.width = 600;
-    canvas.height = 200; // Back to original height
+    canvas.height = 200; 
     chartContainer.appendChild(canvas);
     
     document.body.appendChild(chartContainer);
     
-    // Process the data
+    // Lajittele data päivämäärän mukaan
     const lastData = rawData.slice(-days);
     lastData.sort((a, b) => {
       const dateA = a.daily_result ? new Date(a.daily_result) : new Date();
@@ -545,7 +559,7 @@ async function createSingleHrvChart(rawData, days, chartConfig) {
       pointHoverRadius: 5
     }];
     
-    // Remove threshold lines - they're no longer needed
+    // Poista ylimääräiset arvot
     
     const ctx = canvas.getContext('2d');
     new Chart(ctx, {
