@@ -1,123 +1,901 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.2.2 (Python 3.13.1 on win32)" generated="2025-05-08T12:44:41.040459" rpa="false" schemaversion="5">
+<robot generator="Robot 7.2.2 (Python 3.13.1 on win32)" generated="2025-05-08T14:03:54.216264" rpa="false" schemaversion="5">
 <suite id="s1" name="Tests" source="C:\Users\attek\NuFlow\NuFlow_projekti\tests">
-<suite id="s1-s1" name="Login Logout Testi" source="C:\Users\attek\NuFlow\NuFlow_projekti\tests\login_logout_testi.robot">
+<suite id="s1-s1" name="esitietojentäyttö Käyttäjänpoisto" source="C:\Users\attek\NuFlow\NuFlow_projekti\tests\esitietojentäyttö_Käyttäjänpoisto.robot">
 <test id="s1-s1-t1" name="Test Login Flow" line="7">
 <kw name="New Browser" owner="Browser">
-<msg time="2025-05-08T12:44:41.861359" level="INFO">{"browser": "chromium", "headless": false, "chromiumSandbox": false, "devtools": false, "handleSIGHUP": true, "handleSIGINT": true, "handleSIGTERM": true, "slowMo": 0.0, "timeout": 30000.0, "tracesDir": "C:\\Users\\attek\\NuFlow\\NuFlow_projekti\\outputs\\browser\\traces\\temp\\f4de9eab-1b3b-4a09-bff4-c243bbb0df26"}</msg>
-<msg time="2025-05-08T12:44:41.914686" level="INFO">Starting Browser process C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\index.js using at 127.0.0.1:56283</msg>
-<msg time="2025-05-08T12:44:44.135201" level="INFO">Successfully created browser with options: {"browser":"chromium","headless":false,"chromiumSandbox":false,"devtools":false,"handleSIGHUP":true,"handleSIGINT":true,"handleSIGTERM":true,"slowMo":0,"timeout":30000,"tracesDir":"C:\\Users\\attek\\NuFlow\\NuFlow_projekti\\outputs\\browser\\traces\\temp\\f4de9eab-1b3b-4a09-bff4-c243bbb0df26"}</msg>
+<msg time="2025-05-08T14:03:55.460052" level="INFO">{"browser": "chromium", "headless": false, "chromiumSandbox": false, "devtools": false, "handleSIGHUP": true, "handleSIGINT": true, "handleSIGTERM": true, "slowMo": 0.0, "timeout": 30000.0, "tracesDir": "C:\\Users\\attek\\NuFlow\\NuFlow_projekti\\outputs\\browser\\traces\\temp\\bf23f51f-7a1c-493a-82b2-838ee020388e"}</msg>
+<msg time="2025-05-08T14:03:55.510345" level="INFO">Starting Browser process C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\index.js using at 127.0.0.1:59141</msg>
+<msg time="2025-05-08T14:03:58.607656" level="INFO">Successfully created browser with options: {"browser":"chromium","headless":false,"chromiumSandbox":false,"devtools":false,"handleSIGHUP":true,"handleSIGINT":true,"handleSIGTERM":true,"slowMo":0,"timeout":30000,"tracesDir":"C:\\Users\\attek\\NuFlow\\NuFlow_projekti\\outputs\\browser\\traces\\temp\\bf23f51f-7a1c-493a-82b2-838ee020388e"}</msg>
 <arg>chromium</arg>
 <arg>headless=No</arg>
 <tag>BrowserControl</tag>
 <tag>Setter</tag>
 <doc>Create a new playwright Browser with specified options.</doc>
-<status status="PASS" start="2025-05-08T12:44:41.859568" elapsed="2.276098"/>
+<status status="PASS" start="2025-05-08T14:03:55.457700" elapsed="3.150395"/>
 </kw>
 <kw name="New Page" owner="Browser">
-<msg time="2025-05-08T12:44:45.274600" level="INFO">Successfully initialized new page object and opened url: http://localhost:5173</msg>
-<msg time="2025-05-08T12:44:45.274719" level="INFO">No context was open. New context was automatically opened when this page is created.</msg>
+<msg time="2025-05-08T14:03:59.824934" level="INFO">Successfully initialized new page object and opened url: http://localhost:5173/</msg>
+<msg time="2025-05-08T14:03:59.825089" level="INFO">No context was open. New context was automatically opened when this page is created.</msg>
 <arg>${URL}</arg>
 <tag>BrowserControl</tag>
 <tag>Setter</tag>
 <doc>Open a new Page.</doc>
-<status status="PASS" start="2025-05-08T12:44:44.142302" elapsed="1.132970"/>
+<status status="PASS" start="2025-05-08T14:03:58.609717" elapsed="1.216368"/>
 </kw>
 <kw name="Click" owner="Browser">
-<msg time="2025-05-08T12:44:45.276469" level="INFO">Clicks the element 'id=login-button'.</msg>
+<msg time="2025-05-08T14:03:59.828046" level="INFO">Clicks the element 'id=login-button'.</msg>
 <arg>id=login-button</arg>
 <tag>PageContent</tag>
 <tag>Setter</tag>
 <doc>Simulates mouse click on the element found by ``selector``.</doc>
-<status status="PASS" start="2025-05-08T12:44:45.275749" elapsed="0.168238"/>
+<status status="PASS" start="2025-05-08T14:03:59.826917" elapsed="0.196400"/>
 </kw>
 <kw name="Type Text" owner="Browser">
-<msg time="2025-05-08T12:44:45.445917" level="INFO">Types the text 'elsikubios@gmail.com' in the given field.</msg>
+<msg time="2025-05-08T14:04:00.027246" level="INFO">Types the text 'elsikubios@gmail.com' in the given field.</msg>
 <arg>id=login-username</arg>
 <arg>${username}</arg>
 <arg>delay=80ms</arg>
 <tag>PageContent</tag>
 <tag>Setter</tag>
 <doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
-<status status="PASS" start="2025-05-08T12:44:45.444472" elapsed="1.900854"/>
+<status status="PASS" start="2025-05-08T14:04:00.025092" elapsed="1.939681"/>
 </kw>
 <kw name="Type Text" owner="Browser">
-<msg time="2025-05-08T12:44:47.347430" level="INFO">Types the text '750GmuduMdLX' in the given field.</msg>
+<msg time="2025-05-08T14:04:01.966554" level="INFO">Types the text '750GmuduMdLX' in the given field.</msg>
 <arg>id=login-password</arg>
 <arg>${password}</arg>
 <arg>delay=80ms</arg>
 <tag>PageContent</tag>
 <tag>Setter</tag>
 <doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
-<status status="PASS" start="2025-05-08T12:44:47.346105" elapsed="1.157777"/>
+<status status="PASS" start="2025-05-08T14:04:01.965343" elapsed="1.228936"/>
 </kw>
 <kw name="Click" owner="Browser">
-<msg time="2025-05-08T12:44:48.505611" level="INFO">Clicks the element 'css=form#login-form button[class="form-button"]'.</msg>
+<msg time="2025-05-08T14:04:03.195937" level="INFO">Clicks the element 'css=form#login-form button[class="form-button"]'.</msg>
 <arg>css=form#login-form button[class="form-button"]</arg>
 <tag>PageContent</tag>
 <tag>Setter</tag>
 <doc>Simulates mouse click on the element found by ``selector``.</doc>
-<status status="PASS" start="2025-05-08T12:44:48.504554" elapsed="0.072338"/>
+<status status="PASS" start="2025-05-08T14:04:03.194952" elapsed="0.061536"/>
 </kw>
-<status status="PASS" start="2025-05-08T12:44:41.857421" elapsed="6.720210"/>
-</test>
-<test id="s1-s1-t2" name="Test Logout Flow" line="18">
 <kw name="Wait For Elements State" owner="Browser">
-<msg time="2025-05-08T12:44:51.097256" level="INFO">Waited for Element with selector id=logoutButton at state visible</msg>
+<msg time="2025-05-08T14:04:05.655007" level="INFO">Waited for Element with selector id=logoutButton at state visible</msg>
+<arg>id=logoutButton</arg>
+<arg>visible</arg>
+<tag>PageContent</tag>
+<tag>Wait</tag>
+<doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
+<status status="PASS" start="2025-05-08T14:04:03.257010" elapsed="2.398519"/>
+</kw>
+<status status="PASS" start="2025-05-08T14:03:55.454342" elapsed="10.202311"/>
+</test>
+<test id="s1-s1-t2" name="Test Initial Info Flow" line="18">
+<kw name="Wait For Elements State" owner="Browser">
+<msg time="2025-05-08T14:04:16.212626" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="browser/screenshot/fail-screenshot-1.png" target="_blank"&gt;&lt;img src="browser/screenshot/fail-screenshot-1.png" width="800px"/&gt;&lt;/a&gt;</msg>
+<msg time="2025-05-08T14:04:16.212920" level="INFO">See also file:///C:/Users/attek/NuFlow/NuFlow_projekti/outputs/playwright-log-1746702234719166200.txt for additional details.</msg>
+<msg time="2025-05-08T14:04:16.215248" level="FAIL">TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator('id=infoForm') to be visible
+</msg>
+<arg>id=infoForm</arg>
+<arg>visible</arg>
+<arg>timeout=10s</arg>
+<tag>PageContent</tag>
+<tag>Wait</tag>
+<doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
+<status status="FAIL" start="2025-05-08T14:04:05.671405" elapsed="10.562282">TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator('id=infoForm') to be visible
+</status>
+</kw>
+<kw name="Type Text" owner="Browser">
+<arg>textarea[name="drug_use"]</arg>
+<arg>${drug_use}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="NOT RUN" start="2025-05-08T14:04:16.234333" elapsed="0.000317"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2025-05-08T14:04:16.235104" elapsed="0.000450"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<arg>textarea[name="diseases_medications"]</arg>
+<arg>${diseases_medications}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="NOT RUN" start="2025-05-08T14:04:16.235973" elapsed="0.000215"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2025-05-08T14:04:16.236468" elapsed="0.000183"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<arg>textarea[name="sleep"]</arg>
+<arg>${sleep}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="NOT RUN" start="2025-05-08T14:04:16.236926" elapsed="0.000164"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2025-05-08T14:04:16.237374" elapsed="0.000165"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<arg>textarea[name="self_assessment"]</arg>
+<arg>${self_assesment}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="NOT RUN" start="2025-05-08T14:04:16.237857" elapsed="0.000190"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2025-05-08T14:04:16.238385" elapsed="0.000191"/>
+</kw>
+<kw name="Click" owner="Browser">
+<arg>id=submit-button</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="NOT RUN" start="2025-05-08T14:04:16.239983" elapsed="0.000386"/>
+</kw>
+<kw name="Wait For Elements State" owner="Browser">
+<arg>id=month-year</arg>
+<arg>visible</arg>
+<arg>timeout=10s</arg>
+<tag>PageContent</tag>
+<tag>Wait</tag>
+<doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
+<status status="NOT RUN" start="2025-05-08T14:04:16.240966" elapsed="0.000432"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2025-05-08T14:04:16.242219" elapsed="0.000329"/>
+</kw>
+<status status="FAIL" start="2025-05-08T14:04:05.670121" elapsed="10.572931">TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator('id=infoForm') to be visible
+</status>
+</test>
+<test id="s1-s1-t3" name="Test Info Edit Flow" line="32">
+<kw name="Wait For Elements State" owner="Browser">
+<msg time="2025-05-08T14:04:16.279091" level="INFO">Waited for Element with selector text=Omat tiedot at state visible</msg>
+<arg>text=Omat tiedot</arg>
+<arg>visible</arg>
+<arg>timeout=10s</arg>
+<tag>PageContent</tag>
+<tag>Wait</tag>
+<doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
+<status status="PASS" start="2025-05-08T14:04:16.250832" elapsed="0.028521"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:16.781323" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:16.280096" elapsed="0.501404"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:16.783371" level="INFO">Clicks the element 'text=Omat tiedot'.</msg>
+<arg>text=Omat tiedot</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:16.782061" elapsed="0.140723"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:17.925259" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:16.923710" elapsed="1.001796"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:17.927516" level="INFO">Types the text 'Elsi' in the given field.</msg>
+<arg>input[name="first_name"]</arg>
+<arg>${first_name}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:17.926181" elapsed="0.225406"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:18.253233" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:18.152257" elapsed="0.101147"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:18.255167" level="INFO">Types the text 'Kubios' in the given field.</msg>
+<arg>input[name="last_name"]</arg>
+<arg>${last_name}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:18.253880" elapsed="0.305502"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:18.660736" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:18.559884" elapsed="0.101096"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:18.662576" level="INFO">Types the text '150' in the given field.</msg>
+<arg>input[name="height"]</arg>
+<arg>${height}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:18.661542" elapsed="0.185044"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:18.948773" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:18.847731" elapsed="0.101256"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:18.950847" level="INFO">Types the text '50' in the given field.</msg>
+<arg>input[name="weight"]</arg>
+<arg>${weight}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:18.949563" elapsed="0.128804"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:19.180327" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:19.079034" elapsed="0.101534"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:19.182402" level="INFO">Types the text 'Nainen' in the given field.</msg>
+<arg>input[name="gender"]</arg>
+<arg>${gender}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:19.181243" elapsed="0.298390"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:19.581199" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:19.480127" elapsed="0.101262"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:19.583272" level="INFO">Types the text 'SAIRAAT huumeet ja kaikki lääkkeet' in the given field.</msg>
+<arg>textarea[name="drug_use"]</arg>
+<arg>${drug_use}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:19.581927" elapsed="1.561140"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:21.245636" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:21.144158" elapsed="0.101700"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:21.248342" level="INFO">Types the text 'Maksakirroosi' in the given field.</msg>
+<arg>textarea[name="diseases_medications"]</arg>
+<arg>${diseases_medications}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:21.246536" elapsed="0.621067"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:21.969345" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:21.868453" elapsed="0.101124"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:21.971485" level="INFO">Types the text 'En nuku' in the given field.</msg>
+<arg>textarea[name="sleep"]</arg>
+<arg>${sleep}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:21.970180" elapsed="0.378471"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:22.450059" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:22.349162" elapsed="0.101201"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:22.452450" level="INFO">Types the text 'Olen sairas' in the given field.</msg>
+<arg>textarea[name="self_assessment"]</arg>
+<arg>${self_assesment}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:22.451218" elapsed="0.536613"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:23.089931" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:22.988731" elapsed="0.101887"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:23.093121" level="INFO">Clicks the element 'id=submit-button'.</msg>
+<arg>id=submit-button</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:23.091435" elapsed="0.069989"/>
+</kw>
+<status status="PASS" start="2025-05-08T14:04:16.249352" elapsed="6.912997"/>
+</test>
+<test id="s1-s1-t4" name="Test User Delete Flow" line="57">
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:24.174210" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:23.172694" elapsed="1.001744"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:24.175875" level="INFO">Clicks the element 'css=.settings-link'.</msg>
+<arg>css=.settings-link</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:24.175034" elapsed="0.341391"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:25.018547" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:24.517095" elapsed="0.501763"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:25.020864" level="INFO">Types the text 'elsikubios@gmail.com' in the given field.</msg>
+<arg>input[type="email"]</arg>
+<arg>${username}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:25.019495" elapsed="0.888426"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:26.410160" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:25.908906" elapsed="0.501668"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:26.413371" level="INFO">Clicks the element 'button[id="delete-account"]'.</msg>
+<arg>button[id="delete-account"]</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:26.411972" elapsed="0.056913"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:26.971038" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:26.469631" elapsed="0.501687"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:26.973488" level="INFO">Clicks the element 'button[id="confirm-delete"]'.</msg>
+<arg>button[id="confirm-delete"]</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:26.972089" elapsed="0.066212"/>
+</kw>
+<kw name="Wait For Elements State" owner="Browser">
+<msg time="2025-05-08T14:04:27.063495" level="INFO">Waited for Element with selector id=login-button at state visible</msg>
+<arg>id=login-button</arg>
+<arg>visible</arg>
+<arg>timeout=10s</arg>
+<tag>PageContent</tag>
+<tag>Wait</tag>
+<doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
+<status status="PASS" start="2025-05-08T14:04:27.039405" elapsed="0.024399"/>
+</kw>
+<kw name="Close Browser" owner="Browser">
+<msg time="2025-05-08T14:04:27.545045" level="INFO">Closed browser</msg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-05-08T14:04:27.064677" elapsed="0.480638"/>
+</kw>
+<status status="PASS" start="2025-05-08T14:04:23.171589" elapsed="4.374169"/>
+</test>
+<status status="FAIL" start="2025-05-08T14:03:54.294249" elapsed="33.295312"/>
+</suite>
+<suite id="s1-s2" name="Login Logout Testi" source="C:\Users\attek\NuFlow\NuFlow_projekti\tests\login_logout_testi.robot">
+<test id="s1-s2-t1" name="Test Login Flow" line="7">
+<kw name="New Browser" owner="Browser">
+<msg time="2025-05-08T14:04:27.647527" level="INFO">{"browser": "chromium", "headless": false, "chromiumSandbox": false, "devtools": false, "handleSIGHUP": true, "handleSIGINT": true, "handleSIGTERM": true, "slowMo": 0.0, "timeout": 30000.0, "tracesDir": "C:\\Users\\attek\\NuFlow\\NuFlow_projekti\\outputs\\browser\\traces\\temp\\c7e099c9-2e29-47a6-857f-13b43b0f45ee"}</msg>
+<msg time="2025-05-08T14:04:28.178992" level="INFO">Successfully created browser with options: {"browser":"chromium","headless":false,"chromiumSandbox":false,"devtools":false,"handleSIGHUP":true,"handleSIGINT":true,"handleSIGTERM":true,"slowMo":0,"timeout":30000,"tracesDir":"C:\\Users\\attek\\NuFlow\\NuFlow_projekti\\outputs\\browser\\traces\\temp\\c7e099c9-2e29-47a6-857f-13b43b0f45ee"}</msg>
+<arg>chromium</arg>
+<arg>headless=No</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Create a new playwright Browser with specified options.</doc>
+<status status="PASS" start="2025-05-08T14:04:27.645709" elapsed="0.533742"/>
+</kw>
+<kw name="New Page" owner="Browser">
+<msg time="2025-05-08T14:04:28.930126" level="INFO">Successfully initialized new page object and opened url: http://localhost:5173/</msg>
+<msg time="2025-05-08T14:04:28.930280" level="INFO">No context was open. New context was automatically opened when this page is created.</msg>
+<arg>${URL}</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Open a new Page.</doc>
+<status status="PASS" start="2025-05-08T14:04:28.181717" elapsed="0.748864"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:28.932095" level="INFO">Clicks the element 'id=login-button'.</msg>
+<arg>id=login-button</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:28.931166" elapsed="0.205136"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:29.137618" level="INFO">Types the text 'elsikubios@gmail.com' in the given field.</msg>
+<arg>id=login-username</arg>
+<arg>${username}</arg>
+<arg>delay=80ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:29.136716" elapsed="2.083247"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:31.221762" level="INFO">Types the text '750GmuduMdLX' in the given field.</msg>
+<arg>id=login-password</arg>
+<arg>${password}</arg>
+<arg>delay=80ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:31.220633" elapsed="1.211403"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:32.433767" level="INFO">Clicks the element 'css=form#login-form button[class="form-button"]'.</msg>
+<arg>css=form#login-form button[class="form-button"]</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:32.432690" elapsed="0.067776"/>
+</kw>
+<status status="PASS" start="2025-05-08T14:04:27.644503" elapsed="4.860385"/>
+</test>
+<test id="s1-s2-t2" name="Test Logout Flow" line="18">
+<kw name="Wait For Elements State" owner="Browser">
+<msg time="2025-05-08T14:04:34.486956" level="INFO">Waited for Element with selector id=logoutButton at state visible</msg>
 <arg>id=logoutButton</arg>
 <arg>visible</arg>
 <arg>timeout=3s</arg>
 <tag>PageContent</tag>
 <tag>Wait</tag>
 <doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
-<status status="PASS" start="2025-05-08T12:44:48.587033" elapsed="2.510642"/>
+<status status="PASS" start="2025-05-08T14:04:32.514605" elapsed="1.972677"/>
 </kw>
 <kw name="Click" owner="Browser">
-<msg time="2025-05-08T12:44:51.099941" level="INFO">Clicks the element 'id=logoutButton'.</msg>
+<msg time="2025-05-08T14:04:34.489607" level="INFO">Clicks the element 'id=logoutButton'.</msg>
 <arg>id=logoutButton</arg>
 <tag>PageContent</tag>
 <tag>Setter</tag>
 <doc>Simulates mouse click on the element found by ``selector``.</doc>
-<status status="PASS" start="2025-05-08T12:44:51.098476" elapsed="0.068640"/>
+<status status="PASS" start="2025-05-08T14:04:34.488116" elapsed="0.213132"/>
 </kw>
 <kw name="Wait For Elements State" owner="Browser">
-<msg time="2025-05-08T12:44:51.184599" level="INFO">Waited for Element with selector id=login-button at state visible</msg>
+<msg time="2025-05-08T14:04:34.714040" level="INFO">Waited for Element with selector id=login-button at state visible</msg>
 <arg>id=login-button</arg>
 <arg>visible</arg>
 <arg>timeout=3s</arg>
 <tag>PageContent</tag>
 <tag>Wait</tag>
 <doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
-<status status="PASS" start="2025-05-08T12:44:51.167851" elapsed="0.017587"/>
+<status status="PASS" start="2025-05-08T14:04:34.701960" elapsed="0.012515"/>
 </kw>
 <kw name="Sleep" owner="BuiltIn">
-<msg time="2025-05-08T12:44:53.189616" level="INFO">Slept 2 seconds.</msg>
+<msg time="2025-05-08T14:04:36.716451" level="INFO">Slept 2 seconds.</msg>
 <arg>2s</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2025-05-08T12:44:51.187457" elapsed="2.002585"/>
+<status status="PASS" start="2025-05-08T14:04:34.715089" elapsed="2.001574"/>
 </kw>
 <kw name="Close Browser" owner="Browser">
-<msg time="2025-05-08T12:44:53.729219" level="INFO">Closed browser</msg>
+<msg time="2025-05-08T14:04:37.536507" level="INFO">Closed browser</msg>
 <tag>BrowserControl</tag>
 <tag>Setter</tag>
 <doc>Closes the current browser.</doc>
-<status status="PASS" start="2025-05-08T12:44:53.190752" elapsed="0.538864"/>
+<status status="PASS" start="2025-05-08T14:04:36.717183" elapsed="0.819790"/>
 </kw>
-<status status="PASS" start="2025-05-08T12:44:48.585848" elapsed="5.144448"/>
+<status status="PASS" start="2025-05-08T14:04:32.513704" elapsed="5.023850"/>
 </test>
-<status status="PASS" start="2025-05-08T12:44:41.107744" elapsed="12.697666"/>
+<status status="PASS" start="2025-05-08T14:04:27.636834" elapsed="9.953932"/>
 </suite>
-<status status="PASS" start="2025-05-08T12:44:41.044651" elapsed="12.828291"/>
+<suite id="s1-s3" name="Päiväkirjamerkkaus" source="C:\Users\attek\NuFlow\NuFlow_projekti\tests\päiväkirjamerkkaus.robot">
+<test id="s1-s3-t1" name="Test Login Flow" line="7">
+<kw name="New Browser" owner="Browser">
+<msg time="2025-05-08T14:04:37.663631" level="INFO">{"browser": "chromium", "headless": false, "chromiumSandbox": false, "devtools": false, "handleSIGHUP": true, "handleSIGINT": true, "handleSIGTERM": true, "slowMo": 0.0, "timeout": 30000.0, "tracesDir": "C:\\Users\\attek\\NuFlow\\NuFlow_projekti\\outputs\\browser\\traces\\temp\\2c3d0698-c499-4602-bb90-b46bc3a8882c"}</msg>
+<msg time="2025-05-08T14:04:37.987759" level="INFO">Successfully created browser with options: {"browser":"chromium","headless":false,"chromiumSandbox":false,"devtools":false,"handleSIGHUP":true,"handleSIGINT":true,"handleSIGTERM":true,"slowMo":0,"timeout":30000,"tracesDir":"C:\\Users\\attek\\NuFlow\\NuFlow_projekti\\outputs\\browser\\traces\\temp\\2c3d0698-c499-4602-bb90-b46bc3a8882c"}</msg>
+<arg>chromium</arg>
+<arg>headless=No</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Create a new playwright Browser with specified options.</doc>
+<status status="PASS" start="2025-05-08T14:04:37.661318" elapsed="0.327153"/>
+</kw>
+<kw name="New Page" owner="Browser">
+<msg time="2025-05-08T14:04:38.920432" level="INFO">Successfully initialized new page object and opened url: http://localhost:5173/</msg>
+<msg time="2025-05-08T14:04:38.920541" level="INFO">No context was open. New context was automatically opened when this page is created.</msg>
+<arg>${URL}</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Open a new Page.</doc>
+<status status="PASS" start="2025-05-08T14:04:38.007411" elapsed="0.913408"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:40.922927" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:38.921779" elapsed="2.001401"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:40.924998" level="INFO">Clicks the element 'id=login-button'.</msg>
+<arg>id=login-button</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:40.924020" elapsed="0.079448"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:41.005037" level="INFO">Types the text 'elsikubios@gmail.com' in the given field.</msg>
+<arg>id=login-username</arg>
+<arg>${username}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:41.003975" elapsed="0.842678"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:41.848678" level="INFO">Types the text '750GmuduMdLX' in the given field.</msg>
+<arg>id=login-password</arg>
+<arg>${password}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:41.847382" elapsed="0.567975"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:42.417486" level="INFO">Clicks the element 'css=form#login-form button[class="form-button"]'.</msg>
+<arg>css=form#login-form button[class="form-button"]</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:42.416139" elapsed="0.088148"/>
+</kw>
+<kw name="Wait For Elements State" owner="Browser">
+<msg time="2025-05-08T14:04:44.440105" level="INFO">Waited for Element with selector id=logoutButton at state visible</msg>
+<arg>id=logoutButton</arg>
+<arg>visible</arg>
+<arg>timeout=10s</arg>
+<tag>PageContent</tag>
+<tag>Wait</tag>
+<doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
+<status status="PASS" start="2025-05-08T14:04:42.506183" elapsed="1.934375"/>
+</kw>
+<status status="PASS" start="2025-05-08T14:04:37.659459" elapsed="6.781747"/>
+</test>
+<test id="s1-s3-t2" name="Test Initial Info Flow" line="18">
+<kw name="Wait For Elements State" owner="Browser">
+<msg time="2025-05-08T14:04:44.463252" level="INFO">Waited for Element with selector id=infoForm at state visible</msg>
+<arg>id=infoForm</arg>
+<arg>visible</arg>
+<arg>timeout=5s</arg>
+<tag>PageContent</tag>
+<tag>Wait</tag>
+<doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
+<status status="PASS" start="2025-05-08T14:04:44.448765" elapsed="0.015212"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:44.465706" level="INFO">Types the text 'SAIRAAT huumeet ja kaikki lääkkeet' in the given field.</msg>
+<arg>textarea[name="drug_use"]</arg>
+<arg>${drug_use}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:44.464571" elapsed="1.682142"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:46.248341" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:46.147441" elapsed="0.101115"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:46.250271" level="INFO">Types the text 'Maksakirroosi' in the given field.</msg>
+<arg>textarea[name="diseases_medications"]</arg>
+<arg>${diseases_medications}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:46.249134" elapsed="0.563152"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:46.914567" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:46.813132" elapsed="0.101735"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:46.917366" level="INFO">Types the text 'En nuku' in the given field.</msg>
+<arg>textarea[name="sleep"]</arg>
+<arg>${sleep}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:46.915799" elapsed="0.325326"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:47.342816" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:47.242003" elapsed="0.101091"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:47.345692" level="INFO">Types the text 'Olen sairas' in the given field.</msg>
+<arg>textarea[name="self_assessment"]</arg>
+<arg>${self_assesment}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:47.344074" elapsed="0.467066"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:47.913165" level="INFO">Slept 100 milliseconds.</msg>
+<arg>0.1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:47.811965" elapsed="0.101449"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:47.915424" level="INFO">Clicks the element 'id=submit-button'.</msg>
+<arg>id=submit-button</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:47.914282" elapsed="0.074993"/>
+</kw>
+<kw name="Wait For Elements State" owner="Browser">
+<msg time="2025-05-08T14:04:48.012953" level="INFO">Waited for Element with selector id=logoutButton at state visible</msg>
+<arg>id=logoutButton</arg>
+<arg>visible</arg>
+<arg>timeout=10s</arg>
+<tag>PageContent</tag>
+<tag>Wait</tag>
+<doc>Waits for the element found by ``selector`` to satisfy state option.</doc>
+<status status="PASS" start="2025-05-08T14:04:47.991863" elapsed="0.021661"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:49.016178" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:48.014370" elapsed="1.002125"/>
+</kw>
+<status status="PASS" start="2025-05-08T14:04:44.447844" elapsed="4.569358"/>
+</test>
+<test id="s1-s3-t3" name="Test Diary Entry + Graphview Flow" line="34">
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:49.534655" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:49.025111" elapsed="0.509849"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:49.595573" level="INFO">Clicks the element 'id=openDiaryBtn'.</msg>
+<arg>id=openDiaryBtn</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:49.591636" elapsed="0.982787"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:51.077493" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:50.575340" elapsed="0.502553"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:51.080059" level="INFO">Clicks the element 'css=label:has(input[value="evening"])'.</msg>
+<arg>css=label:has(input[value="evening"])</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:51.078756" elapsed="0.073703"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:51.654790" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:51.153076" elapsed="0.502011"/>
+</kw>
+<kw name="Evaluate JavaScript" owner="Browser">
+<msg time="2025-05-08T14:04:51.700340" level="INFO">JavaScript executed successfully.</msg>
+<arg>css=#sleepRange</arg>
+<arg>(elem) =&gt; { elem.value = 5; elem.dispatchEvent(new Event('input', { bubbles: true })); }</arg>
+<tag>Getter</tag>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Executes given javascript on the selected element(s) or on page.</doc>
+<status status="PASS" start="2025-05-08T14:04:51.656422" elapsed="0.044249"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:52.202820" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:51.701343" elapsed="0.501786"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:52.205709" level="INFO">Types the text 'Nukuinko?' in the given field.</msg>
+<arg>css=textarea[placeholder="Lisätietoa..."]</arg>
+<arg>${sleep_detail}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:52.204171" elapsed="0.448246"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:53.154351" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:52.653119" elapsed="0.501491"/>
+</kw>
+<kw name="Evaluate JavaScript" owner="Browser">
+<msg time="2025-05-08T14:04:53.195735" level="INFO">JavaScript executed successfully.</msg>
+<arg>css=#moodRange</arg>
+<arg>(elem) =&gt; { elem.value = 4; elem.dispatchEvent(new Event('input', { bubbles: true })); elem.dispatchEvent(new Event('change', { bubbles: true })); }</arg>
+<tag>Getter</tag>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Executes given javascript on the selected element(s) or on page.</doc>
+<status status="PASS" start="2025-05-08T14:04:53.155377" elapsed="0.040795"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:53.697604" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:53.196711" elapsed="0.501182"/>
+</kw>
+<kw name="Type Text" owner="Browser">
+<msg time="2025-05-08T14:04:53.700027" level="INFO">Types the text 'Sain ostettua.' in the given field.</msg>
+<arg>css=textarea[placeholder="Tähän voit kirjoittaa muita muistiinpanoja: "]</arg>
+<arg>${more_detail}</arg>
+<arg>delay=30ms</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Types the given ``txt`` into the text field found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:53.698632" elapsed="0.620722"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:54.820771" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:54.319858" elapsed="0.501080"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:54.822579" level="INFO">Clicks the element 'id=submit-button'.</msg>
+<arg>id=submit-button</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:54.821588" elapsed="0.069623"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:04:59.897197" level="INFO">Slept 5 seconds.</msg>
+<arg>5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:54.895998" elapsed="5.001403"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:04:59.898808" level="INFO">Clicks the element 'id=btn7days'.</msg>
+<arg>id=btn7days</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:04:59.897905" elapsed="0.044173"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:05:02.944003" level="INFO">Slept 3 seconds.</msg>
+<arg>3s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:04:59.942898" elapsed="3.001400"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:05:02.946880" level="INFO">Clicks the element 'id=btn30days'.</msg>
+<arg>id=btn30days</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:05:02.945562" elapsed="0.064601"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:05:06.012719" level="INFO">Slept 3 seconds.</msg>
+<arg>3s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:05:03.010974" elapsed="3.002351"/>
+</kw>
+<kw name="Click" owner="Browser">
+<msg time="2025-05-08T14:05:06.015689" level="INFO">Clicks the element 'id=closing-button'.</msg>
+<arg>id=closing-button</arg>
+<tag>PageContent</tag>
+<tag>Setter</tag>
+<doc>Simulates mouse click on the element found by ``selector``.</doc>
+<status status="PASS" start="2025-05-08T14:05:06.014343" elapsed="0.063348"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-08T14:05:09.080353" level="INFO">Slept 3 seconds.</msg>
+<arg>3s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-08T14:05:06.078407" elapsed="3.002236"/>
+</kw>
+<kw name="Close Browser" owner="Browser">
+<msg time="2025-05-08T14:05:09.861416" level="INFO">Closed browser</msg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-05-08T14:05:09.081972" elapsed="0.779801"/>
+</kw>
+<status status="PASS" start="2025-05-08T14:04:49.024288" elapsed="20.838476"/>
+</test>
+<status status="PASS" start="2025-05-08T14:04:37.653058" elapsed="32.264972"/>
+</suite>
+<status status="FAIL" start="2025-05-08T14:03:54.219692" elapsed="75.747687"/>
 </suite>
 <statistics>
 <total>
-<stat pass="2" fail="0" skip="0">All Tests</stat>
+<stat pass="8" fail="1" skip="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat name="Tests" id="s1" pass="2" fail="0" skip="0">Tests</stat>
-<stat name="Login Logout Testi" id="s1-s1" pass="2" fail="0" skip="0">Tests.Login Logout Testi</stat>
+<stat name="Tests" id="s1" pass="8" fail="1" skip="0">Tests</stat>
+<stat name="esitietojentäyttö Käyttäjänpoisto" id="s1-s1" pass="3" fail="1" skip="0">Tests.esitietojentäyttö Käyttäjänpoisto</stat>
+<stat name="Login Logout Testi" id="s1-s2" pass="2" fail="0" skip="0">Tests.Login Logout Testi</stat>
+<stat name="Päiväkirjamerkkaus" id="s1-s3" pass="3" fail="0" skip="0">Tests.Päiväkirjamerkkaus</stat>
 </suite>
 </statistics>
 <errors>

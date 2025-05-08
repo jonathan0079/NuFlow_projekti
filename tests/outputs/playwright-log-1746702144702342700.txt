@@ -1,0 +1,108 @@
+{"level":30,"time":"2025-05-08T11:02:26.896Z","pid":58328,"hostname":"IdeapadAtte","msg":"Listening on 127.0.0.1:59030"}
+(node:58328) DeprecationWarning: Calling start() is no longer necessary. It can be safely omitted.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+{"level":30,"time":"2025-05-08T11:02:27.607Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method newBrowser"}
+{"level":30,"time":"2025-05-08T11:02:28.512Z","pid":58328,"hostname":"IdeapadAtte","msg":"Adding browser to stack: chromium, version: 136.0.7103.25"}
+{"level":30,"time":"2025-05-08T11:02:28.514Z","pid":58328,"hostname":"IdeapadAtte","msg":"Adding 0 contexts to browser"}
+{"level":30,"time":"2025-05-08T11:02:28.514Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method newBrowser"}
+{"level":30,"time":"2025-05-08T11:02:28.531Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method newPage"}
+{"level":30,"time":"2025-05-08T11:02:28.532Z","pid":58328,"hostname":"IdeapadAtte","msg":"currentBrowser: [object Object]"}
+{"level":30,"time":"2025-05-08T11:02:28.571Z","pid":58328,"hostname":"IdeapadAtte","msg":"Changed active context"}
+{"level":30,"time":"2025-05-08T11:02:29.050Z","pid":58328,"hostname":"IdeapadAtte","msg":"Video path: undefined"}
+{"level":30,"time":"2025-05-08T11:02:29.051Z","pid":58328,"hostname":"IdeapadAtte","msg":"Changed active page"}
+{"level":30,"time":"2025-05-08T11:02:29.630Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method newPage"}
+{"level":30,"time":"2025-05-08T11:02:31.642Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method click"}
+{"level":30,"time":"2025-05-08T11:02:31.642Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with id=login-button in page."}
+{"level":30,"time":"2025-05-08T11:02:31.807Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method click"}
+{"level":30,"time":"2025-05-08T11:02:31.816Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:31.816Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with id=login-username in page."}
+{"level":30,"time":"2025-05-08T11:02:32.761Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:32.767Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:32.767Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with id=login-password in page."}
+{"level":30,"time":"2025-05-08T11:02:33.297Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:33.304Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method click"}
+{"level":30,"time":"2025-05-08T11:02:33.305Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with css=form#login-form button[class=\"form-button\"] in page."}
+{"level":30,"time":"2025-05-08T11:02:33.364Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method click"}
+{"level":30,"time":"2025-05-08T11:02:33.380Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-05-08T11:02:33.382Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with id=logoutButton in page."}
+{"level":30,"time":"2025-05-08T11:02:35.266Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-05-08T11:02:35.290Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-05-08T11:02:35.290Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with id=infoForm in page."}
+{"level":30,"time":"2025-05-08T11:02:35.299Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-05-08T11:02:35.308Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:35.309Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with textarea[name=\"drug_use\"] in page."}
+{"level":30,"time":"2025-05-08T11:02:37.089Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:37.200Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:37.200Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with textarea[name=\"diseases_medications\"] in page."}
+{"level":30,"time":"2025-05-08T11:02:37.801Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:37.910Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:37.910Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with textarea[name=\"sleep\"] in page."}
+{"level":30,"time":"2025-05-08T11:02:38.269Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:38.378Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:38.379Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with textarea[name=\"self_assessment\"] in page."}
+{"level":30,"time":"2025-05-08T11:02:38.895Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:39.003Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method click"}
+{"level":30,"time":"2025-05-08T11:02:39.004Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with id=submit-button in page."}
+{"level":30,"time":"2025-05-08T11:02:39.088Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method click"}
+{"level":30,"time":"2025-05-08T11:02:39.099Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-05-08T11:02:39.100Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with id=logoutButton in page."}
+{"level":30,"time":"2025-05-08T11:02:39.105Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-05-08T11:02:40.622Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method click"}
+{"level":30,"time":"2025-05-08T11:02:40.622Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with id=openDiaryBtn in page."}
+{"level":30,"time":"2025-05-08T11:02:42.116Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method click"}
+{"level":30,"time":"2025-05-08T11:02:42.625Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method click"}
+{"level":30,"time":"2025-05-08T11:02:42.626Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with css=label:has(input[value=\"evening\"]) in page."}
+{"level":30,"time":"2025-05-08T11:02:42.690Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method click"}
+{"level":30,"time":"2025-05-08T11:02:43.200Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method evaluateJavascript"}
+{"level":30,"time":"2025-05-08T11:02:43.201Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with css=#sleepRange in page."}
+{"level":30,"time":"2025-05-08T11:02:43.244Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method evaluateJavascript"}
+{"level":30,"time":"2025-05-08T11:02:43.755Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:43.755Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with css=textarea[placeholder=\"Lisätietoa...\"] in page."}
+{"level":30,"time":"2025-05-08T11:02:44.213Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:44.723Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method evaluateJavascript"}
+{"level":30,"time":"2025-05-08T11:02:44.724Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with css=#moodRange in page."}
+{"level":30,"time":"2025-05-08T11:02:44.743Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method evaluateJavascript"}
+{"level":30,"time":"2025-05-08T11:02:45.254Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:45.254Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with css=textarea[placeholder=\"Tähän voit kirjoittaa muita muistiinpanoja: \"] in page."}
+{"level":30,"time":"2025-05-08T11:02:45.909Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method typeText"}
+{"level":30,"time":"2025-05-08T11:02:46.419Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method click"}
+{"level":30,"time":"2025-05-08T11:02:46.419Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with id=submit-button in page."}
+{"level":30,"time":"2025-05-08T11:02:46.475Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method click"}
+{"level":30,"time":"2025-05-08T11:02:51.488Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method click"}
+{"level":30,"time":"2025-05-08T11:02:51.488Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with id=btn7days in page."}
+{"level":30,"time":"2025-05-08T11:02:51.537Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method click"}
+{"level":30,"time":"2025-05-08T11:02:54.546Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method click"}
+{"level":30,"time":"2025-05-08T11:02:54.547Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with id=btn30days in page."}
+{"level":30,"time":"2025-05-08T11:02:54.598Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method click"}
+{"level":30,"time":"2025-05-08T11:02:57.608Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method click"}
+{"level":30,"time":"2025-05-08T11:02:57.608Z","pid":58328,"hostname":"IdeapadAtte","msg":"Strict mode is enabled, find Locator with id=closing-button in page."}
+{"level":30,"time":"2025-05-08T11:02:57.643Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method click"}
+{"level":30,"time":"2025-05-08T11:03:00.653Z","pid":58328,"hostname":"IdeapadAtte","msg":"Start of node method closeBrowser"}
+{"level":30,"time":"2025-05-08T11:03:00.680Z","pid":58328,"hostname":"IdeapadAtte","msg":"Removed page=af702013-ee7f-4265-b052-c20e69a9859f from context=b6b86db3-8b98-42b3-86b1-0ac6a7036ea1 page stack"}
+{"level":30,"time":"2025-05-08T11:03:01.146Z","pid":58328,"hostname":"IdeapadAtte","msg":"End of node method closeBrowser"}
+================= Original suppressed error =================
+Error: Browser has been closed.
+    at PlaywrightState.getActiveBrowser (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\index.js:12226:15)
+    at PlaywrightServer.getActiveBrowser (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\index.js:13122:59)
+    at PlaywrightServer.setTimeout (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\index.js:13370:57)
+    at Object.onReceiveHalfClose (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\node_modules\@grpc\grpc-js\build\src\server.js:1461:25)
+    at BaseServerInterceptingCall.maybePushNextMessage (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\node_modules\@grpc\grpc-js\build\src\server-interceptors.js:575:31)
+    at BaseServerInterceptingCall.handleEndEvent (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\node_modules\@grpc\grpc-js\build\src\server-interceptors.js:615:14)
+    at ServerHttp2Stream.<anonymous> (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\node_modules\@grpc\grpc-js\build\src\server-interceptors.js:382:18)
+    at ServerHttp2Stream.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+=============================================================
+================= Original suppressed error =================
+Error: Browser has been closed.
+    at PlaywrightState.getActiveBrowser (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\index.js:12226:15)
+    at PlaywrightServer.getActiveBrowser (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\index.js:13122:59)
+    at PlaywrightServer.setTimeout (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\index.js:13370:57)
+    at Object.onReceiveHalfClose (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\node_modules\@grpc\grpc-js\build\src\server.js:1461:25)
+    at BaseServerInterceptingCall.maybePushNextMessage (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\node_modules\@grpc\grpc-js\build\src\server-interceptors.js:575:31)
+    at BaseServerInterceptingCall.handleEndEvent (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\node_modules\@grpc\grpc-js\build\src\server-interceptors.js:615:14)
+    at ServerHttp2Stream.<anonymous> (C:\Users\attek\NuFlow\NuFlow_projekti\.venv\Lib\site-packages\Browser\wrapper\node_modules\@grpc\grpc-js\build\src\server-interceptors.js:382:18)
+    at ServerHttp2Stream.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+=============================================================
