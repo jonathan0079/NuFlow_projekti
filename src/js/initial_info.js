@@ -1,6 +1,6 @@
 import './auth.js';
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Health metrics form handler loaded');
+  // console.log('Health metrics form handler loaded');
   
   const infoForm = document.getElementById('infoForm');
   
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       
       const user = JSON.parse(userData);
-      console.log('User data from storage:', user);
+      // console.log('User data from storage:', user);
       
       // Korjattu tapa hakea käyttäjän ID - huomaa että käytämme numeroa!
       let userId = null;
@@ -50,10 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Käytetään kiinteää käyttäjä-ID:tä (1) tilapäisesti testaukseen
         userId = 1;
         
-        console.log('Using temporary user ID for testing:', userId);
+        // console.log('Using temporary user ID for testing:', userId);
       }
       
-      console.log('Final user ID to be sent:', userId);
+      // console.log('Final user ID to be sent:', userId);
       
       const token = user.token;
       if (!token) {
@@ -88,10 +88,10 @@ document.addEventListener('DOMContentLoaded', function() {
         self_assessment: selfAssessment
       };
       
-      console.log('Sending health data:', healthData);
+      // console.log('Sending health data:', healthData);
       
       // 5. Lähetetään data backendiin
-      const API_URL = 'http://localhost:5000/api';
+      const API_URL = 'https://nuflow-app.northeurope.cloudapp.azure.com/api';
       
       const response = await fetch(`${API_URL}/metrics/insert`, {
         method: 'POST',
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         body: JSON.stringify(healthData)
       });
       
-      console.log('Response status:', response.status);
+      // console.log('Response status:', response.status);
       
       if (response.ok) {
         // 6. Merkitään terveystiedot tallennetuiksi

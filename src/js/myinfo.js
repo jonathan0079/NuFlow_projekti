@@ -1,21 +1,21 @@
 
 import './auth.js';
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://nuflow-app.northeurope.cloudapp.azure.com/api';
 
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('myinfo.js loaded');
+  // console.log('myinfo.js loaded');
   
   // Tarkistetaan, onko käyttäjä kirjautunut sisään
   const userJson = localStorage.getItem('user');
   if (!userJson) {
-    console.log('User not logged in, redirecting to index.html');
+    // console.log('User not logged in, redirecting to index.html');
     window.location.href = 'index.html';
     return;
   }
   
   // Haetaan käyttäjän tiedot
   const user = JSON.parse(userJson);
-  console.log('User data from localStorage:', user);
+  // console.log('User data from localStorage:', user);
   
   // Täytetään lomakkeen tiedot Kubios-profiilista, jos ne ovat saatavilla
   populateFormWithKubiosData(user);
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
   
-  console.log('User ID:', userId);
+  // console.log('User ID:', userId);
   
   // Haetaan käyttäjän terveysmetriikat
   fetchHealthMetrics(userId);
@@ -66,7 +66,7 @@ function populateFormWithKubiosData(userData) {
   // Tarkistetaan onko Kubios-profiilin tiedot saatavilla
   if (userData && userData.user) {
     const kubiosUser = userData.user;
-    console.log('Kubios user data:', kubiosUser);
+    // console.log('Kubios user data:', kubiosUser);
     
     // Täytetään perustiedot, jos ne löytyvät
     const firstNameField = document.getElementById('first_name');
@@ -129,7 +129,7 @@ function populateFormWithKubiosData(userData) {
 // Hakee käyttäjän terveysmetriikat API:sta
 async function fetchHealthMetrics(userId) {
   try {
-    console.log('Fetching health metrics for user ID:', userId);
+    // console.log('Fetching health metrics for user ID:', userId);
     
     const authToken = getAuthToken();
     if (!authToken) {
@@ -147,7 +147,7 @@ async function fetchHealthMetrics(userId) {
     
     // Jos 404, kokeillaan /metrics/user/:id endpoint
     if (response.status === 404) {
-      console.log('First endpoint returned 404, trying alternate endpoint');
+      // console.log('First endpoint returned 404, trying alternate endpoint');
       response = await fetch(`${API_URL}/metrics/user/${userId}`, {
         method: 'GET',
         headers: {
@@ -162,7 +162,7 @@ async function fetchHealthMetrics(userId) {
     }
     
     const data = await response.json();
-    console.log('Health metrics data:', data);
+    // console.log('Health metrics data:', data);
     
     // Näytetään terveysmetriikat lomakkeessa
     if (data && data.length > 0) {
@@ -214,7 +214,7 @@ async function handleSubmit(event) {
       self_assessment: document.getElementById('self_assessment').value
     };
     
-    console.log('Submitting metric data:', metricData);
+    // console.log('Submitting metric data:', metricData);
     
     const authToken = getAuthToken();
     if (!authToken) {
@@ -350,7 +350,7 @@ async function updateKubiosProfile() {
     
     // Vain jos on päivitettävää, lähetetään pyyntö
     if (Object.keys(updateData).length > 0) {
-      console.log('Updating Kubios profile:', updateData);
+      // console.log('Updating Kubios profile:', updateData);
       
       // Käytä uutta userinfo-endpointia
       const response = await fetch(`${API_URL}/kubios/userinfo`, {
@@ -363,7 +363,7 @@ async function updateKubiosProfile() {
       });
       
       if (response.ok) {
-        console.log('Kubios profile updated successfully');
+        // console.log('Kubios profile updated successfully');
         
         // Päivitä käyttäjän tiedot localStoragessa
         const updatedUser = { ...user };

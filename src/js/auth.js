@@ -1,9 +1,10 @@
-const API_URL = 'http://localhost:5000/api';
+import './opastus.js';
+const API_URL = 'https://nuflow-app.northeurope.cloudapp.azure.com/api';
 
 // Odottaa, että koko sivu on ladattu
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Auth client script ladattu');
-  console.log('API URL on asetettu:', API_URL);
+  //console.log('Auth client script ladattu');
+  //console.log('API URL on asetettu:', API_URL);
   
 // Etsii tarvittavat elementit DOM:sta
   const loginButton = document.getElementById('login-button');
@@ -22,9 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Näyttää login-modal ikkunan, kun login-nappia painetaan
   if (loginButton) {
-    console.log('Login-nappi löytyi');
+    //console.log('Login-nappi löytyi');
     loginButton.addEventListener('click', () => {
-      console.log('Login-nappia painettu');
+      //console.log('Login-nappia painettu');
       modal.style.display = 'block';
       showLoginForm();
     });
@@ -35,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Sulkee login-modal ikkunan, kun sulje-nappia painetaan
   if (closeModal) {
     closeModal.addEventListener('click', () => {
-      console.log('Sulje-nappia painettu');
+      //console.log('Sulje-nappia painettu');
       modal.style.display = 'none';
       clearForms();
     });
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Sulkee login-modal ikkunan, kun klikataan ulkopuolelle
   window.addEventListener('click', (e) => {
     if (e.target === modal) {
-      console.log('Klikattu modalin ulkopuolelle, suljetaan');
+      //console.log('Klikattu modalin ulkopuolelle, suljetaan');
       modal.style.display = 'none';
       clearForms();
     }
@@ -69,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Näyttää login-lomakkeen
   function showLoginForm() {
-    console.log('Näytetään login-lomake');
+    //console.log('Näytetään login-lomake');
     loginTab.classList.add('active');
     loginForm.classList.add('active');
     clearErrors();
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Tyhjentää lomakkeet
   function clearForms() {
-    console.log('Tyhjennetään lomakkeet');
+    //console.log('Tyhjennetään lomakkeet');
     loginForm.reset();
     clearErrors();
   }
@@ -90,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Käsittelee login-lomakkeen lähettämistä
 async function handleLogin(e) {
   e.preventDefault();
-  console.log('Login-lomake lähetetty');
+  //console.log('Login-lomake lähetetty');
   
   const username = document.getElementById('login-username').value;
   const password = document.getElementById('login-password').value;
@@ -100,7 +101,7 @@ async function handleLogin(e) {
     return;
   }
   
-  console.log('Yritetään kirjautua käyttäjänimellä:', username);
+  //console.log('Yritetään kirjautua käyttäjänimellä:', username);
   
   const submitButton = loginForm.querySelector('button[type="submit"]');
   const originalButtonText = submitButton.textContent;
@@ -108,7 +109,7 @@ async function handleLogin(e) {
   submitButton.disabled = true;
   
   const loginUrl = `${API_URL}/auth/login`;
-  console.log('Login-päätepiste (täysi URL):', loginUrl);
+  //console.log('Login-päätepiste (täysi URL):', loginUrl);
   
   try {
     const response = await secureFetch(loginUrl, {
@@ -158,7 +159,7 @@ async function handleLogin(e) {
 // Käsittelee uloskirjautumista
   function handleLogout(e) {
     e.preventDefault();
-    console.log('Logging out user');
+    //console.log('Logging out user');
     localStorage.removeItem('user');
     setTimeout(() => {
       window.location.href = 'index.html';
@@ -195,7 +196,7 @@ async function handleLogin(e) {
 
 // Tarkistaa käyttäjän kirjautumistilan
 function checkAuthStatus() {
-  console.log('Checking authentication status');
+  //console.log('Checking authentication status');
 
   let user = null;
   try {
@@ -215,7 +216,7 @@ function checkAuthStatus() {
       return;
     }
 
-    console.log('User is logged in:', user.user.given_name);
+    //console.log('User is logged in:', user.user.given_name);
     updateAuthUI(true);
     
     // Tarkista ja ohjaa vain jos ei olla initial_info sivulla
@@ -238,7 +239,7 @@ function checkAuthStatus() {
 // Päivittää käyttöliittymän kirjautumisen tilan mukaan
 
   function updateAuthUI(isLoggedIn) {
-    console.log('Updating UI for authentication status:', isLoggedIn);
+    //console.log('Updating UI for authentication status:', isLoggedIn);
     if (isLoggedIn) {
 // Hakee käyttäjän tiedot
       const user = JSON.parse(localStorage.getItem('user'));
@@ -246,7 +247,7 @@ function checkAuthStatus() {
 // Piilottaa login napin
       if (loginButton) {
         loginButton.style.display = 'none';
-        console.log('Login button hidden');
+        //console.log('Login button hidden');
       }
       
 // Näyttää käyttäjävalikon
@@ -255,7 +256,7 @@ function checkAuthStatus() {
         if (userGreeting) {
           userGreeting.textContent = `Hei, ${user.user.given_name}!`;
         }
-        console.log('User menu displayed');
+        //console.log('User menu displayed');
       } else {
         console.warn('User menu trigger not found');
       }
@@ -264,7 +265,7 @@ function checkAuthStatus() {
       const diaryNavLink = document.getElementById('diary-nav-link');
       if (diaryNavLink) {
         diaryNavLink.style.display = 'inline';
-        console.log('Diary nav link displayed');
+        //console.log('Diary nav link displayed');
       } else {
         console.warn('Diary nav link not found');
       }
@@ -273,33 +274,33 @@ function checkAuthStatus() {
 // Näyttää login napin
       if (loginButton) {
         loginButton.style.display = 'inline-block';
-        console.log('Login button displayed');
+        //console.log('Login button displayed');
       }
 
 // Piilottaa logout napin
       if (logoutButton) {
         logoutButton.style.display = 'none';
-        console.log('Logout button hidden');
+        //console.log('Logout button hidden');
       }
       
 // Piilottaa käyttäjävalikon
       if (userMenuTrigger) {
         userMenuTrigger.style.display = 'none';
-        console.log('User menu hidden');
+        //console.log('User menu hidden');
       }
       
 // Piilottaa päiväkirja linkin navigaatiossa
       const diaryNavLink = document.getElementById('diary-nav-link');
       if (diaryNavLink) {
         diaryNavLink.style.display = 'none';
-        console.log('Diary nav link hidden');
+        //console.log('Diary nav link hidden');
       }
       
 // Piilottaa "Omat tiedot" -linkin
       const myInfoNavLink = document.querySelector('a[href="/myinfo.html"]');
       if (myInfoNavLink) {
         myInfoNavLink.parentElement.style.display = 'none';
-        console.log('MyInfo nav link hidden');
+        //console.log('MyInfo nav link hidden');
       }
     }
   }

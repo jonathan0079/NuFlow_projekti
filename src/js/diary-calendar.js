@@ -229,7 +229,7 @@ function updateCalendar(year, month) {
  */
 async function fetchMonthHrvData(token) {
     try {
-        const response = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
+        const response = await fetch('https://nuflow-app.northeurope.cloudapp.azure.com/api/kubios/hrv/last-30-measurements', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -240,7 +240,7 @@ async function fetchMonthHrvData(token) {
         }
         
         const data = await response.json();
-        console.log('HRV-arvot haettu:', data);
+        //console.log('HRV-arvot haettu:', data);
         
         // Tallennetaan HRV-arvot päiväkohtaisesti
         window.hrvData = {};
@@ -268,7 +268,7 @@ async function fetchMonthHrvData(token) {
             };
         });
         
-        console.log('HRV-data käsitelty:', window.hrvData);
+        //console.log('HRV-data käsitelty:', window.hrvData);
     } catch (error) {
         console.error('Virhe HRV-datan haussa:', error);
         window.hrvData = {}; // Varmista, että hrvData on aina olemassa
@@ -360,7 +360,7 @@ async function fetchUserEntries() {
         }
         
         // Haetaan käyttäjän merkinnät
-        const response = await fetch(`http://localhost:5000/api/entries/user`, {
+        const response = await fetch(`https://nuflow-app.northeurope.cloudapp.azure.com/api/entries/user`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -371,7 +371,7 @@ async function fetchUserEntries() {
         }
         
         const entries = await response.json();
-        console.log('Käyttäjän merkinnät haettu:', entries);
+        //console.log('Käyttäjän merkinnät haettu:', entries);
         
         // Tallennetaan merkinnät globaaliin muuttujaan, jotta ne ovat saatavilla kalenterille
         window.userEntries = entries || [];
@@ -462,7 +462,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Erillinen funktio tapahtuman käsittelylle
     function processHrvDateEvent(event) {
-        console.log("Käsitellään päivämäärävalinta:", event.detail.date);
+        //console.log("Käsitellään päivämäärävalinta:", event.detail.date);
         const { date, hrvData } = event.detail;
         
         // Päivitä globaalit muuttujat vain kerran
@@ -475,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const reportButton = document.getElementById('generateHrvReportBtn');
             if (reportButton && reportButton.classList.contains('hidden')) {
                 reportButton.classList.remove('hidden');
-                console.log("HRV-raporttipainike näytetään - poikkeava arvo");
+                //console.log("HRV-raporttipainike näytetään - poikkeava arvo");
             }
         } else {
             window.currentDayHasAbnormalHrv = false;
@@ -483,7 +483,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const reportButton = document.getElementById('generateHrvReportBtn');
             if (reportButton && !reportButton.classList.contains('hidden')) {
                 reportButton.classList.add('hidden');
-                console.log("HRV-raporttipainike piilotetaan - ei poikkeavaa arvoa");
+                //console.log("HRV-raporttipainike piilotetaan - ei poikkeavaa arvoa");
             }
         }
     }

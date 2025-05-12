@@ -83,8 +83,8 @@ async function fetchHrvDataForReport(days) {
       throw new Error('User token not found');
     }
 
-    const url = `http://localhost:5000/api/kubios/hrv/last-${days > 7 ? '30' : '7'}-measurements`;
-    console.log(`Fetching HRV data from: ${url}`);
+    const url = `https://nuflow-app.northeurope.cloudapp.azure.com/api/kubios/hrv/last-${days > 7 ? '30' : '7'}-measurements`;
+    // console.log(`Fetching HRV data from: ${url}`);
     
     const response = await fetch(url, {
       headers: {
@@ -97,7 +97,7 @@ async function fetchHrvDataForReport(days) {
     }
 
     const data = await response.json();
-    console.log(`Fetched ${days} days data:`, data);
+    // console.log(`Fetched ${days} days data:`, data);
     return data;
   } catch (error) {
     console.error(`Error fetching ${days} days data:`, error);
@@ -130,7 +130,7 @@ function getFormData() {
     activity: activityNotes
   };
   
-  console.log("GetFormData returns:", data);
+  // console.log("GetFormData returns:", data);
   return data;
 }
 
@@ -140,28 +140,28 @@ let currentSelectedDate = null;
 
 // Lisää tapahtumakuuntelijat kun dokumentti on ladattu
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("HRV-report script loaded");
+  // console.log("HRV-report script loaded");
   
   const reportButton = document.getElementById('generateHrvReportBtn');
   
   if (reportButton) {
-    console.log("PDF report button found");
+    // console.log("PDF report button found");
     reportButton.addEventListener('click', generateHrvPdfReport);
   }
   
   window.addEventListener('selectedDateChanged', function(event) {
-    console.log("Date selection event received:", event.detail);
+    // console.log("Date selection event received:", event.detail);
     const { date, hrvData } = event.detail;
     currentSelectedDate = date;
     
     if (hrvData && (hrvData.isAbnormal || hrvData.rmssdAbnormal || hrvData.sdnnAbnormal)) {
       currentDayHasAbnormalHrv = true;
       showReportButton();
-      console.log("Showing report button - abnormal HRV found");
+      // console.log("Showing report button - abnormal HRV found");
     } else {
       currentDayHasAbnormalHrv = false;
       hideReportButton();
-      console.log("Hiding report button - no abnormal HRV");
+      // console.log("Hiding report button - no abnormal HRV");
     }
   });
 });
@@ -182,7 +182,7 @@ function hideReportButton() {
 
 // Päätoiminto PDF-raportin luontiin
 async function generateHrvPdfReport() {
-  console.log("PDF generation started");
+  // console.log("PDF generation started");
   
   // Käytä aina nykyistä valittua päivää, ei kuluvan päivän päivämäärää
   const selectedDate = currentSelectedDate || window.currentSelectedDate;
@@ -198,7 +198,7 @@ async function generateHrvPdfReport() {
 
   try {
     const formattedSelectedDate = formatDateToYYYYMMDD(selectedDate);
-    console.log("Generating PDF for date:", formattedSelectedDate);
+    // console.log("Generating PDF for date:", formattedSelectedDate);
     
     showMessage('Luodaan PDF-raporttia...', 'info');
     
@@ -286,11 +286,11 @@ async function generateHrvPdfReport() {
       const savedEntryData = localStorage.getItem('lastEntryData');
       if (savedEntryData) {
         latestEntry = JSON.parse(savedEntryData);
-        console.log("Using saved form data from localStorage:", latestEntry);
+        // console.log("Using saved form data from localStorage:", latestEntry);
         localStorage.removeItem('lastEntryData');
       } else {
         latestEntry = getFormData();
-        console.log("Using form data directly:", latestEntry);
+        // console.log("Using form data directly:", latestEntry);
       }
     } else {
       // Etsi päiväkirjamerkintä kalenterielementistä valitulle päivälle
@@ -301,7 +301,7 @@ async function generateHrvPdfReport() {
           if (entriesFromCalendar && entriesFromCalendar.length > 0) {
             // Käytä viimeisintä merkintää päivälle
             latestEntry = entriesFromCalendar[entriesFromCalendar.length - 1];
-            console.log("Found entry from calendar element:", latestEntry);
+            // console.log("Found entry from calendar element:", latestEntry);
           }
         } catch (e) {
           console.error("Error parsing entries from calendar:", e);
@@ -319,7 +319,7 @@ async function generateHrvPdfReport() {
         if (dayEntries.length > 0) {
           // Käytä viimeisintä merkintää päivälle
           latestEntry = dayEntries[dayEntries.length - 1];
-          console.log("Found entry in userEntries:", latestEntry);
+          // console.log("Found entry in userEntries:", latestEntry);
         }
       }
     }
@@ -403,7 +403,7 @@ async function generateHrvPdfReport() {
       
       startY += 10;
     } else {
-      console.log("No entries found for the selected date");
+      // console.log("No entries found for the selected date");
     }
     
     // lisää yksinkertaiset kaaviot raporttiin
@@ -454,13 +454,13 @@ async function addSimpleChartsToReport(doc, startY) {
     
     // Jos ei löydy dataa globaaleista muuttujista, hae se API:sta
     if ((!rawData7.length && !rawData30.length)) {
-      console.log("No data available in variables, fetching from API...");
+      // console.log("No data available in variables, fetching from API...");
       rawData7 = await fetchHrvDataForReport(7);
       rawData30 = await fetchHrvDataForReport(30);
     }
     
     if (!rawData7.length && !rawData30.length) {
-      console.log("No HRV data available for charts");
+      // console.log("No HRV data available for charts");
       return;
     }
     

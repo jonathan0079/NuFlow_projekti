@@ -25,7 +25,7 @@ const HRV_THRESHOLDS = {
 document.addEventListener('DOMContentLoaded', () => {
   const token = getAuthToken(); // Haetaan käyttäjän token (auth.js tiedostosta)
 
-  console.log("Haettu token:", token);
+  //console.log("Haettu token:", token);
 
   // Jos token puuttuu, ohjataan takaisin kirjautumissivulle
   if (!token) {
@@ -130,7 +130,7 @@ function setupModalFunctionality() {
 
       try {
         const user = JSON.parse(localStorage.getItem('user'));
-        const res = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
+        const res = await fetch('https://nuflow-app.northeurope.cloudapp.azure.com/api/kubios/hrv/last-30-measurements', {
           headers: {
             'Authorization': `Bearer ${user.token}`
           }
@@ -192,7 +192,7 @@ function setupModalFunctionality() {
     chartOverlay.addEventListener('click', () => {
       chartModal.style.display = 'none';
       chartOverlay.style.display = 'none';
-      console.log('Chart modaali suljettu klikkaamalla taustaa');
+      //console.log('Chart modaali suljettu klikkaamalla taustaa');
     });
   }
   
@@ -200,7 +200,7 @@ function setupModalFunctionality() {
     diaryOverlay.addEventListener('click', () => {
       diaryModal.style.display = 'none';
       diaryOverlay.style.display = 'none';
-      console.log('Diary modaali suljettu klikkaamalla taustaa');
+      //console.log('Diary modaali suljettu klikkaamalla taustaa');
     });
   }
 
@@ -240,7 +240,7 @@ function setupModalFunctionality() {
       
       try {
         const user = JSON.parse(localStorage.getItem('user'));
-        const res = await fetch('http://localhost:5000/api/kubios/hrv/last-7-measurements', {
+        const res = await fetch('https://nuflow-app.northeurope.cloudapp.azure.com/api/kubios/hrv/last-7-measurements', {
           headers: {
             'Authorization': `Bearer ${user.token}`
           }
@@ -251,7 +251,7 @@ function setupModalFunctionality() {
         }
         
         fullRawData = await res.json();
-        console.log("7 päivän data:", fullRawData);
+        //console.log("7 päivän data:", fullRawData);
         
         if (!fullRawData || fullRawData.length === 0) {
           console.warn('No HRV data available for last 7 days');
@@ -287,7 +287,7 @@ function setupModalFunctionality() {
       
       try {
         const user = JSON.parse(localStorage.getItem('user'));
-        const res = await fetch('http://localhost:5000/api/kubios/hrv/last-30-measurements', {
+        const res = await fetch('https://nuflow-app.northeurope.cloudapp.azure.com/api/kubios/hrv/last-30-measurements', {
           headers: {
             'Authorization': `Bearer ${user.token}`
           }
@@ -298,7 +298,7 @@ function setupModalFunctionality() {
         }
         
         fullRawData = await res.json();
-        console.log("30 päivän data:", fullRawData);
+        //console.log("30 päivän data:", fullRawData);
         
         if (!fullRawData || fullRawData.length === 0) {
           console.warn('No HRV data available for last 30 days');
@@ -356,7 +356,7 @@ function processHrvDataForCalendar(hrvData) {
     console.error('Virhe käyttäjän iän laskemisessa:', e);
   }
   
-  console.log('Käytetään ikäryhmää:', ageGroup);
+  //console.log('Käytetään ikäryhmää:', ageGroup);
   
   // Käytetään oikeita raja-arvoja ikäryhmän mukaan
   const thresholds = HRV_THRESHOLDS[ageGroup];
@@ -397,11 +397,11 @@ function processHrvDataForCalendar(hrvData) {
       // Lisätään data-attribuutti arvoja varten
       dayElement.dataset.hrv = JSON.stringify(window.hrvData[dateStr]);
       
-      console.log(`Merkitty päivä ${dateStr} poikkeavaksi HRV-arvoksi. RMSSD: ${item.rmssd}, SDNN: ${item.sdnn}`);
+      //console.log(`Merkitty päivä ${dateStr} poikkeavaksi HRV-arvoksi. RMSSD: ${item.rmssd}, SDNN: ${item.sdnn}`);
     }
   });
   
-  console.log('HRV-data käsitelty kalenteria varten:', window.hrvData);
+  //console.log('HRV-data käsitelty kalenteria varten:', window.hrvData);
 }
 
 // Luo modalille overlay-elementin
@@ -455,7 +455,7 @@ function initDiary(token) {
       };
 
       localStorage.setItem('lastEntryData', JSON.stringify(entryData)); // Tallennetaan viimeisin merkintä local storageen
-      console.log("Lähetetään lomake:", entryData); // Tarkistus konsoliin
+      //console.log("Lähetetään lomake:", entryData); // Tarkistus konsoliin
 
       //  Lähetetään tiedot backendille
       try {
@@ -627,7 +627,7 @@ function populateDiaryForm(entry) {
 //  HRV-arvojen nouto backendiltä ja näyttö sivulla
 async function fetchAndDisplayHrvData(token) {
   const staticDate = new Date().toISOString().split('T')[0]; // Tämän hetkinen päivämäärä
-  console.log("📡 Haetaan HRV päivälle:", staticDate);
+  //console.log("📡 Haetaan HRV päivälle:", staticDate);
 
   try {
     const response = await fetch(`http://localho:5000/api/kubios/hrv/by-date/${staticDate}`, {
@@ -649,7 +649,7 @@ async function fetchAndDisplayHrvData(token) {
     }
 
     const data = await response.json(); // Luetaan vastaus
-    console.log(data); // Tarkista konsolista, että data on oikein
+    //console.log(data); // Tarkista konsolista, että data on oikein
 
     // Haetaan 'results' taulukosta ensimmäinen objekti
     data.results.sort((a, b) => new Date(b.create_timestamp) - new Date(a.create_timestamp));
@@ -705,10 +705,10 @@ async function fetchMonthHrvData(token) {
 
 
     async function fetchHrvDataForSelectedDate(token, date) {
-      console.log("📡 Haetaan HRV päivälle:", date);
+      //console.log("📡 Haetaan HRV päivälle:", date);
       
       try {
-        const response = await fetch(`http://localhost:5000/api/kubios/hrv/by-date/${date}`, {
+        const response = await fetch(`https://nuflow-app.northeurope.cloudapp.azure.com/api/kubios/hrv/by-date/${date}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -728,7 +728,7 @@ async function fetchMonthHrvData(token) {
         }
     
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
     
         if (!data.results || !data.results[0]) {
           console.warn('No HRV data found for the selected date');
@@ -954,7 +954,7 @@ async function fetchMonthHrvData(token) {
       const chartGrid = document.getElementById('lineChartGrid');
       if (!chartGrid || !fullRawData) return;
     
-      console.log(`Drawing line charts for ${days} days with data:`, fullRawData);
+      //console.log(`Drawing line charts for ${days} days with data:`, fullRawData);
       
       // Tyhjennä aiemmat kaaviot
       chartGrid.innerHTML = '';
@@ -1102,7 +1102,7 @@ async function fetchMonthHrvData(token) {
       });
     }
     function openHrvChartWithWarning() {
-      console.log("Avataan HRV-kaaviomodaali");
+      //console.log("Avataan HRV-kaaviomodaali");
       
       // Sulje ensin päiväkirjamodaali, jos se on auki
       const diaryModal = document.getElementById('diaryModal');
@@ -1114,7 +1114,7 @@ async function fetchMonthHrvData(token) {
         if (diaryOverlay) {
           diaryOverlay.style.display = 'none';
         }
-        console.log("Päiväkirjamodaali suljettu");
+        //console.log("Päiväkirjamodaali suljettu");
       }
       
       // Pieni viive ennen uuden modaalin avaamista
@@ -1163,7 +1163,7 @@ async function fetchMonthHrvData(token) {
         
         // Jos tämän päivän HRV-data on saatavilla ja siinä on poikkeavia arvoja
         if (dayHrvData && (dayHrvData.isAbnormal || dayHrvData.rmssdAbnormal || dayHrvData.sdnnAbnormal)) {
-          console.log("Poikkeavia HRV-arvoja havaittu, näytetään varoitus");
+          //console.log("Poikkeavia HRV-arvoja havaittu, näytetään varoitus");
           
           // Luo varoituselementti
           const warningElement = document.createElement('div');
@@ -1231,7 +1231,7 @@ async function fetchMonthHrvData(token) {
           drawPieChart(latestData);
         }
         
-        console.log("HRV-kaaviomodaali avattu");
+        //console.log("HRV-kaaviomodaali avattu");
       }, 300); // Pieni viive modalien välillä
     }
     
