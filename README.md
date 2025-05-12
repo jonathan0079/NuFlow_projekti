@@ -130,7 +130,8 @@ Asetuksissa käyttäjätilin saa poistettua tietokannasta syöttämällä sähk�
 
 ## Mahdolliset tiedossa olevat bugit/ongelmat
 
-* Ei tiedossa olevia bugeja tai ongelmia.
+* Päiväkirjamerkintää ei saa tehtyä edellisille päiville
+* Asetus-nappi näkyy, vaikka käyttäjä ei ole kirjautunut
 
 
 
